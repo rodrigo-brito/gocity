@@ -1,8 +1,6 @@
-package example
+package subpackage
 
 import "fmt"
-
-type AliasExample int
 
 type Example struct {
 	Value string

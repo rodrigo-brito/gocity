@@ -8,26 +8,48 @@ import (
 	"log"
 )
 
-func (v visitor) Visit(n ast.Node) ast.Visitor {
+func getIdentifier(pkg, name string) string {
+	return fmt.Sprintf("%s.%s", pkg, name)
+}
+
+func (v visitor) getNumberOfLines(start, end token.Pos) int {
+	return v.FileSet.Position(end).Line - v.FileSet.Position(start).Line + 1
+}
+
+func (v *visitor) Visit(n ast.Node) ast.Visitor {
 	if n == nil {
 		return nil
 	}
 
 	switch d := n.(type) {
-	case *ast.Package:
-		fmt.Printf("PACK %s (%d file(s))\n", d.Name, len(d.Files))
-	case *ast.File:
-		fmt.Printf("FILE %s = %d-%d\n", d.Name.Name, v.FileSet.Position(d.Pos()).Line, v.FileSet.Position(d.End()).Line)
-	case *ast.StructType:
-		fmt.Printf("STRUCT %v = %d-%d\n", d.Struct, v.FileSet.Position(d.Pos()).Line, v.FileSet.Position(d.End()).Line)
+	case *ast.TypeSpec:
+		if structObj, ok := d.Type.(*ast.StructType); ok {
+			identifier := getIdentifier(v.PackageName, d.Name.Name)
+
+			if _, ok := v.StructInfo[identifier]; !ok {
+				v.StructInfo[identifier] = new(info)
+			}
+
+			v.StructInfo[identifier].Name = d.Name.Name
+			v.StructInfo[identifier].NumberAttributes = len(structObj.Fields.List)
+			v.StructInfo[identifier].NumberLines += v.getNumberOfLines(structObj.Pos(), structObj.End())
+		}
 	case *ast.FuncDecl:
-		var structName string
+		var structName = "(Orphan)"
 		if d.Recv != nil && len(d.Recv.List) > 0 {
 			typeObj := d.Recv.List[0].Type
 			structName = typeObj.(*ast.StarExpr).X.(*ast.Ident).Name
 		}
 
-		fmt.Printf("(%s) FUNC %s = %d-%d\n", structName, d.Name.Name, v.FileSet.Position(d.Body.Pos()).Line, v.FileSet.Position(d.Body.End()).Line)
+		identifier := getIdentifier(v.PackageName, structName)
+
+		if _, ok := v.StructInfo[identifier]; !ok {
+			v.StructInfo[identifier] = new(info)
+			v.StructInfo[identifier].Name = structName
+		}
+
+		v.StructInfo[identifier].NumberFunctions += 1
+		v.StructInfo[identifier].NumberLines += v.getNumberOfLines(d.Body.Pos(), d.Body.End())
 	}
 
 	return v
@@ -36,22 +58,42 @@ func (v visitor) Visit(n ast.Node) ast.Visitor {
 func main() {
 	packageName := "example"
 	fileSet := token.NewFileSet()
-	files, err := parser.ParseDir(fileSet, packageName, nil, parser.ParseComments)
+	packages, err := parser.ParseDir(fileSet, packageName, nil, parser.AllErrors)
 	if err != nil {
 		log.Fatalf("invalid input %s: %s", packageName, err)
 	}
 
-	for _, file := range files {
-		visitor := &visitor{FileSet: fileSet}
-		ast.Walk(visitor, file)
+	for name, pkg := range packages {
+		visitor := &visitor{FileSet: fileSet, PackageName: pkg.Name, StructInfo: make(map[string]*info)}
+		fmt.Println("reading pack ", name)
+		ast.Walk(visitor, pkg)
 		if err != nil {
 			log.Fatalf("error on walk: %s", err)
 		}
+
+		visitor.Print()
 	}
 }
 
+type info struct {
+	Name             string
+	NumberLines      int
+	NumberFunctions  int
+	NumberAttributes int
+}
+
 type visitor struct {
-	FileSet         *token.FileSet
-	NumberStructs   int
-	NumberFunctions int
+	FileSet     *token.FileSet
+	PackageName string
+	StructInfo  map[string]*info
+}
+
+func (v visitor) Print() {
+	fmt.Println("Package: ", v.PackageName)
+	for _, v := range v.StructInfo {
+		fmt.Println("Source: ", v.Name)
+		fmt.Println("Lines: ", v.NumberLines)
+		fmt.Println("Attrs: ", v.NumberAttributes)
+		fmt.Println("Funcs: ", v.NumberFunctions)
+	}
 }
