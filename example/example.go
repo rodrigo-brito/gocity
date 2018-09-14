@@ -2,6 +2,13 @@ package example
 
 import "fmt"
 
+var (
+	a = 1
+	b = 2
+)
+
+const batata = 3
+
 type AliasExample int
 
 type Example struct {
