@@ -1,25 +1,46 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
+
+	"github.com/go-chi/chi"
+
+	"github.com/rodrigo-brito/gocity/analyzer"
 )
 
 func main() {
-	packageName := "github.com/rodrigo-brito/go-async-benchmark"
+	router := chi.NewRouter()
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		projectName := r.URL.Query().Get("q")
+		w.Write([]byte(projectName))
 
-	analyzer := NewAnalyzer(packageName)
-	err := analyzer.FetchPackage()
-	if err != nil {
-		log.Fatal(err)
-	}
+		// TODO: validate project name
 
-	summary, err := analyzer.Analyze()
-	if err != nil {
-		log.Fatalf("error on analyzetion %s", err)
-	}
+		analyzer := analyzer.NewAnalyzer(projectName)
+		err := analyzer.FetchPackage()
+		if err != nil {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			log.Print(err)
+		}
 
-	for key, value := range summary {
-		fmt.Printf("%s: LOC=%d NOM=%d NOA=%d\n", key, value.NumberLines, value.NumberFunctions, value.NumberAttributes)
-	}
+		summary, err := analyzer.Analyze()
+		if err != nil {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			log.Printf("error on analyzetion %s", err)
+		}
+
+		body, err := json.Marshal(summary)
+		if err != nil {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			log.Print(err)
+		}
+
+		w.Write(body)
+	})
+
+	fmt.Println("Server started at http://localhost:3000")
+	http.ListenAndServe(":3000", router)
 }

@@ -1,9 +1,11 @@
-package main
+package analyzer
 
 import (
 	"fmt"
 	"go/ast"
 	"go/token"
+
+	"github.com/rodrigo-brito/gocity/utils"
 )
 
 type info struct {
@@ -39,7 +41,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 
 	switch d := n.(type) {
 	case *ast.ValueSpec:
-		identifier := getIdentifier(v.PackageName, "")
+		identifier := utils.GetIdentifier(v.PackageName, "")
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(info)
@@ -49,7 +51,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 
 	case *ast.TypeSpec:
 		if structObj, ok := d.Type.(*ast.StructType); ok {
-			identifier := getIdentifier(v.PackageName, d.Name.Name)
+			identifier := utils.GetIdentifier(v.PackageName, d.Name.Name)
 
 			if _, ok := v.StructInfo[identifier]; !ok {
 				v.StructInfo[identifier] = new(info)
@@ -66,7 +68,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 			structName = typeObj.(*ast.StarExpr).X.(*ast.Ident).Name
 		}
 
-		identifier := getIdentifier(v.PackageName, structName)
+		identifier := utils.GetIdentifier(v.PackageName, structName)
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(info)

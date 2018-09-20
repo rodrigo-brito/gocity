@@ -1,2 +1,2 @@
-# golang.org/x/tools v0.0.0-20180831211245-7ca132754999
-golang.org/x/tools/go/ast/astutil
+# github.com/go-chi/chi v3.3.3+incompatible
+github.com/go-chi/chi

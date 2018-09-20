@@ -1,4 +1,4 @@
-package main
+package analyzer
 
 import (
 	"errors"
@@ -9,6 +9,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/rodrigo-brito/gocity/utils"
+
+	"github.com/rodrigo-brito/gocity/lib"
 )
 
 var ErrInvalidPackage = errors.New("invalid package")
@@ -29,7 +33,7 @@ func NewAnalyzer(packageName string) Analyzer {
 }
 
 func (p *analyzer) FetchPackage() error {
-	fetcher := NewFetcher()
+	fetcher := lib.NewFetcher()
 	ok, err := fetcher.Fetch(p.PackageName)
 	if err != nil {
 		return err
@@ -51,7 +55,7 @@ func (a *analyzer) Analyze() (map[string]*info, error) {
 		}
 
 		fileSet := token.NewFileSet()
-		if f.IsDir() || !isGoFile(f.Name()) {
+		if f.IsDir() || !utils.IsGoFile(f.Name()) {
 			return nil
 		}
 
