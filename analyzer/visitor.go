@@ -8,7 +8,7 @@ import (
 	"github.com/rodrigo-brito/gocity/utils"
 )
 
-type info struct {
+type NodeInfo struct {
 	File             string
 	ObjectName       string
 	NumberLines      int
@@ -18,7 +18,7 @@ type info struct {
 
 type Visitor struct {
 	FileSet     *token.FileSet
-	StructInfo  map[string]*info
+	StructInfo  map[string]*NodeInfo
 	PackageName string
 	Path        string
 }
@@ -44,7 +44,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 		identifier := utils.GetIdentifier(v.PackageName, "")
 
 		if _, ok := v.StructInfo[identifier]; !ok {
-			v.StructInfo[identifier] = new(info)
+			v.StructInfo[identifier] = new(NodeInfo)
 		}
 
 		v.StructInfo[identifier].NumberAttributes++
@@ -54,7 +54,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 			identifier := utils.GetIdentifier(v.PackageName, d.Name.Name)
 
 			if _, ok := v.StructInfo[identifier]; !ok {
-				v.StructInfo[identifier] = new(info)
+				v.StructInfo[identifier] = new(NodeInfo)
 			}
 
 			v.StructInfo[identifier].ObjectName = d.Name.Name
@@ -71,7 +71,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 		identifier := utils.GetIdentifier(v.PackageName, structName)
 
 		if _, ok := v.StructInfo[identifier]; !ok {
-			v.StructInfo[identifier] = new(info)
+			v.StructInfo[identifier] = new(NodeInfo)
 			v.StructInfo[identifier].ObjectName = structName
 		}
 

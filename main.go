@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/rodrigo-brito/gocity/model"
+
 	"github.com/go-chi/chi"
 
 	"github.com/rodrigo-brito/gocity/analyzer"
@@ -32,7 +34,7 @@ func main() {
 			log.Printf("error on analyzetion %s", err)
 		}
 
-		body, err := json.Marshal(summary)
+		body, err := json.Marshal(model.New(summary, projectName))
 		if err != nil {
 			w.WriteHeader(http.StatusServiceUnavailable)
 			log.Print(err)

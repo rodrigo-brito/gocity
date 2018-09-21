@@ -19,7 +19,7 @@ var ErrInvalidPackage = errors.New("invalid package")
 
 type Analyzer interface {
 	FetchPackage() error
-	Analyze() (map[string]*info, error)
+	Analyze() (map[string]*NodeInfo, error)
 }
 
 type analyzer struct {
@@ -46,8 +46,8 @@ func (p *analyzer) FetchPackage() error {
 	return nil
 }
 
-func (a *analyzer) Analyze() (map[string]*info, error) {
-	summary := make(map[string]*info)
+func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
+	summary := make(map[string]*NodeInfo)
 	root := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), a.PackageName)
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
