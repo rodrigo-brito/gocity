@@ -12,7 +12,7 @@ type NodeInfo struct {
 	File             string
 	ObjectName       string
 	NumberLines      int
-	NumberFunctions  int
+	NumberMethods    int
 	NumberAttributes int
 }
 
@@ -65,7 +65,11 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 		var structName = ""
 		if d.Recv != nil && len(d.Recv.List) > 0 {
 			typeObj := d.Recv.List[0].Type
-			structName = typeObj.(*ast.StarExpr).X.(*ast.Ident).Name
+			if ident, ok := typeObj.(*ast.Ident); ok {
+				structName = ident.Name
+			} else {
+				structName = typeObj.(*ast.StarExpr).X.(*ast.Ident).Name
+			}
 		}
 
 		identifier := utils.GetIdentifier(v.PackageName, structName)
@@ -75,8 +79,10 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 			v.StructInfo[identifier].ObjectName = structName
 		}
 
-		v.StructInfo[identifier].NumberFunctions++
-		v.StructInfo[identifier].NumberLines += v.getNumberOfLines(d.Body.Pos(), d.Body.End())
+		v.StructInfo[identifier].NumberMethods++
+		if d.Body != nil {
+			v.StructInfo[identifier].NumberLines += v.getNumberOfLines(d.Body.Pos(), d.Body.End())
+		}
 	}
 
 	return v
