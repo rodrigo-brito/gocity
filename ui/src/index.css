@@ -1,0 +1,32 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.canvas {
+  flex: 1;
+}
+.canvas canvas {
+  height: 100%;
+  display: table;
+  margin: 0 auto;
+  touch-action: none;
+}
+.header {
+  background: #fff;
+}
+.float-card {
+  position: fixed;
+  display: none;
+}
+.field {
+  margin: 20px auto;
+}

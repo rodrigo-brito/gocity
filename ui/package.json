@@ -1,0 +1,22 @@
+{
+  "name": "ui2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "babylonjs": "^3.3.0-rc.4",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "1.1.5"
+  },
+  "eslintIgnore": [
+    "node_modules/**",
+    ".node_modules/**",
+    "node_modules/"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

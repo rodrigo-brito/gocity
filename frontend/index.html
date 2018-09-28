@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -23,15 +24,19 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
         html, body {
-            overflow: hidden;
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
         }
-        #renderCanvas {
+        main {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        canvas {
             width: 100%;
-            height: auto;
+            flex: 1;
             touch-action: none;
         }
         .header {
@@ -46,6 +51,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="float-card">
         <div class="box">
@@ -57,23 +63,25 @@
             </div>
         </div>
     </div>
-    <header class="header">
-        <div class="container">
-            <h1 class="title">GoCity</h1>
-            <span class="subtitle">Source code visualization</span>
-            <div class="field has-addons">
-                <div class="control">
-                    <input class="input" id="repository" type="text" placeholder="eg: github.com/golang/go" value="github.com/rodrigo-brito/go-async-benchmark">
-                </div>
-                <div class="control">
-                    <a id="search" class="button is-info">
-                        Plot
-                    </a>
+    <main>
+        <header class="header">
+            <div class="container">
+                <h1 class="title">GoCity</h1>
+                <span class="subtitle">Source code visualization</span>
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" id="repository" type="text" placeholder="eg: github.com/golang/go" value="github.com/rodrigo-brito/go-async-benchmark">
+                    </div>
+                    <div class="control">
+                        <a id="search" class="button is-info">
+                            Plot
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <canvas id="renderCanvas"></canvas>
+        </header>
+        <canvas id="renderCanvas"></canvas>
+    </main>
     <script src="js/main.js"></script>
 
     <!--  Bulma -->
@@ -81,4 +89,5 @@
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 
 </body>
+
 </html>
