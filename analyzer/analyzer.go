@@ -89,7 +89,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 
 		v := &Visitor{
 			FileSet:     fileSet,
-			PackageName: path,
+			PackageName: a.PackageName,
 			Path:        path,
 			StructInfo:  summary,
 		}

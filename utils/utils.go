@@ -2,11 +2,16 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 )
 
 var pattern = regexp.MustCompile(`(\w+\.go)(?:\.\((\w+)\))?$`)
+
+func TrimGoPath(path, repository string) string {
+	return strings.TrimPrefix(path, fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), repository))
+}
 
 func GetFileAndStruct(identifier string) (fileName, structName string) {
 	result := pattern.FindStringSubmatch(identifier)
@@ -21,7 +26,8 @@ func GetFileAndStruct(identifier string) (fileName, structName string) {
 	return
 }
 
-func GetIdentifier(path, name string) string {
+func GetIdentifier(path, pkg, name string) string {
+	path = TrimGoPath(path, pkg)
 	if len(name) > 0 {
 		return fmt.Sprintf("%s.(%s)", path, name)
 	}

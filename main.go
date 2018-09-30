@@ -11,19 +11,29 @@ import (
 	"github.com/rodrigo-brito/gocity/model"
 
 	"github.com/go-chi/chi"
-
+	"github.com/go-chi/cors"
 	"github.com/rodrigo-brito/gocity/analyzer"
 )
 
 func main() {
 	router := chi.NewRouter()
+
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	})
+
+	router.Use(cors.Handler)
+
 	router.Get("/api", func(w http.ResponseWriter, r *http.Request) {
 		projectName := r.URL.Query().Get("q")
 		if len(projectName) == 0 {
 			return
 		}
 
-		// TODO: improve folder selection, ignore GOPATH
 		analyzer := analyzer.NewAnalyzer(projectName, analyzer.WithIgnoreList("/vendor/"))
 		err := analyzer.FetchPackage()
 		if err != nil {
@@ -47,11 +57,11 @@ func main() {
 	})
 
 	workDir, _ := os.Getwd()
-	filesDir := filepath.Join(workDir, "frontend")
+	filesDir := filepath.Join(workDir, "ui/build")
 	FileServer(router, "/", http.Dir(filesDir))
 
-	fmt.Println("Server started at http://localhost:3000")
-	if err := http.ListenAndServe(":3000", router); err != nil {
+	fmt.Println("Server started at http://localhost:4000")
+	if err := http.ListenAndServe(":4000", router); err != nil {
 		log.Print(err)
 	}
 }

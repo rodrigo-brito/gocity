@@ -41,7 +41,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 
 	switch d := n.(type) {
 	case *ast.ValueSpec:
-		identifier := utils.GetIdentifier(v.PackageName, "")
+		identifier := utils.GetIdentifier(v.Path, v.PackageName, "")
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(NodeInfo)
@@ -51,7 +51,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 
 	case *ast.TypeSpec:
 		if structObj, ok := d.Type.(*ast.StructType); ok {
-			identifier := utils.GetIdentifier(v.PackageName, d.Name.Name)
+			identifier := utils.GetIdentifier(v.Path, v.PackageName, d.Name.Name)
 
 			if _, ok := v.StructInfo[identifier]; !ok {
 				v.StructInfo[identifier] = new(NodeInfo)
@@ -72,7 +72,7 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 			}
 		}
 
-		identifier := utils.GetIdentifier(v.PackageName, structName)
+		identifier := utils.GetIdentifier(v.Path, v.PackageName, structName)
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(NodeInfo)
