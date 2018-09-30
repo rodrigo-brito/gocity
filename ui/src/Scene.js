@@ -13,19 +13,16 @@ export default class Scene extends React.Component {
   };
 
   componentDidMount() {
-    this.engine = new BABYLON.Engine(
-      this.canvas,
-      true,
-      this.props.engineOptions,
-      this.props.adaptToDeviceRatio
-    );
+    this.engine = new BABYLON.Engine(this.canvas, true, {
+      preserveDrawingBuffer: true,
+      stencil: true
+    });
 
-    let scene = new BABYLON.Scene(this.engine);
-    this.scene = scene;
+    this.scene = new BABYLON.Scene(this.engine);
 
     if (typeof this.props.onSceneMount === "function") {
       this.props.onSceneMount({
-        scene,
+        scene: this.scene,
         engine: this.engine,
         canvas: this.canvas
       });

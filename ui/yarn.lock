@@ -332,6 +332,13 @@ aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
 
+axios@^0.18.0:
+  version "0.18.0"
+  resolved "http://registry.npmjs.org/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
+  dependencies:
+    follow-redirects "^1.3.0"
+    is-buffer "^1.1.5"
+
 axobject-query@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-0.1.0.tgz#62f59dbc59c9f9242759ca349960e7a2fe3c36c0"
@@ -998,9 +1005,23 @@ babylon@^6.17.0, babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
-babylonjs@^3.3.0-rc.4:
-  version "3.3.0-rc.4"
-  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-3.3.0-rc.4.tgz#303873a2ce310c6ad7aef704e6f5d8ac7289ed2c"
+babylonjs-gltf2interface@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/babylonjs-gltf2interface/-/babylonjs-gltf2interface-3.2.0.tgz#dd903ac947f79e7818006feec386a5b8bae981e3"
+
+babylonjs-gui@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/babylonjs-gui/-/babylonjs-gui-3.2.0.tgz#e454b037c1586cf60bc5b8610410308675464bba"
+
+babylonjs-loaders@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/babylonjs-loaders/-/babylonjs-loaders-3.2.0.tgz#a0984703cd5ca7ec0f29cc8796ecb29d9a65d82c"
+  dependencies:
+    babylonjs-gltf2interface "3.2.0"
+
+babylonjs@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-3.2.0.tgz#14cb71f27adaae1b071a03bd0d292b0fe07e448e"
 
 balanced-match@^0.4.2:
   version "0.4.2"
@@ -2758,7 +2779,7 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.3.0:
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.8.tgz#1dbfe13e45ad969f813e86c00e5296f525c885a1"
   dependencies:
