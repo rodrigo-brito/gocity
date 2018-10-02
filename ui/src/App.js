@@ -11,7 +11,7 @@ const playgroundSize = 1000;
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-const endpoint = "/api";
+const endpoint = "/api"; // TODO: isolate variable by enviroments
 
 // TODO: isolate in the constants file
 const colors = {
@@ -89,7 +89,7 @@ class App extends Component {
   addBlock = data => {
     const bar = BABYLON.MeshBuilder.CreateBox(
       data.label,
-      { width: data.width, depth: data.width, height: data.height },
+      { width: data.width, depth: data.depth, height: data.height },
       this.scene
     );
     if (data.parent) {
@@ -142,7 +142,8 @@ class App extends Component {
       var mesh = this.addBlock({
         x: data.position.x,
         y: data.position.y,
-        width: data.size,
+        width: data.width,
+        depth: data.depth,
         height: data.numberOfMethods,
         label: "teste",
         color: colors[data.type],
@@ -167,8 +168,10 @@ class App extends Component {
     });
   }
 
-  updateCamera(size) {
-    this.camera.setPosition(new BABYLON.Vector3(size, size, size));
+  updateCamera(width, height) {
+    this.camera.setPosition(
+      new BABYLON.Vector3(width, width, width + height / 2)
+    );
   }
 
   initScene() {
@@ -257,7 +260,7 @@ class App extends Component {
         console.log(response);
         this.reset();
         this.plot(response.data.children);
-        this.updateCamera(response.data.size);
+        this.updateCamera(response.data.width, response.data.depth);
       })
       .catch(e => {
         alert("Erro ao processar projeto");

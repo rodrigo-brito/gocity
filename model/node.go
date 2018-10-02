@@ -1,7 +1,6 @@
 package model
 
 import (
-	"math"
 	"strings"
 
 	"github.com/rodrigo-brito/gocity/utils"
@@ -23,35 +22,14 @@ type Node struct {
 	Name               string   `json:"name"`
 	URL                string   `json:"url"`
 	Type               NodeType `json:"type"`
-	Size               float64  `json:"size"`
+	Width              float64  `json:"width"`
+	Depth              float64  `json:"depth"`
 	Position           Position `json:"position"`
 	NumberOfLines      int      `json:"numberOfLines"`
 	NumberOfMethods    int      `json:"numberOfMethods"`
 	NumberOfAttributes int      `json:"numberOfAttributes"`
 	Children           []*Node  `json:"children"`
 	childrenMap        map[string]*Node
-}
-
-func (n *Node) GetSize() float64 {
-	numberChildren := len(n.childrenMap)
-	if numberChildren > 0 {
-		dimension := math.Ceil(math.Sqrt(float64(numberChildren)))
-
-		var maxSize float64
-		for _, child := range n.childrenMap {
-			size := child.GetSize()
-			if size > maxSize {
-				maxSize = size
-			}
-		}
-
-		maxSize += PackageSizeMargin
-		n.Size = float64(dimension) * maxSize
-		return n.Size
-	}
-
-	n.Size = float64(n.NumberOfAttributes) + 1
-	return n.Size
 }
 
 func (n *Node) GenerateChildList() {
@@ -65,20 +43,28 @@ func (n *Node) GenerateChildList() {
 
 func (n *Node) GenerateChildrenPosition() {
 	if len(n.childrenMap) == 0 {
+		n.Width = float64(n.NumberOfAttributes) + 1
+		n.Depth = float64(n.NumberOfAttributes) + 1
 		return
 	}
 
-	var maxSize float64
+	positionGenerator := NewGenerator(len(n.childrenMap))
 	for _, child := range n.childrenMap {
-		if child.Size > maxSize {
-			maxSize = child.Size
-		}
+		child.GenerateChildrenPosition()
+		child.Position = positionGenerator.NextPosition(child.Width, child.Depth)
 	}
 
-	positionGenerator := NewGenerator(len(n.childrenMap), maxSize)
+	bounds := positionGenerator.GetBounds()
+	n.Width, n.Depth = bounds.X, bounds.Y
+
 	for _, child := range n.childrenMap {
-		child.Position = positionGenerator.NextPosition()
-		child.GenerateChildrenPosition()
+		child.Position.X -= n.Width / 2.0
+		child.Position.Y -= n.Depth / 2.0
+	}
+
+	if n.Type == FileType {
+		n.Width += float64(n.NumberOfAttributes)
+		n.Depth += float64(n.NumberOfAttributes)
 	}
 }
 
@@ -144,7 +130,6 @@ func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
 		}
 	}
 
-	tree.GetSize()
 	tree.GenerateChildrenPosition()
 	tree.GenerateChildList()
 

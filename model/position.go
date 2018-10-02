@@ -9,38 +9,56 @@ type Position struct {
 	Y float64 `json:"y"`
 }
 
+const defaultMargin = 1
+
 type generator struct {
-	maxSize     float64
-	numberNodes int
-	margin      int
-	positions   []Position
+	numberNodes  int
+	margin       int
+	dimension    int
+	xReference   float64
+	yReference   float64
+	currentIndex int
+	maxWidth     float64
+	maxHeight    float64
+	bounds       Position
 }
 
-func NewGenerator(numberNode int, maxSize float64) *generator {
+func NewGenerator(numberNodes int) *generator {
 	generator := &generator{
-		maxSize:     maxSize,
-		numberNodes: numberNode,
+		numberNodes: numberNodes,
+		dimension:   int(math.Ceil(math.Sqrt(float64(numberNodes)))),
 	}
-	generator.Init()
+
 	return generator
 }
 
-func (g *generator) Init() {
-	dimension := math.Ceil(math.Sqrt(float64(g.numberNodes)))
-	halfWidth := float64(g.maxSize / 2.0)
-	shiftCorner := dimension*halfWidth - halfWidth
-	for i := 0; i < int(dimension); i++ {
-		for j := 0; j < int(dimension); j++ {
-			g.positions = append(g.positions, Position{
-				X: g.maxSize*float64(j) - shiftCorner,
-				Y: g.maxSize*float64(i) - shiftCorner,
-			})
-		}
+func (g *generator) GetBounds() Position {
+	return Position{
+		X: g.maxWidth + defaultMargin,
+		Y: g.maxHeight + defaultMargin,
 	}
 }
 
-func (g *generator) NextPosition() Position {
-	position := g.positions[0]
-	g.positions = append(g.positions[:0], g.positions[1:]...)
+func (g *generator) NextPosition(width, height float64) Position {
+	g.currentIndex++
+
+	if g.currentIndex > g.dimension && g.yReference+height >= g.maxWidth {
+		g.currentIndex = 0
+		g.yReference = 0
+		g.xReference = g.maxWidth + defaultMargin
+	}
+
+	position := Position{X: g.xReference + (width+defaultMargin)/2, Y: g.yReference + (height+defaultMargin)/2}
+
+	if g.xReference+width > g.maxWidth {
+		g.maxWidth = g.xReference + width
+	}
+
+	if g.yReference+height > g.maxHeight {
+		g.maxHeight = g.yReference + height
+	}
+
+	g.yReference += height + defaultMargin
+
 	return position
 }
