@@ -1,6 +1,7 @@
 package model
 
 import (
+	"sort"
 	"strings"
 
 	"github.com/rodrigo-brito/gocity/utils"
@@ -39,17 +40,20 @@ func (n *Node) GenerateChildList() {
 			child.GenerateChildList()
 		}
 	}
+
+	// Sort by width
+	sort.Sort(sort.Reverse(byWidth(n.Children)))
 }
 
 func (n *Node) GenerateChildrenPosition() {
-	if len(n.childrenMap) == 0 {
+	if len(n.Children) == 0 {
 		n.Width = float64(n.NumberOfAttributes) + 1
 		n.Depth = float64(n.NumberOfAttributes) + 1
 		return
 	}
 
-	positionGenerator := NewGenerator(len(n.childrenMap))
-	for _, child := range n.childrenMap {
+	positionGenerator := NewGenerator(len(n.Children))
+	for _, child := range n.Children {
 		child.GenerateChildrenPosition()
 		child.Position = positionGenerator.NextPosition(child.Width, child.Depth)
 	}
@@ -57,7 +61,7 @@ func (n *Node) GenerateChildrenPosition() {
 	bounds := positionGenerator.GetBounds()
 	n.Width, n.Depth = bounds.X, bounds.Y
 
-	for _, child := range n.childrenMap {
+	for _, child := range n.Children {
 		child.Position.X -= n.Width / 2.0
 		child.Position.Y -= n.Depth / 2.0
 	}
@@ -130,8 +134,8 @@ func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
 		}
 	}
 
-	tree.GenerateChildrenPosition()
 	tree.GenerateChildList()
+	tree.GenerateChildrenPosition()
 
 	return tree
 }
