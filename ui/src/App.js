@@ -40,6 +40,8 @@ class App extends Component {
   scene = null;
   engine = null;
   camera = null;
+  shadowGenerator = null;
+  light = null;
 
   constructor(props) {
     super(props);
@@ -128,7 +130,7 @@ class App extends Component {
     bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
 
     // Shadows
-    // shadowGenerator.getShadowMap().renderList.push(bar);
+    this.shadowGenerator.getShadowMap().renderList.push(bar);
 
     return bar;
   };
@@ -172,6 +174,8 @@ class App extends Component {
     this.camera.setPosition(
       new BABYLON.Vector3(width, width, width + height / 2)
     );
+
+    this.light.position = new BABYLON.Vector3(0, 25, -50);
   }
 
   initScene() {
@@ -195,14 +199,23 @@ class App extends Component {
     this.camera.useAutoRotationBehavior = true;
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight(
-      "light1",
-      new BABYLON.Vector3(0, 1, 0),
-      this.scene
+    // var light = new BABYLON.HemisphericLight(
+    //   "light1",
+    //   new BABYLON.Vector3(0, 1, 0),
+    //   this.scene
+    // );
+    //
+    // // Default intensity is 1. Let's dim the light a small amount
+    // light.intensity = 0.7;
+
+    this.light = new BABYLON.DirectionalLight(
+        "light",
+        new BABYLON.Vector3(0, -0.5, -1.0),
+        this.scene
     );
 
-    // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
+    this.shadowGenerator = new BABYLON.ShadowGenerator(1024, this.light);
+    this.shadowGenerator.usePoissonSampling = true;
 
     var ground = BABYLON.Mesh.CreateGround(
       "ground",
