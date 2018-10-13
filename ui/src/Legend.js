@@ -10,7 +10,7 @@ export default () => {
         <i className="legend-ico white" /> File
       </p>
       <p>
-        <i className="legend-ico gray" /> Folder
+        <i className="legend-ico red" /> Folder
       </p>
     </div>
   );

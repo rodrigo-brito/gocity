@@ -3,7 +3,8 @@ package lib
 import (
 	"fmt"
 	"os"
-	"os/exec"
+
+	git "gopkg.in/src-d/go-git.v4"
 )
 
 type Fetcher interface {
@@ -25,11 +26,18 @@ func (fetcher) packageFound(name string) bool {
 }
 
 func (f *fetcher) Fetch(name string) (bool, error) {
-	cmd := exec.Command("go", "get", "-d", "-insecure", name)
-	cmd.Dir = os.Getenv("GOPATH")
-	_, err := cmd.Output()
-	if err != nil {
+	gitAddress := fmt.Sprintf("https://%s", name)
+	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
+
+	_, err := git.PlainClone(folder, false, &git.CloneOptions{
+		URL:          gitAddress,
+		Depth:        1,
+		SingleBranch: true,
+	})
+
+	if err != nil && err != git.ErrRepositoryAlreadyExists {
 		return false, err
 	}
-	return f.packageFound(name), err
+
+	return f.packageFound(name), nil
 }
