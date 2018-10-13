@@ -1,13 +1,17 @@
 import React from "react";
 export default () => {
   return (
-    <div className="columns is-mobile">
-      <div className="column">
-        <h1 className="title">GoCity</h1>
-        <span>Source code visualization</span>
+    <div className="level">
+      <div className="level-left">
+        <div className="level-item">
+          <div class="control">
+            <h1 className="title">GoCity</h1>
+            <span>Source code visualization</span>
+          </div>
+        </div>
       </div>
-      <div className="column is-2">
-        <div className="share m-t-10">
+      <div className="level-right">
+        <div className="level-item is-hidden-mobile">
           <a
             className="github-button"
             href="https://github.com/rodrigo-brito/gocity"

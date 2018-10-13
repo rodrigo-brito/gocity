@@ -82,7 +82,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 			return nil
 		}
 
-		file, err := parser.ParseFile(fileSet, path, nil, parser.AllErrors)
+		file, err := parser.ParseFile(fileSet, path, nil, parser.ParseComments)
 		if err != nil {
 			return fmt.Errorf("invalid input %s: %s", path, err)
 		}

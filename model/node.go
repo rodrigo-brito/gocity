@@ -15,8 +15,6 @@ const (
 	StructType  NodeType = "STRUCT"
 	FileType    NodeType = "FILE"
 	PackageType NodeType = "PACKAGE"
-
-	PackageSizeMargin = 1
 )
 
 type Node struct {

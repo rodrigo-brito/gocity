@@ -4,33 +4,44 @@ import * as BABYLON from "babylonjs";
 import BabylonScene from "./Scene";
 import "./App.css";
 import axios from "axios";
-import Header from "./Header";
+import Navbar from "./Nav";
 import Legend from "./Legend";
+import { getProportionalColor } from "./utils";
 
 const playgroundSize = 1000;
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-const endpoint = "/api"; // TODO: isolate variable by enviroments
+// const endpoint = "/api"; // TODO: isolate variable by enviroments
+const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
 
 // TODO: isolate in the constants file
 const colors = {
-  PACKAGE: new BABYLON.Color3(0.5, 0.5, 0.5),
-  FILE: new BABYLON.Color3(1, 1, 1),
-  STRUCT: new BABYLON.Color3(32 / 255, 156 / 255, 238 / 255)
+  PACKAGE: {
+    start: { r: 255, g: 100, b: 100 },
+    end: { r: 255, g: 100, b: 100 }
+  },
+  FILE: {
+    start: { r: 255, g: 255, b: 255 },
+    end: { r: 0, g: 0, b: 0 }
+  },
+  STRUCT: {
+    start: { r: 32, g: 156, b: 238 },
+    end: { r: 0, g: 0, b: 0 }
+  }
 };
 
 const examples = [
   {
-    name: "rodrigo-brito/go-async-benchmark",
+    name: "Example 1",
     link: "github.com/rodrigo-brito/go-async-benchmark"
   },
   {
-    name: "rodrigo-brito/gocity",
+    name: "Example 2",
     link: "github.com/rodrigo-brito/gocity"
   },
   {
-    name: "sirupsen/logrus",
+    name: "Example 3",
     link: "github.com/sirupsen/logrus"
   }
 ];
@@ -68,7 +79,6 @@ class App extends Component {
   }
 
   showTooltip(info) {
-    console.log("INFO: ", info);
     this.setState({
       infoVisible: true,
       infoData: info,
@@ -110,7 +120,6 @@ class App extends Component {
       new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnPointerOverTrigger,
         () => {
-          console.log("Hover ", bar.info);
           this.showTooltip(bar.info);
         }
       )
@@ -141,14 +150,20 @@ class App extends Component {
     }
 
     children.forEach(data => {
+      var color = getProportionalColor(
+        colors[data.type].start,
+        colors[data.type].end,
+        Math.min(100, data.numberOfLines / 1000.0)
+      );
+
       var mesh = this.addBlock({
         x: data.position.x,
         y: data.position.y,
         width: data.width,
         depth: data.depth,
         height: data.numberOfMethods,
-        label: "teste",
-        color: colors[data.type],
+        // label: "teste",
+        color: new BABYLON.Color3(color.r / 255, color.g / 255, color.b / 255),
         parent: parent,
         info: {
           name: data.name,
@@ -209,9 +224,9 @@ class App extends Component {
     // light.intensity = 0.7;
 
     this.light = new BABYLON.DirectionalLight(
-        "light",
-        new BABYLON.Vector3(0, -0.5, -1.0),
-        this.scene
+      "light",
+      new BABYLON.Vector3(0, -0.5, -1.0),
+      this.scene
     );
 
     this.shadowGenerator = new BABYLON.ShadowGenerator(1024, this.light);
@@ -295,21 +310,7 @@ class App extends Component {
         />
         <header className="header">
           <div className="container">
-            <Header />
-            Examples:{" "}
-            <span>
-              {examples.map(example => (
-                <a
-                  className="m-l-10"
-                  key={example.link}
-                  onClick={() => {
-                    this.process(example.link);
-                  }}
-                >
-                  {example.name}
-                </a>
-              ))}
-            </span>
+            <Navbar />
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
@@ -332,6 +333,19 @@ class App extends Component {
               </div>
             </div>
           </div>
+          <span>
+            {examples.map(example => (
+              <a
+                className="m-l-10"
+                key={example.link}
+                onClick={() => {
+                  this.process(example.link);
+                }}
+              >
+                {example.name}
+              </a>
+            ))}
+          </span>
         </header>
         <section className="canvas">
           <BabylonScene
