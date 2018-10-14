@@ -44,8 +44,16 @@ main {
   margin-top: 10px;
 }
 
+.m-t-50 {
+  margin-top: 50px;
+}
+
 .m-l-10 {
   margin-left: 10px;
+}
+
+.m-b-50 {
+  margin-left: 50px;
 }
 
 .legend {
@@ -75,4 +83,46 @@ main {
 
 .legend-ico.white {
   background: #fff;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.lds-dual-ring {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 10px auto;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  text-align: center;
+  color: #fff;
 }

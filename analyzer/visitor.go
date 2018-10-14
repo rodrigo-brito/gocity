@@ -1,7 +1,6 @@
 package analyzer
 
 import (
-	"fmt"
 	"go/ast"
 	"go/token"
 
@@ -21,13 +20,6 @@ type Visitor struct {
 	StructInfo  map[string]*NodeInfo
 	PackageName string
 	Path        string
-}
-
-func (v Visitor) Print() {
-	fmt.Println("Package: ", v.PackageName)
-	for ID := range v.StructInfo {
-		fmt.Println("ID: ", ID)
-	}
 }
 
 func (v Visitor) getNumberOfLines(start, end token.Pos) int {
