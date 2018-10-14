@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 
@@ -31,11 +32,39 @@ type Node struct {
 	childrenMap        map[string]*Node
 }
 
-func (n *Node) GenerateChildList() {
+const (
+	BaseTypeFlag       = "{{TYPE}}"
+	PackageBaseTypeURL = "tree"
+	FileBaseTypeURL    = "blob"
+)
+
+func getNodeURL(node *Node, parentPath string) (raw string, formatted string) {
+	if node.Type == StructType {
+		formatted = strings.Replace(parentPath, BaseTypeFlag, FileBaseTypeURL, -1)
+		return formatted, formatted
+	}
+
+	if len(node.Name) > 0 {
+		raw = fmt.Sprintf("%s/%s", parentPath, node.Name)
+	} else {
+		raw = parentPath
+	}
+
+	if node.Type == PackageType {
+		formatted = strings.Replace(raw, BaseTypeFlag, PackageBaseTypeURL, -1)
+		return
+	}
+	formatted = strings.Replace(raw, BaseTypeFlag, FileBaseTypeURL, -1)
+	return
+}
+
+func (n *Node) GenerateChildList(parentPath string) {
 	for _, child := range n.childrenMap {
+		baseName, nodeURL := getNodeURL(child, parentPath)
+		child.URL = nodeURL
 		n.Children = append(n.Children, child)
 		if len(child.childrenMap) > 0 {
-			child.GenerateChildList()
+			child.GenerateChildList(baseName)
 		}
 	}
 
@@ -132,7 +161,8 @@ func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
 		}
 	}
 
-	tree.GenerateChildList()
+	// TODO: branch selector
+	tree.GenerateChildList(fmt.Sprintf("https://%s/%s/master", repositoryName, BaseTypeFlag))
 	tree.GenerateChildrenPosition()
 
 	return tree

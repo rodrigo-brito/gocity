@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import FloatBox from "./FloatBox";
 import * as BABYLON from "babylonjs";
 import BabylonScene from "./Scene";
-import "./App.css";
 import axios from "axios";
 import Navbar from "./Nav";
 import Legend from "./Legend";
+import Loading from "./Loading"
 import { getProportionalColor } from "./utils";
 
 const playgroundSize = 1000;
@@ -33,16 +33,16 @@ const colors = {
 
 const examples = [
   {
-    name: "Example 1",
-    link: "github.com/rodrigo-brito/go-async-benchmark"
-  },
-  {
-    name: "Example 2",
-    link: "github.com/rodrigo-brito/gocity"
-  },
-  {
-    name: "Example 3",
+    name: "sirupsen/logrus",
     link: "github.com/sirupsen/logrus"
+  },
+  {
+    name: "99designs/gqlgen",
+    link: "github.com/99designs/gqlgen"
+  },
+  {
+    name: "gohugoio/hugo",
+    link: "github.com/gohugoio/hugo"
   }
 ];
 
@@ -51,12 +51,13 @@ class App extends Component {
   scene = null;
   engine = null;
   camera = null;
-  shadowGenerator = null;
+  // shadowGenerator = null;
   light = null;
 
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       repository: "github.com/rodrigo-brito/go-async-benchmark"
     };
     this.addBlock = this.addBlock.bind(this);
@@ -135,11 +136,11 @@ class App extends Component {
     // Material
     bar.material = new BABYLON.StandardMaterial(data.label + "mat", this.scene);
     bar.material.diffuseColor = data.color;
-    bar.material.emissiveColor = data.color.scale(0.3);
-    bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    // bar.material.emissiveColor = data.color.scale(0.3);
+    // bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
 
-    // Shadows
-    this.shadowGenerator.getShadowMap().renderList.push(bar);
+    // // Shadows
+    // this.shadowGenerator.getShadowMap().renderList.push(bar);
 
     return bar;
   };
@@ -153,7 +154,7 @@ class App extends Component {
       var color = getProportionalColor(
         colors[data.type].start,
         colors[data.type].end,
-        Math.min(100, data.numberOfLines / 1000.0)
+        Math.min(100, data.numberOfLines / 2000.0)
       );
 
       var mesh = this.addBlock({
@@ -189,11 +190,11 @@ class App extends Component {
     this.camera.setPosition(
       new BABYLON.Vector3(width, width, width + height / 2)
     );
-
-    this.light.position = new BABYLON.Vector3(0, 25, -50);
   }
 
   initScene() {
+    this.scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    this.scene.ambientColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     // This creates and positions a free camera (non-mesh)
     this.camera = new BABYLON.ArcRotateCamera(
       "camera",
@@ -214,41 +215,41 @@ class App extends Component {
     this.camera.useAutoRotationBehavior = true;
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    // var light = new BABYLON.HemisphericLight(
-    //   "light1",
-    //   new BABYLON.Vector3(0, 1, 0),
-    //   this.scene
-    // );
-    //
-    // // Default intensity is 1. Let's dim the light a small amount
-    // light.intensity = 0.7;
-
-    this.light = new BABYLON.DirectionalLight(
-      "light",
-      new BABYLON.Vector3(0, -0.5, -1.0),
+    var light = new BABYLON.HemisphericLight(
+      "light1",
+      new BABYLON.Vector3(0, 1, 0),
       this.scene
     );
 
-    this.shadowGenerator = new BABYLON.ShadowGenerator(1024, this.light);
-    this.shadowGenerator.usePoissonSampling = true;
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
 
-    var ground = BABYLON.Mesh.CreateGround(
-      "ground",
-      playgroundSize,
-      playgroundSize,
-      1,
-      this.scene,
-      false
-    );
+    // this.light = new BABYLON.DirectionalLight(
+    //   "light",
+    //   new BABYLON.Vector3(0, -0.5, -1.0),
+    //   this.scene
+    // );
 
-    var groundMaterial = new BABYLON.StandardMaterial("ground", this.scene);
+    // this.shadowGenerator = new BABYLON.ShadowGenerator(1024, this.light);
+    // this.shadowGenerator.usePoissonSampling = true;
 
-    groundMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-    groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    ground.material = groundMaterial;
-    ground.receiveShadows = true;
-    ground.position.y = -0.1;
-    ground.isVisible = false;
+    // var ground = BABYLON.Mesh.CreateGround(
+    //   "ground",
+    //   playgroundSize,
+    //   playgroundSize,
+    //   1,
+    //   this.scene,
+    //   false
+    // );
+    //
+    // var groundMaterial = new BABYLON.StandardMaterial("ground", this.scene);
+    //
+    // groundMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+    // // groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    // ground.material = groundMaterial;
+    // // ground.receiveShadows = true;
+    // ground.position.y = -0.1;
+    // // ground.isVisible = false;
   }
 
   onSceneMount(e) {
@@ -272,11 +273,14 @@ class App extends Component {
   process(repository) {
     const match = URLRegexp.exec(repository);
     if (!match) {
-      alert("url inválida");
+      alert("Invalid URL! Please inform a valid Github URL.");
       return;
     }
 
-    this.setState({ repository: match[1] });
+    this.setState({
+      repository: match[1],
+      loading: true
+    });
 
     axios
       .get(endpoint, {
@@ -285,12 +289,13 @@ class App extends Component {
         }
       })
       .then(response => {
-        console.log(response);
+        this.setState({loading: false});
         this.reset();
         this.plot(response.data.children);
         this.updateCamera(response.data.width, response.data.depth);
       })
       .catch(e => {
+        this.setState({loading: false});
         alert("Erro ao processar projeto");
         console.error(e);
       });
@@ -332,26 +337,30 @@ class App extends Component {
                 </a>
               </div>
             </div>
+            <small>
+                Examples: {examples.map(example => (
+                <a
+                  className="m-l-10"
+                  key={example.link}
+                  onClick={() => {
+                    this.process(example.link);
+                  }}
+                >
+                  {example.name}
+                </a>
+              ))}
+            </small>
           </div>
-          <span>
-            {examples.map(example => (
-              <a
-                className="m-l-10"
-                key={example.link}
-                onClick={() => {
-                  this.process(example.link);
-                }}
-              >
-                {example.name}
-              </a>
-            ))}
-          </span>
         </header>
         <section className="canvas">
-          <BabylonScene
-            engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
-            onSceneMount={this.onSceneMount}
-          />
+            {this.state.loading ?
+              <Loading/> :
+              <BabylonScene
+                width={window.innerWidth}
+                engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
+                onSceneMount={this.onSceneMount}
+              />
+            }
         </section>
         <Legend />
       </main>
