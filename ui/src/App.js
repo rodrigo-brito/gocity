@@ -7,8 +7,7 @@ import Navbar from "./Nav";
 import Legend from "./Legend";
 import Loading from "./Loading"
 import { getProportionalColor } from "./utils";
-
-const playgroundSize = 1000;
+import FeedbackForm from "./FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
@@ -57,6 +56,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      feedbackFormActive: true,
       loading: false,
       repository: "github.com/rodrigo-brito/go-async-benchmark"
     };
@@ -72,6 +72,8 @@ class App extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.updateCamera = this.updateCamera.bind(this);
     this.onSceneMount = this.onSceneMount.bind(this);
+    this.onFeedBackFormClose = this.onFeedBackFormClose.bind(this);
+    this.openFeedBackForm = this.openFeedBackForm.bind(this);
   }
 
   onMouseMove(e) {
@@ -305,6 +307,14 @@ class App extends Component {
     this.process(this.state.repository);
   }
 
+  onFeedBackFormClose() {
+    this.setState({feedbackFormActive: false});
+  }
+
+  openFeedBackForm() {
+    this.setState({feedbackFormActive: true});
+  }
+
   render() {
     return (
       <main onMouseMove={this.onMouseMove}>
@@ -316,6 +326,7 @@ class App extends Component {
         <header className="header">
           <div className="container">
             <Navbar />
+            <button className="button is-primary  m-t-10 m-b-10" onClick={this.openFeedBackForm}>Users feedback</button>
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
@@ -354,7 +365,7 @@ class App extends Component {
         </header>
         <section className="canvas">
             {this.state.loading ?
-              <Loading/> :
+              <Loading message="Fetching repository..."/> :
               <BabylonScene
                 width={window.innerWidth}
                 engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
@@ -363,6 +374,7 @@ class App extends Component {
             }
         </section>
         <Legend />
+        <FeedbackForm active={this.state.feedbackFormActive} onClose={this.onFeedBackFormClose}/>
       </main>
     );
   }

@@ -22,6 +22,7 @@ main {
 
 .canvas canvas {
   height: 100%;
+  width: 100%;
   display: table;
   margin: 0 auto;
   touch-action: none;
@@ -50,6 +51,10 @@ main {
 
 .m-l-10 {
   margin-left: 10px;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
 }
 
 .m-b-50 {
@@ -110,6 +115,18 @@ main {
   border-radius: 50%;
   border: 5px solid #fff;
   border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+.lds-dual-ring-dark:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #252525;
+  border-color: #252525 transparent #252525 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 

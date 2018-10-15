@@ -4,7 +4,7 @@ export default () => {
     <div className="level">
       <div className="level-left">
         <div className="level-item">
-          <div class="control">
+          <div className="control">
             <h1 className="title">GoCity</h1>
             <span>Source code visualization</span>
           </div>
