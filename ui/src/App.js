@@ -7,7 +7,7 @@ import Navbar from "./Nav";
 import Legend from "./Legend";
 import Loading from "./Loading"
 import { getProportionalColor } from "./utils";
-import FeedbackForm from "./FeedbackForm";
+import FeedbackForm from "./form/FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
@@ -326,7 +326,6 @@ class App extends Component {
         <header className="header">
           <div className="container">
             <Navbar />
-            <button className="button is-primary  m-t-10 m-b-10" onClick={this.openFeedBackForm}>Users feedback</button>
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
@@ -348,23 +347,26 @@ class App extends Component {
                 </a>
               </div>
             </div>
-            <small>
-                Examples: {examples.map(example => (
-                <a
-                  className="m-l-10"
-                  key={example.link}
-                  onClick={() => {
-                    this.process(example.link);
-                  }}
-                >
-                  {example.name}
-                </a>
-              ))}
-            </small>
+            <div className="level">
+              <small className="level-left">
+                  Examples: {examples.map(example => (
+                  <a
+                    className="m-l-10"
+                    key={example.link}
+                    onClick={() => {
+                      this.process(example.link);
+                    }}
+                  >
+                    {example.name}
+                  </a>
+                ))}
+              </small>
+              <button className="button is-primary level-right" onClick={this.openFeedBackForm}>Leave a feedback</button>
+            </div>
           </div>
         </header>
         <section className="canvas">
-            {this.state.loading ?
+          {this.state.loading ?
               <Loading message="Fetching repository..."/> :
               <BabylonScene
                 width={window.innerWidth}
