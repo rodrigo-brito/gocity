@@ -1,9 +1,10 @@
 import React from "react";
-import Message from "./form/Message";
-import Login from "./form/Login";
-import Loading from "./Loading";
+import Message from "./Message";
+import Login from "./Login";
+import Loading from "../Loading";
 
-const DATABASE_NAME = "public-feedback";
+const DATABASE_ALL = "all-messages";
+const DATABASE_PUBLIC = "public-messages";
 
 export default class FeedbackForm extends React.Component {
     provider = null;
@@ -16,20 +17,23 @@ export default class FeedbackForm extends React.Component {
         user: null,
         message: "",
         userMessages: [],
-        loading: false
+        loading: false,
+        errorMessage: null,
+        isPublic: true,
+        sent: false
       };
 
       this.onSend = this.onSend.bind(this);
       this.onLogin = this.onLogin.bind(this);
       this.onChange = this.onChange.bind(this);
+      this.onPublicChange = this.onPublicChange.bind(this);
 
       this.database = window.firebase.firestore();
     }
 
     componentDidMount(){
       this.setState({loading: true});
-      this.database.collection(DATABASE_NAME).get().then((querySnapshot) => {
-        console.log(querySnapshot);
+      this.database.collection(DATABASE_PUBLIC).get().then((querySnapshot) => {
         const userMessages = querySnapshot.docs.map((node) => node.data());
         console.log(userMessages);
         this.setState({userMessages, loading: false});
@@ -51,14 +55,25 @@ export default class FeedbackForm extends React.Component {
         date: new Date()
       };
 
-      this.database.collection(DATABASE_NAME).add(data).then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-        alert("Feedback sent!");
-        const userMessages = this.state.userMessages;
-        userMessages.unshift(data);
-        this.setState({userMessages});
+      this.database.collection(DATABASE_ALL).add(data).then((docRef) => {
+        if (!this.state.isPublic) {
+          this.setState({sent: true, errorMessage: null});
+          return;
+        }
+
+        this.database.collection(DATABASE_PUBLIC).doc(docRef.id).set({
+          name: data.name,
+          photo : data.photo,
+          message: data.message,
+          date: data.date
+        }).then(() => {
+          const userMessages = this.state.userMessages;
+          userMessages.unshift(data);
+          this.setState({sent: true, errorMessage: null, userMessages});
+        })
       })
       .catch(function(error) {
+        this.setState({errorMessage: "Error on send feedback!"});
         console.error("Error adding document: ", error);
         alert("Fail to send feedback!")
       });
@@ -77,6 +92,10 @@ export default class FeedbackForm extends React.Component {
       this.setState({message: e.target.value});
     }
 
+    onPublicChange() {
+      this.setState(prev => ({isPublic: !prev.isPublic}));
+    }
+
     render() {
       return (
         <div className={`modal ${this.props.active ? "is-active" : ""}`}>
@@ -87,9 +106,15 @@ export default class FeedbackForm extends React.Component {
               <button type="button" className="delete" aria-label="close" onClick={this.props.onClose} />
             </header>
             <section className="modal-card-body">
+              {this.state.sent && <div className="notification is-success">
+                Message sent! Thank you for the feedback!
+              </div>}
+              {this.state.errorMessage && <div className="notification is-error">
+                Erro on send message. Try again
+              </div>}
               {!this.state.user && <Login onLogin={this.onLogin}/>}
-              {this.state.user && <form className="m-b-10 is-clearfix">
-                  <label htmlFor="input">Hi <b>{this.state.user.displayName}</b>, leave your feedback:</label>
+              {this.state.user && !this.state.sent && <form className="m-b-10 is-clearfix">
+                <label htmlFor="input">Hi <b>{this.state.user.displayName}</b>, leave your feedback:</label>
                 <div className="field">
                   <div className="control">
                     <textarea className="textarea"
@@ -99,7 +124,7 @@ export default class FeedbackForm extends React.Component {
                   </div>
                 </div>
                 <label className="checkbox">
-                  <input type="checkbox" />
+                  <input type="checkbox" checked={this.state.isPublic} onChange={this.onPublicChange} />
                   {" "}Make feedback public
                 </label>
                 <button className="button is-success is-pulled-right" onClick={this.onSend}>Send Feedback</button>
