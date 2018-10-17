@@ -50,15 +50,14 @@ class App extends Component {
   scene = null;
   engine = null;
   camera = null;
-  // shadowGenerator = null;
   light = null;
 
   constructor(props) {
     super(props);
     this.state = {
-      feedbackFormActive: true,
+      feedbackFormActive: false,
       loading: false,
-      repository: "github.com/rodrigo-brito/go-async-benchmark"
+      repository: "github.com/rodrigo-brito/gocity"
     };
     this.addBlock = this.addBlock.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -74,6 +73,10 @@ class App extends Component {
     this.onSceneMount = this.onSceneMount.bind(this);
     this.onFeedBackFormClose = this.onFeedBackFormClose.bind(this);
     this.openFeedBackForm = this.openFeedBackForm.bind(this);
+  }
+
+  componentDidMount() {
+    this.process(this.state.repository)
   }
 
   onMouseMove(e) {

@@ -13,6 +13,7 @@ type NodeInfo struct {
 	NumberLines      int
 	NumberMethods    int
 	NumberAttributes int
+	Line             int
 }
 
 type Visitor struct {
@@ -26,13 +27,13 @@ func (v Visitor) getNumberOfLines(start, end token.Pos) int {
 	return v.FileSet.Position(end).Line - v.FileSet.Position(start).Line + 1
 }
 
-func (v *Visitor) Visit(n ast.Node) ast.Visitor {
-	if n == nil {
+func (v *Visitor) Visit(node ast.Node) ast.Visitor {
+	if node == nil {
 		return nil
 	}
 
-	switch d := n.(type) {
-	case *ast.ValueSpec:
+	switch definition := node.(type) {
+	case *ast.ValueSpec: // Atributes
 		identifier := utils.GetIdentifier(v.Path, v.PackageName, "")
 
 		if _, ok := v.StructInfo[identifier]; !ok {
@@ -40,23 +41,25 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 		}
 
 		v.StructInfo[identifier].NumberAttributes++
+		v.StructInfo[identifier].Line = v.FileSet.Position(definition.Pos()).Line
 
-	case *ast.TypeSpec:
-		if structObj, ok := d.Type.(*ast.StructType); ok {
-			identifier := utils.GetIdentifier(v.Path, v.PackageName, d.Name.Name)
+	case *ast.TypeSpec: // Structs
+		if structObj, ok := definition.Type.(*ast.StructType); ok {
+			identifier := utils.GetIdentifier(v.Path, v.PackageName, definition.Name.Name)
 
 			if _, ok := v.StructInfo[identifier]; !ok {
 				v.StructInfo[identifier] = new(NodeInfo)
 			}
 
-			v.StructInfo[identifier].ObjectName = d.Name.Name
+			v.StructInfo[identifier].ObjectName = definition.Name.Name
 			v.StructInfo[identifier].NumberAttributes = len(structObj.Fields.List)
 			v.StructInfo[identifier].NumberLines += v.getNumberOfLines(structObj.Pos(), structObj.End())
+			v.StructInfo[identifier].Line = v.FileSet.Position(structObj.Pos()).Line
 		}
-	case *ast.FuncDecl:
+	case *ast.FuncDecl: // Methods
 		var structName = ""
-		if d.Recv != nil && len(d.Recv.List) > 0 {
-			typeObj := d.Recv.List[0].Type
+		if definition.Recv != nil && len(definition.Recv.List) > 0 {
+			typeObj := definition.Recv.List[0].Type
 			if ident, ok := typeObj.(*ast.Ident); ok {
 				structName = ident.Name
 			} else {
@@ -72,8 +75,8 @@ func (v *Visitor) Visit(n ast.Node) ast.Visitor {
 		}
 
 		v.StructInfo[identifier].NumberMethods++
-		if d.Body != nil {
-			v.StructInfo[identifier].NumberLines += v.getNumberOfLines(d.Body.Pos(), d.Body.End())
+		if definition.Body != nil {
+			v.StructInfo[identifier].NumberLines += v.getNumberOfLines(definition.Body.Pos(), definition.Body.End())
 		}
 	}
 

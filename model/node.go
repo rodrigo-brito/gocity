@@ -29,6 +29,7 @@ type Node struct {
 	NumberOfMethods    int      `json:"numberOfMethods"`
 	NumberOfAttributes int      `json:"numberOfAttributes"`
 	Children           []*Node  `json:"children"`
+	Line               int      `json:"-"`
 	childrenMap        map[string]*Node
 }
 
@@ -40,7 +41,7 @@ const (
 
 func getNodeURL(node *Node, parentPath string) (raw string, formatted string) {
 	if node.Type == StructType {
-		formatted = strings.Replace(parentPath, BaseTypeFlag, FileBaseTypeURL, -1)
+		formatted = fmt.Sprintf("%s#L%d", strings.Replace(parentPath, BaseTypeFlag, FileBaseTypeURL, -1), node.Line)
 		return formatted, formatted
 	}
 
@@ -145,6 +146,7 @@ func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
 				fileNode.childrenMap[structName] = &Node{
 					Name:               structName,
 					Type:               StructType,
+					Line:               value.Line,
 					NumberOfAttributes: value.NumberAttributes,
 					NumberOfMethods:    value.NumberMethods,
 					NumberOfLines:      value.NumberLines,
