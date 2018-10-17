@@ -11,8 +11,8 @@ import FeedbackForm from "./form/FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-// const endpoint = "/api"; // TODO: isolate variable by enviroments
-const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
+const endpoint = "/api"; // TODO: isolate variable by enviroments
+// const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
 
 // TODO: isolate in the constants file
 const colors = {
