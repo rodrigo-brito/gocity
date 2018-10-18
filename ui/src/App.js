@@ -11,8 +11,8 @@ import FeedbackForm from "./form/FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-const endpoint = "/api"; // TODO: isolate variable by enviroments
-// const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
+// const endpoint = "/api"; // TODO: isolate variable by enviroments
+const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
 
 // TODO: isolate in the constants file
 const colors = {
@@ -131,6 +131,7 @@ class App extends Component {
       )
     );
 
+
     bar.actionManager.registerAction(
       new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnPointerOutTrigger,
@@ -141,7 +142,20 @@ class App extends Component {
     // Material
     bar.material = new BABYLON.StandardMaterial(data.label + "mat", this.scene);
     bar.material.diffuseColor = data.color;
-    // bar.material.emissiveColor = data.color.scale(0.3);
+    bar.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+
+    // Light on hover
+    bar.actionManager.registerAction(
+      new BABYLON.SetValueAction(
+        BABYLON.ActionManager.OnPointerOverTrigger, bar.material, "emissiveColor", data.color.scale(0.2)
+      )
+    );
+
+    bar.actionManager.registerAction(
+      new BABYLON.SetValueAction(
+        BABYLON.ActionManager.OnPointerOutTrigger, bar.material, "emissiveColor", bar.material.emissiveColor
+      )
+    );
     // bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
 
     // // Shadows
