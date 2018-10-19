@@ -11,8 +11,7 @@ import FeedbackForm from "./form/FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-// const endpoint = "/api"; // TODO: isolate variable by enviroments
-const endpoint = "http://localhost:4000/api"; // TODO: isolate variable by enviroments
+const endpoint = process.env.REACT_APP_API_URL;
 
 // TODO: isolate in the constants file
 const colors = {
@@ -53,12 +52,14 @@ class App extends Component {
   light = null;
 
   constructor(props) {
+
     super(props);
     this.state = {
       feedbackFormActive: false,
       loading: false,
-      repository: "github.com/rodrigo-brito/gocity"
+      repository: this.props.match.params.repository || "github.com/rodrigo-brito/gocity"
     };
+
     this.addBlock = this.addBlock.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -76,7 +77,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.process(this.state.repository)
+    this.process(this.state.repository);
   }
 
   onMouseMove(e) {
@@ -294,6 +295,10 @@ class App extends Component {
     if (!match) {
       alert("Invalid URL! Please inform a valid Github URL.");
       return;
+    }
+
+    if (match !== this.props.match.params.repository) {
+      this.props.history.push(`/${match[1]}`);
     }
 
     this.setState({
