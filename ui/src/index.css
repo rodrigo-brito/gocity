@@ -22,7 +22,6 @@ main {
 
 .canvas canvas {
   height: 100%;
-  width: 100%;
   display: table;
   margin: 0 auto;
   touch-action: none;
@@ -152,6 +151,6 @@ main {
   color: #fff;
 }
 
-.examples a {
+small a {
   display: inline-block;
 }
