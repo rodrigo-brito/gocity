@@ -77,7 +77,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.process(this.state.repository);
+    if (this.state.repository) {
+      this.process(this.state.repository);
+    }
   }
 
   onMouseMove(e) {
@@ -132,7 +134,6 @@ class App extends Component {
       )
     );
 
-
     bar.actionManager.registerAction(
       new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnPointerOutTrigger,
@@ -157,10 +158,6 @@ class App extends Component {
         BABYLON.ActionManager.OnPointerOutTrigger, bar.material, "emissiveColor", bar.material.emissiveColor
       )
     );
-    // bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
-
-    // // Shadows
-    // this.shadowGenerator.getShadowMap().renderList.push(bar);
 
     return bar;
   };
@@ -183,7 +180,6 @@ class App extends Component {
         width: data.width,
         depth: data.depth,
         height: data.numberOfMethods,
-        // label: "teste",
         color: new BABYLON.Color3(color.r / 255, color.g / 255, color.b / 255),
         parent: parent,
         info: {
@@ -236,40 +232,12 @@ class App extends Component {
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
     var light = new BABYLON.HemisphericLight(
-      "light1",
+      "global_light",
       new BABYLON.Vector3(0, 1, 0),
       this.scene
     );
 
-    // Default intensity is 1. Let's dim the light a small amount
     light.intensity = 0.7;
-
-    // this.light = new BABYLON.DirectionalLight(
-    //   "light",
-    //   new BABYLON.Vector3(0, -0.5, -1.0),
-    //   this.scene
-    // );
-
-    // this.shadowGenerator = new BABYLON.ShadowGenerator(1024, this.light);
-    // this.shadowGenerator.usePoissonSampling = true;
-
-    // var ground = BABYLON.Mesh.CreateGround(
-    //   "ground",
-    //   playgroundSize,
-    //   playgroundSize,
-    //   1,
-    //   this.scene,
-    //   false
-    // );
-    //
-    // var groundMaterial = new BABYLON.StandardMaterial("ground", this.scene);
-    //
-    // groundMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-    // // groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    // ground.material = groundMaterial;
-    // // ground.receiveShadows = true;
-    // ground.position.y = -0.1;
-    // // ground.isVisible = false;
   }
 
   onSceneMount(e) {
@@ -291,6 +259,10 @@ class App extends Component {
   }
 
   process(repository) {
+    if (!BABYLON.Engine.isSupported()) {
+      alert("Browser not supported!");
+    }
+
     const match = URLRegexp.exec(repository);
     if (!match) {
       alert("Invalid URL! Please inform a valid Github URL.");
@@ -398,7 +370,10 @@ class App extends Component {
             }
         </section>
         <Legend />
-        <FeedbackForm active={this.state.feedbackFormActive} onClose={this.onFeedBackFormClose}/>
+        <FeedbackForm
+          active={this.state.feedbackFormActive}
+          projectURL={this.state.repository}
+          onClose={this.onFeedBackFormClose}/>
       </main>
     );
   }

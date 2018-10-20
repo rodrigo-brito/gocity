@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 
 export default class Login extends React.Component {
@@ -28,8 +29,9 @@ export default class Login extends React.Component {
   render() {
     return (
       <div className="has-text-centered">
-        <p>Do you think GoCity can be useful in the software maintenance process?</p>
-        <p>Sign in to leave a feedback.</p>
+        <p>Help GoCity <a href="#">research</a> and let us know your opinion about <b>{this.props.projectURL}</b> design. You can <a
+          href="#" onClick={this.props.onClose}>choose</a> another project to leave a comment.</p>
+        <p>Sign in with your GitHub account to leave a feedback.</p>
         <button className="button m-t-10 m-b-10" onClick={this.onClick}>
           <svg
             version="1.1"
