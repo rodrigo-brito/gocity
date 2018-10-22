@@ -6,7 +6,7 @@ import axios from "axios";
 import Navbar from "./Nav";
 import Legend from "./Legend";
 import Loading from "./Loading"
-import { getProportionalColor } from "./utils";
+import {feedbackEvent, getProportionalColor, searchEvent} from "./utils";
 import FeedbackForm from "./form/FeedbackForm";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
@@ -35,12 +35,17 @@ const examples = [
     link: "github.com/sirupsen/logrus"
   },
   {
-    name: "99designs/gqlgen",
-    link: "github.com/99designs/gqlgen"
+    name: "golang/dep",
+    link: "github.com/golang/dep"
   },
   {
     name: "gohugoio/hugo",
-    link: "github.com/gohugoio/hugo"
+    link: "github.com/gohugoio/hugo",
+    json: "/examples/hugo.json"
+  },
+  {
+    name: "spf13/cobra",
+    link: "github.com/spf13/cobra"
   }
 ];
 
@@ -203,6 +208,8 @@ class App extends Component {
   }
 
   updateCamera(width, height) {
+    width = Math.min(width, 1000);
+    height = Math.min(height, 1000);
     this.camera.setPosition(
       new BABYLON.Vector3(width, width, width + height / 2)
     );
@@ -258,9 +265,9 @@ class App extends Component {
     this.setState({ repository: e.target.value });
   }
 
-  process(repository) {
+  process(repository, json) {
     if (!BABYLON.Engine.isSupported()) {
-      alert("Browser not supported!");
+      return;
     }
 
     const match = URLRegexp.exec(repository);
@@ -278,13 +285,19 @@ class App extends Component {
       loading: true
     });
 
-    axios
-      .get(endpoint, {
-        params: {
-          q: match[1]
-        }
-      })
-      .then(response => {
+    let request = null;
+    if (json) {
+      request = axios.get(json)
+    } else {
+      request = axios
+        .get(endpoint, {
+          params: {
+            q: match[1]
+          }
+        })
+    }
+
+    request.then(response => {
         this.setState({loading: false});
         this.reset();
         this.plot(response.data.children);
@@ -292,12 +305,13 @@ class App extends Component {
       })
       .catch(e => {
         this.setState({loading: false});
-        alert("Erro ao processar projeto");
+        alert("Error on plot project, try again later.");
         console.error(e);
       });
   }
 
   onClick() {
+    searchEvent(this.state.repository);
     this.process(this.state.repository);
   }
 
@@ -307,6 +321,7 @@ class App extends Component {
 
   openFeedBackForm() {
     this.setState({feedbackFormActive: true});
+    feedbackEvent()
   }
 
   render() {
@@ -348,14 +363,27 @@ class App extends Component {
                     className="m-l-10"
                     key={example.link}
                     onClick={() => {
-                      this.process(example.link);
+                      this.process(example.link, example.json);
                     }}
                   >
                     {example.name}
                   </a>
                 ))}
               </small>
-              <button className="button is-primary level-right" onClick={this.openFeedBackForm}>Leave a feedback</button>
+              <button className="button is-primary level-right" onClick={this.openFeedBackForm}>
+                <svg
+                  version="1.1"
+                  width="16px"
+                  height="16px"
+                  viewBox="0 0 427 427"
+                  aria-hidden="true"
+                  className="m-r-10"
+                >
+                  <g>
+                    <path d="M384,0H42.667C19.093,0,0.213,19.093,0.213,42.667L0,426.667l85.333-85.333H384c23.573,0,42.667-19.093,42.667-42.667    v-256C426.667,19.093,407.573,0,384,0z M149.333,192h-42.667v-42.667h42.667V192z M234.667,192H192v-42.667h42.667V192z M320,192    h-42.667v-42.667H320V192z" fill="#FFFFFF"/>
+                  </g>
+                </svg>
+                &nbsp;User comments</button>
             </div>
           </div>
         </header>

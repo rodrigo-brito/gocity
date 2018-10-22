@@ -31,13 +31,17 @@ export default class FeedbackForm extends React.Component {
       this.onPublicChange = this.onPublicChange.bind(this);
 
       this.database = window.firebase.firestore();
+      this.database.settings({ timestampsInSnapshots: true })
     }
 
     componentDidMount(){
       this.setState({loading: true});
       this.database.collection(DATABASE_PUBLIC).orderBy("date", "desc").limit(DEFAULT_LIMIT).get().then((querySnapshot) => {
-        const userMessages = querySnapshot.docs.map((node) => node.data());
-        console.log(userMessages.length);
+        const userMessages = querySnapshot.docs.map((node) => {
+          const message = node.data()
+          message.date = message.date.toDate();
+          return message;
+        });
         this.setState({userMessages, loading: false});
       }).catch((e) => {
         console.error(e);
@@ -105,7 +109,8 @@ export default class FeedbackForm extends React.Component {
         errorMessage: null,
         isPublic: true,
         sent: false
-      })
+      });
+      this.props.onClose();
     }
 
     render() {
