@@ -7,14 +7,17 @@ import (
 	"strings"
 )
 
-var pattern = regexp.MustCompile(`(\w+\.go)(?:\.\((\w+)\))?$`)
+var (
+	regexpFile   = regexp.MustCompile(`([^/]+\.go)(?:\.\((\w+)\))?$`)
+	regexpGithub = regexp.MustCompile(`github\.com\/([^\/]+)\/([^\/]+)`)
+)
 
 func TrimGoPath(path, repository string) string {
 	return strings.TrimPrefix(path, fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), repository))
 }
 
 func GetFileAndStruct(identifier string) (fileName, structName string) {
-	result := pattern.FindStringSubmatch(identifier)
+	result := regexpFile.FindStringSubmatch(identifier)
 	if len(result) > 1 {
 		fileName = result[1]
 	}
@@ -36,4 +39,12 @@ func GetIdentifier(path, pkg, name string) string {
 
 func IsGoFile(name string) bool {
 	return strings.HasSuffix(name, ".go")
+}
+
+func GetGithubBaseURL(path string) (string, bool) {
+	result := regexpGithub.FindStringSubmatch(path)
+	if len(result) > 2 {
+		return fmt.Sprintf("github.com/%s/%s", result[1], result[2]), true
+	}
+	return "", false
 }

@@ -2,13 +2,14 @@ package lib
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	git "gopkg.in/src-d/go-git.v4"
 )
 
 type Fetcher interface {
-	Fetch(packageName string) (bool, error)
+	Fetch(packageName string) error
 }
 
 func NewFetcher() Fetcher {
@@ -25,7 +26,7 @@ func (fetcher) packageFound(name string) bool {
 	return true
 }
 
-func (f *fetcher) Fetch(name string) (bool, error) {
+func (f *fetcher) Fetch(name string) error {
 	gitAddress := fmt.Sprintf("https://%s", name)
 	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
 
@@ -36,8 +37,14 @@ func (f *fetcher) Fetch(name string) (bool, error) {
 	})
 
 	if err != nil && err != git.ErrRepositoryAlreadyExists {
-		return false, err
+		go func() {
+			if err := os.RemoveAll(folder); err != nil {
+				log.Printf("error on remove: %s", err)
+			}
+		}()
+
+		return err
 	}
 
-	return f.packageFound(name), nil
+	return nil
 }
