@@ -63,7 +63,11 @@ func (v *Visitor) Visit(node ast.Node) ast.Visitor {
 			if ident, ok := typeObj.(*ast.Ident); ok {
 				structName = ident.Name
 			} else {
-				structName = typeObj.(*ast.StarExpr).X.(*ast.Ident).Name
+				if ident, ok := typeObj.(*ast.StarExpr).X.(*ast.Ident); ok {
+					structName = ident.Name
+				} else if ident, ok := typeObj.(*ast.StarExpr).X.(*ast.SelectorExpr); ok {
+					structName = ident.Sel.Name
+				}
 			}
 		}
 

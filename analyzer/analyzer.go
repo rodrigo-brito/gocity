@@ -1,11 +1,11 @@
 package analyzer
 
 import (
-	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,8 +15,6 @@ import (
 	"github.com/rodrigo-brito/gocity/lib"
 )
 
-var ErrInvalidPackage = errors.New("invalid package")
-
 type Analyzer interface {
 	FetchPackage() error
 	Analyze() (map[string]*NodeInfo, error)
@@ -25,6 +23,7 @@ type Analyzer interface {
 type analyzer struct {
 	PackageName string
 	IgnoreNodes []string
+	fetcher     lib.Fetcher
 }
 
 type Option func(a *analyzer)
@@ -32,6 +31,7 @@ type Option func(a *analyzer)
 func NewAnalyzer(packageName string, options ...Option) Analyzer {
 	analyzer := &analyzer{
 		PackageName: packageName,
+		fetcher:     lib.NewFetcher(),
 	}
 
 	for _, option := range options {
@@ -48,17 +48,7 @@ func WithIgnoreList(files ...string) Option {
 }
 
 func (p *analyzer) FetchPackage() error {
-	fetcher := lib.NewFetcher()
-	ok, err := fetcher.Fetch(p.PackageName)
-	if err != nil {
-		return err
-	}
-
-	if !ok {
-		return ErrInvalidPackage
-	}
-
-	return nil
+	return p.fetcher.Fetch(p.PackageName)
 }
 
 func (p *analyzer) IsInvalidPath(path string) bool {
@@ -84,7 +74,9 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 
 		file, err := parser.ParseFile(fileSet, path, nil, parser.ParseComments)
 		if err != nil {
-			return fmt.Errorf("invalid input %s: %s", path, err)
+			// TODO: Logo with project information
+			log.Printf("invalid file %s: %s", path, err)
+			return nil
 		}
 
 		v := &Visitor{
