@@ -1,4 +1,5 @@
 import React from "react";
+import {openGithubEvent} from "./utils";
 
 export default ({ position, info, visible }) => {
   if (!visible) {
@@ -23,7 +24,9 @@ export default ({ position, info, visible }) => {
           <span className="attributes">{info.NOA}</span>
           <br />
         </div>}
-        <a href={info.url} className="button m-t-10" target="_blank">
+        <a href={info.url} className="button m-t-10" target="_blank" onClick={() => {
+          openGithubEvent(info.url);
+        }}>
           <svg
             version="1.1"
             width="16"

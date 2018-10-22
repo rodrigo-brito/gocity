@@ -13,8 +13,6 @@ export default class Scene extends React.Component {
       support: BABYLON.Engine.isSupported()
     };
 
-    console.log("scene contructed");
-
     this.hideSupportMessage = this.hideSupportMessage.bind(this);
   }
 
@@ -25,7 +23,6 @@ export default class Scene extends React.Component {
   };
 
   componentDidMount() {
-    console.log("did mount")
     if (this.state.support) {
       this.engine = new BABYLON.Engine(this.canvas, true, {
         preserveDrawingBuffer: true,

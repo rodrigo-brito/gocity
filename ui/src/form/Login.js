@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from "react";
+import {loginEvent} from "../utils";
 
 export default class Login extends React.Component {
   provider = null;
@@ -12,6 +13,8 @@ export default class Login extends React.Component {
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    loginEvent();
 
     window.firebase.auth().signInWithPopup(this.provider).then((result) => {
       if (this.props.onLogin) {
