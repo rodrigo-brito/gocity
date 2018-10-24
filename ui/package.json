@@ -2,6 +2,7 @@
   "name": "gocity",
   "version": "1.0.0",
   "private": true,
+  "homepage": "http://gocity.rodrigobrito.net",
   "dependencies": {
     "axios": "^0.18.0",
     "babylonjs": "^3.2.0",

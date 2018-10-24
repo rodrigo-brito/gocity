@@ -5,8 +5,8 @@ import App from "./App";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const Root = () => (
-  <Router>
-    <Route path="/:repository*" component={App} />
+  <Router basename={process.env.PUBLIC_URL}>
+    <Route exact path="/:repository*" component={App} />
   </Router>
 );
 
