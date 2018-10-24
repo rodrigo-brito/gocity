@@ -13,7 +13,7 @@ export default ({name, photo, content, date, project}) => {
           </div>
           <div className="media-content">
             <p className="title is-4">{name}</p>
-            <p className="subtitle is-6"><time dateTime={date}>{date.toLocaleString()}</time> - seeing <Link to={`/${project}`}>{project}</Link></p>
+            <p className="subtitle is-6"><time dateTime={date}>{date.toLocaleString()}</time> - seeing <a href={`/${project}`}>{project}</a></p>
           </div>
         </div>
 
