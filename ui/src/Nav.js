@@ -1,13 +1,18 @@
 import React from "react";
+import logo from "./logo.png"
 export default () => {
   return (
     <div className="level">
       <div className="level-left">
         <div className="level-item">
           <div className="control">
-            <h1 className="title">GoCity</h1>
-            <span>Source code visualization</span>
+            <a href="/">
+              <img className="m-r-10" width={50} src={logo} alt="GoCity: Source code visualization"/>
+            </a>
           </div>
+          <a href="/">
+            <h1 className="title"> GoCity</h1>
+          </a>
         </div>
       </div>
       <div className="level-right">
