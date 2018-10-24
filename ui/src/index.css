@@ -16,12 +16,13 @@ main {
 .canvas {
   flex: 1;
   display: block;
-  width: 100vw;
   background: #252525;
 }
 
 .canvas canvas {
   height: 100%;
+  max-height: 100%;
+  max-width: 100%;
   display: table;
   margin: 0 auto;
   touch-action: none;
