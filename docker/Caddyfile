@@ -1,9 +1,4 @@
-http://gocity.rodrigobrito.net {
-   redir https://gocity.rodrigobrito.net{uri} 301
-}
-
 gocity.rodrigobrito.net {
-	cache
 	gzip
 
 	log stdout
