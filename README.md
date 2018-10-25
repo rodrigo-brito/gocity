@@ -8,7 +8,7 @@
 </a>
 <hr />
  
- Available here: http://gocity.rodrigobrito.net/
+ Available here: https://gocity.rodrigobrito.net/
  
 GoCity is a web tool to visualize Go source code. This project is inspired on Code City project created by [Richard Wettel](https://twitter.com/richardwettel) and [JS City](https://github.com/ASERG-UFMG/JSCity/wiki/JSCITY) created by [Marcus Viana](https://github.com/malilovick).
 
