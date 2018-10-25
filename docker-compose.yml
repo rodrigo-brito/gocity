@@ -2,16 +2,22 @@ version: '3'
 services:
   api:
     image:  "golang:1.11"
+    working_dir: "/go/src/github.com/rodrigo-brito/gocity"
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/go/src/github.com/rodrigo-brito/gocity/gcs-credentials.json
     volumes:
-      - "../:/go/src/github.com/rodrigo-brito/gocity"
-    command: ["go", "run"]
+      - "./:/go/src/github.com/rodrigo-brito/gocity"
+    command: ["go", "run", "main.go"]
+
   caddy:
     image: "abiosoft/caddy"
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - "./docker/Caddyfile:/etc/Caddyfile"
+      - "./ui/build:/srv"
+      - "/root/.caddy"
     depends_on:
       - api
     links:
