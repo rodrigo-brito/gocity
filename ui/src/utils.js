@@ -15,24 +15,13 @@ export function feedbackEvent(action = "click") {
 }
 
 export function searchEvent(projectName) {
-  window.ga('send', 'event', {
-    eventCategory: 'search',
-    eventAction: 'type',
-    eventLabel: projectName
-  });
+  window.ga('send', 'event', 'search', projectName);
 }
 
 export function openGithubEvent(url) {
-  window.ga('send', 'event', {
-    eventCategory: 'github',
-    eventAction: 'click',
-    eventLabel: url
-  });
+  window.ga('send', 'event', 'github', url);
 }
 
 export function loginEvent() {
-  window.ga('send', 'event', {
-    eventCategory: 'login',
-    eventAction: 'click',
-  });
+  window.ga('send', 'event', 'login');
 }
