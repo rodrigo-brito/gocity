@@ -1,5 +1,6 @@
 import React from "react";
 import * as BABYLON from "babylonjs";
+import swal from "sweetalert2";
 
 export default class Scene extends React.Component {
   scene = null;
@@ -43,6 +44,12 @@ export default class Scene extends React.Component {
 
       // Resize the babylon engine when the window is resized
       window.addEventListener("resize", this.onResizeWindow);
+    } else {
+      swal(
+        'Browser not supported',
+        'Your browser don\'t support WebGL, Plaease update your browser.',
+        'error'
+      );
     }
   }
 
@@ -62,27 +69,9 @@ export default class Scene extends React.Component {
 
   render() {
     if (!this.state.support) {
-      return (
-        <div className={`modal ${this.state.hideSupportMessage ? "" : "is-active"}`}>
-          <div className="modal-background" />
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Browser not supported</p>
-              <button className="delete" aria-label="close" onClick={this.hideSupportMessage} />
-            </header>
-            <section className="modal-card-body">
-              <h1 className="title">Your browser don't support WebGL</h1>
-              <p>Plaease update your browser. See more information <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API">here.</a></p>
-            </section>
-            <footer className="modal-card-foot">
-              <button className="button" onClick={this.hideSupportMessage}>Close</button>
-            </footer>
-          </div>
-        </div>
-      );
+      return null;
     }
-    // 'rest' can contain additional properties that you can flow through to canvas:
-    // (id, className, etc.)
+
     let { width, height } = this.props;
 
     let opts = {};

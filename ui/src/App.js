@@ -8,6 +8,7 @@ import Legend from "./Legend";
 import Loading from "./Loading"
 import {feedbackEvent, getProportionalColor, searchEvent} from "./utils";
 import FeedbackForm from "./form/FeedbackForm";
+import swal from 'sweetalert2'
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
@@ -35,6 +36,10 @@ const examples = [
     link: "github.com/sirupsen/logrus"
   },
   {
+    name: "spf13/cobra",
+    link: "github.com/spf13/cobra"
+  },
+  {
     name: "golang/dep",
     link: "github.com/golang/dep"
   },
@@ -42,10 +47,6 @@ const examples = [
     name: "gohugoio/hugo",
     link: "github.com/gohugoio/hugo",
     json: "/examples/hugo.json"
-  },
-  {
-    name: "spf13/cobra",
-    link: "github.com/spf13/cobra"
   }
 ];
 
@@ -272,7 +273,7 @@ class App extends Component {
 
     const match = URLRegexp.exec(repository);
     if (!match) {
-      alert("Invalid URL! Please inform a valid Github URL.");
+      swal("Invalid URL", "Please inform a valid Github URL.", "error")
       return;
     }
 
@@ -300,12 +301,21 @@ class App extends Component {
     request.then(response => {
         this.setState({loading: false});
         this.reset();
+
+        if (response.data.children && response.data.children.length === 0) {
+          swal("Invalid project", "Only Go projects are allowed.", "error");
+        }
+
         this.plot(response.data.children);
         this.updateCamera(response.data.width, response.data.depth);
       })
       .catch(e => {
         this.setState({loading: false});
-        alert("Error on plot project, try again later.");
+        swal(
+          'Error during plot',
+          'Something went wrong during the plot. Try again later',
+          'error'
+        );
         console.error(e);
       });
   }
@@ -335,6 +345,8 @@ class App extends Component {
         <header className="header">
           <div className="container">
             <Navbar />
+            <span>GoCity is an implementation of the Code City metaphor for visualizing source code. Visit our repository for <a
+              href="https://github.com/rodrigo-brito/gocity">more details.</a></span>
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
@@ -370,7 +382,7 @@ class App extends Component {
                   </a>
                 ))}
               </small>
-              <button className="button is-primary level-right" onClick={this.openFeedBackForm}>
+              <button className="button is-primary level-right is-block" onClick={this.openFeedBackForm}>
                 <svg
                   version="1.1"
                   width="16px"
