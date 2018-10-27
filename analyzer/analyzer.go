@@ -74,7 +74,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 
 		file, err := parser.ParseFile(fileSet, path, nil, parser.ParseComments)
 		if err != nil {
-			// TODO: Logo with project information
+			// TODO: Log error with project information
 			log.Printf("invalid file %s: %s", path, err)
 			return nil
 		}
