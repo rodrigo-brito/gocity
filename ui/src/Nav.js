@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.png"
+import logo from "./img/logo.png"
 export default () => {
   return (
     <div className="level">

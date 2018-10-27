@@ -146,7 +146,7 @@ export default class FeedbackForm extends React.Component {
                 </label>
                 <button className="button is-success is-pulled-right" onClick={this.onSend}>Send Feedback</button>
               </form>}
-              <h5 className="title is-5">Recent feedback</h5>
+              <h5 className="title is-5">Recent comments</h5>
               {this.state.loading && <Loading dark message="Loading feedback..." />}
               {this.state.userMessages.map((message, index) => {
                 return <Message key={index}
