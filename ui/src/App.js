@@ -36,17 +36,16 @@ const examples = [
     link: "github.com/sirupsen/logrus"
   },
   {
+    name: "gin-gonic/gin",
+    link: "github.com/gin-gonic/gin",
+  },
+  {
     name: "spf13/cobra",
     link: "github.com/spf13/cobra"
   },
   {
     name: "golang/dep",
     link: "github.com/golang/dep"
-  },
-  {
-    name: "gohugoio/hugo",
-    link: "github.com/gohugoio/hugo",
-    json: "/examples/hugo.json"
   }
 ];
 
