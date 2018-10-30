@@ -356,7 +356,7 @@ class App extends Component {
         <header className="header">
           <div className="container">
             <Navbar />
-            <span>GoCity is an implementation of the Code City metaphor for visualizing source code. Visit our repository for <a
+            <span>GoCity is an implementation of the Code City metaphor for visualizing Go source code. Visit our repository for <a
               href="https://github.com/rodrigo-brito/gocity">more details.</a></span>
             <div className="field has-addons">
               <div className="control is-expanded">
