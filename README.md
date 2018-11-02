@@ -8,7 +8,7 @@
 </a>
 <hr />
  
- Available here: https://gocity.rodrigobrito.net/
+Available here: https://gocity.rodrigobrito.net/
  
 GoCity is an implementation of the Code City metaphor for visualizing source code. GoCity represents a Go program as a city, as follows: 
 
@@ -21,6 +21,10 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
  - The Number of Lines of Source Code (LOC) represents the build color (high values makes the building dark)
  - The Number of Variables (NOV) correlates to the building's base size.
  - The Number of methods (NOM) correlates to the building height.
+ 
+## UI / Front-end
+
+The UI is built with React and uses [babylon.js](https://www.babylonjs.com/) to plot 3D structures. The front-end source code is available in the [front-end](https://github.com/rodrigo-brito/gocity/tree/front-end) branch. 
  
 ### Related Works
 - [Code City](https://wettel.github.io/codecity.html) by [Richard Wettel](https://twitter.com/richardwettel)

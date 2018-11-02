@@ -12,3 +12,10 @@ mock:
 
 run:
 	docker run -ti -v`pwd`:/go/src/github.com/rodrigo-brito/gocity -e "GOOGLE_APPLICATION_CREDENTIALS=/go/src/github.com/rodrigo-brito/gocity/gcs-credentials.json" -p80:4000 -d -w /go/src/github.com/rodrigo-brito/gocity golang go run main.go
+
+test:
+	echo "" > coverage.txt
+	for d in $(shell go list ./... | grep -v vendor); do \
+		go test -race -v -coverprofile=profile.out -covermode=atomic $$d || exit 1; \
+		[ -f profile.out ] && cat profile.out >> coverage.txt && rm profile.out; \
+	done

@@ -4,7 +4,6 @@
 *.dll
 *.so
 *.dylib
-gocity
 
 # Test binary, build with `go test -c`
 *.test
@@ -16,4 +15,8 @@ gocity
 .idea
 
 */**/node_modules
+
+# Project files
 gcs-credentials.json
+gocity
+coverage.txt
