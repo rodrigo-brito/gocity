@@ -5,18 +5,6 @@ dev-dependencies:
 watcher: dev-dependencies
 	GOOGLE_APPLICATION_CREDENTIALS=`pwd`/gcs-credentials.json watcher # github.com/canthefason/go-watcher
 
-build-static:
-	cd ui && yarn build
-
-deploy-static:
-	cd ui/build && git init || echo "git ok"
-	cd ui/build && git remote add deploy git@github.com:go-city/go-city.github.io.git || echo "remote ok"
-	cd ui/build && git add .
-	cd ui/build && git commit -v --no-edit --amend || git commit -m "deploy" || echo "changes ok"
-	cd ui/build && git push deploy master -f
-
-static: build-static deploy-static
-
 mock:
 	go get github.com/vektra/mockery/...
 	mockery -output testdata/mocks -dir ./lib -all

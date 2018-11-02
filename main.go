@@ -2,11 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"github.com/rodrigo-brito/gocity/handle/middlewares"
 
@@ -35,11 +32,7 @@ func main() {
 	router.Get("/api", analyzer.Handler)
 	router.Get("/health", handle.HealthCheck)
 
-	workDir, _ := os.Getwd()
-	filesDir := filepath.Join(workDir, "ui/build")
-	handle.FileServer(router, "/", http.Dir(filesDir))
-
-	fmt.Println("Server started at http://localhost:4000")
+	log.Println("Server started at http://localhost:4000")
 	if err := http.ListenAndServe(":4000", router); err != nil {
 		log.Print(err)
 	}
