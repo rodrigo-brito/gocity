@@ -15,6 +15,8 @@ deploy-static:
 	cd ui/build && git commit -v --no-edit --amend || git commit -m "deploy" || echo "changes ok"
 	cd ui/build && git push deploy master -f
 
+static: build-static deploy-static
+
 mock:
 	go get github.com/vektra/mockery/...
 	mockery -output testdata/mocks -dir ./lib -all
