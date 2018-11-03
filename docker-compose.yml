@@ -16,7 +16,6 @@ services:
       - "443:443"
     volumes:
       - "./docker/Caddyfile:/etc/Caddyfile"
-      - "./ui/build:/srv"
       - "/root/.caddy"
     depends_on:
       - api

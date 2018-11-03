@@ -4,11 +4,12 @@ gocity.rodrigobrito.net {
 	log stdout
 	errors stdout
 
-	rewrite /github {
-		to {path} /
-	}
+	redir 307 {
+        if {path} not_match ^\/(api|health)
+        / "https://go-city.github.io/{query}#{path}"
+    }
 
-	proxy /api api:4000 {
+	proxy / api:4000 {
     	transparent
     }
 }
