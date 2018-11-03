@@ -8,7 +8,7 @@
 </a>
 <hr />
  
-Available here: https://gocity.rodrigobrito.net/
+Available here: https://go-city.github.io
  
 GoCity is an implementation of the Code City metaphor for visualizing source code. GoCity represents a Go program as a city, as follows: 
 
