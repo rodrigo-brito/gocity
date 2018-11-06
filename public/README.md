@@ -1,5 +1,5 @@
-# Atentino
+# [Mirror] Atention
 
-Original source code found here: https://github.com/rodrigo-brito/gocity/tree/front-end
+This repository is a mirror of GoCity production.
 
-API: https://github.com/rodrigo-brito/gocity/tree/master
+Original source code found here: https://github.com/rodrigo-brito/gocity
