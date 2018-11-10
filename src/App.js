@@ -7,7 +7,6 @@ import Navbar from "./Nav";
 import Legend from "./Legend";
 import Loading from "./Loading";
 import { feedbackEvent, getProportionalColor, searchEvent } from "./utils";
-import FeedbackForm from "./form/FeedbackForm";
 import swal from "sweetalert2";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
@@ -46,6 +45,10 @@ const examples = [
   {
     name: "golang/dep",
     link: "github.com/golang/dep"
+  },
+  {
+    name: "gohugoio/hugo",
+    link: "github.com/gohugoio/hugo"
   }
 ];
 
@@ -93,11 +96,13 @@ class App extends Component {
   }
 
   showTooltip(info) {
-    this.setState({
-      infoVisible: true,
-      infoData: info,
-      infoPosition: { x: this.mouse_x, y: this.mouse_y }
-    });
+    setTimeout(() => {
+      this.setState({
+        infoVisible: true,
+        infoData: info,
+        infoPosition: { x: this.mouse_x, y: this.mouse_y }
+      });
+    }, 100);
   }
 
   hideTooltip() {
@@ -118,6 +123,8 @@ class App extends Component {
       { width: data.width, depth: data.depth, height: data.height },
       this.scene
     );
+    bar.receiveShadows = false;
+
     if (data.parent) {
       bar.parent = data.parent;
 
@@ -149,26 +156,8 @@ class App extends Component {
     // Material
     bar.material = new BABYLON.StandardMaterial(data.label + "mat", this.scene);
     bar.material.diffuseColor = data.color;
-    bar.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
 
-    // Light on hover
-    bar.actionManager.registerAction(
-      new BABYLON.SetValueAction(
-        BABYLON.ActionManager.OnPointerOverTrigger,
-        bar.material,
-        "emissiveColor",
-        data.color.scale(0.2)
-      )
-    );
-
-    bar.actionManager.registerAction(
-      new BABYLON.SetValueAction(
-        BABYLON.ActionManager.OnPointerOutTrigger,
-        bar.material,
-        "emissiveColor",
-        bar.material.emissiveColor
-      )
-    );
+    bar.freezeWorldMatrix();
 
     return bar;
   };
@@ -214,16 +203,20 @@ class App extends Component {
   }
 
   updateCamera(width, height) {
+    if (width > 1000) {
+      this.camera.useAutoRotationBehavior = false;
+    } else {
+      this.camera.useAutoRotationBehavior = true;
+    }
     width = Math.min(width, 1000);
     height = Math.min(height, 1000);
     this.camera.setPosition(
-      new BABYLON.Vector3(width, width, width + height / 2)
+      new BABYLON.Vector3(width / 2, width, (width + height) / 2)
     );
   }
 
   initScene() {
-    this.scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    this.scene.ambientColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    this.scene.clearColor = new BABYLON.Color3(0.7, 0.7, 0.7);
     // This creates and positions a free camera (non-mesh)
     this.camera = new BABYLON.ArcRotateCamera(
       "camera",
@@ -250,7 +243,7 @@ class App extends Component {
       this.scene
     );
 
-    light.intensity = 0.7;
+    light.intensity = 0.8;
   }
 
   onSceneMount(e) {
@@ -266,6 +259,12 @@ class App extends Component {
       }
     });
   }
+
+  handleKeyPress = event => {
+    if (event.key === "Enter") {
+      this.onClick();
+    }
+  };
 
   onInputChange(e) {
     this.setState({ repository: e.target.value });
@@ -323,6 +322,12 @@ class App extends Component {
         );
         console.error(e);
       });
+
+    // this.scene.freezeActiveMeshes();
+    this.scene.autoClear = false; // Color buffer
+    this.scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
+    this.scene.blockfreeActiveMeshesAndRenderingGroups = true;
+    this.scene.blockfreeActiveMeshesAndRenderingGroups = false;
   }
 
   onClick() {
@@ -358,7 +363,7 @@ class App extends Component {
             <path
               d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
               fill="currentColor"
-              style={{ "transform-origin": "130px 106px" }}
+              style={{ transformOrigin: "130px 106px" }}
               className="octo-arm"
             />
             <path
@@ -386,6 +391,7 @@ class App extends Component {
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
+                  onKeyPress={this.handleKeyPress}
                   onChange={this.onInputChange}
                   className="input"
                   id="repository"
@@ -419,27 +425,6 @@ class App extends Component {
                   </a>
                 ))}
               </small>
-              <button
-                className="is-hidden-mobile button is-primary level-right is-block"
-                onClick={this.openFeedBackForm}
-              >
-                <svg
-                  version="1.1"
-                  width="16px"
-                  height="16px"
-                  viewBox="0 0 427 427"
-                  aria-hidden="true"
-                  className="m-r-10"
-                >
-                  <g>
-                    <path
-                      d="M384,0H42.667C19.093,0,0.213,19.093,0.213,42.667L0,426.667l85.333-85.333H384c23.573,0,42.667-19.093,42.667-42.667    v-256C426.667,19.093,407.573,0,384,0z M149.333,192h-42.667v-42.667h42.667V192z M234.667,192H192v-42.667h42.667V192z M320,192    h-42.667v-42.667H320V192z"
-                      fill="#FFFFFF"
-                    />
-                  </g>
-                </svg>
-                &nbsp;User comments
-              </button>
             </div>
           </div>
         </header>
@@ -455,12 +440,6 @@ class App extends Component {
           )}
         </section>
         <Legend />
-        <FeedbackForm
-          onOpen={this.process}
-          active={this.state.feedbackFormActive}
-          projectURL={this.state.repository}
-          onClose={this.onFeedBackFormClose}
-        />
       </main>
     );
   }
