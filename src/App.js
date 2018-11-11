@@ -439,6 +439,9 @@ class App extends Component {
             />
           )}
         </section>
+        <div className="footer-warning notification is-danger is-hidden-tablet is-paddingless is-unselectable">
+          GoCity is best viewed on Desktop
+        </div>
         <Legend />
       </main>
     );

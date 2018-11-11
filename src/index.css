@@ -16,10 +16,11 @@ main {
 .canvas {
   flex: 1;
   display: block;
-  background: #252525;
+  background: #b2b2b2;
 }
 
 .canvas canvas {
+  outline: none;
   height: 100%;
   max-height: 100%;
   max-width: 100%;
@@ -37,7 +38,7 @@ main {
   position: fixed;
 }
 
-@media(max-width: 500px){
+@media (max-width: 500px) {
   .float-card {
     display: none;
   }
@@ -100,6 +101,10 @@ main {
 
 .legend-ico.white {
   background: #fff;
+}
+
+.footer-warning {
+  text-align: center;
 }
 
 .noselect {
@@ -169,14 +174,28 @@ small a {
   right: 0;
 }
 
-@keyframes octocat-wave{
-  0%,100%{transform:rotate(0)}
-  20%,60%{transform:rotate(-25deg)}
-  40%,80%{transform:rotate(10deg)}}
-@media (max-width:500px){
-  .github-corner:hover .octo-arm{animation:none}
-  .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
+@keyframes octocat-wave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
 }
-.github-corner:hover .octo-arm{
-  animation:octocat-wave 560ms ease-in-out
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+}
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
 }
