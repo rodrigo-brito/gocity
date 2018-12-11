@@ -1,0 +1,9 @@
+{
+  "id": "gocity",
+  "memory": 1024,
+  "cpu": 1,
+  "port": 4000,
+  "env": {
+    "GOOGLE_APPLICATION_CREDENTIALS": "/go/src/github.com/rodrigo-brito/gocity/gcs-credentials.json"
+  }
+}
