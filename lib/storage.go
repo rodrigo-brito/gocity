@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 
 	"cloud.google.com/go/storage"
 )
 
 // Sets the name for the new bucket.
-const bucketName = "gocity"
+const bucketName = "gocity-cache"
 
 type Storage interface {
 	Get(projectName string) (bool, []byte, error)
@@ -50,7 +49,6 @@ func (g *GCS) Get(projectName string) (bool, []byte, error) {
 	reader, err := object.NewReader(g.ctx)
 	if err != nil {
 		if err == storage.ErrObjectNotExist {
-			log.Print("file not exists...")
 			return false, nil, nil
 		}
 
