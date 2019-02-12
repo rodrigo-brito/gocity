@@ -21,6 +21,7 @@ require (
 	github.com/sirupsen/logrus v1.3.0
 	github.com/src-d/gcfg v1.3.0 // indirect
 	github.com/stretchr/testify v1.2.2
+	github.com/urfave/cli v1.20.0 // indirect
 	github.com/xanzy/ssh-agent v0.2.0 // indirect
 	go.opencensus.io v0.17.0 // indirect
 	golang.org/x/crypto v0.0.0-20181001203147-e3636079e1a4 // indirect
