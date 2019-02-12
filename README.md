@@ -22,6 +22,13 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
  - The Number of Variables (NOV) correlates to the building's base size.
  - The Number of methods (NOM) correlates to the building height.
  
+## How To Run API in Localhost
+
+To start the API in localhost
+- Install Go 1.9+
+- Clone repository
+- Run: `go run main.go`
+ 
 ## UI / Front-end
 
 The UI is built with React and uses [babylon.js](https://www.babylonjs.com/) to plot 3D structures. The front-end source code is available in the [front-end](https://github.com/rodrigo-brito/gocity/tree/front-end) branch. 
