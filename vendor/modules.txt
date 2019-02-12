@@ -15,7 +15,7 @@ github.com/emirpasic/gods/lists/arraylist
 github.com/emirpasic/gods/trees
 github.com/emirpasic/gods/utils
 github.com/emirpasic/gods/lists
-# github.com/go-chi/chi v3.3.3+incompatible
+# github.com/go-chi/chi v4.0.1+incompatible
 github.com/go-chi/chi
 # github.com/go-chi/cors v1.0.0
 github.com/go-chi/cors
@@ -34,6 +34,8 @@ github.com/jbenet/go-context/io
 github.com/karlseguin/ccache
 # github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e
 github.com/kevinburke/ssh_config
+# github.com/konsorten/go-windows-terminal-sequences v1.0.1
+github.com/konsorten/go-windows-terminal-sequences
 # github.com/mitchellh/go-homedir v1.0.0
 github.com/mitchellh/go-homedir
 # github.com/pelletier/go-buffruneio v0.2.0
@@ -42,6 +44,8 @@ github.com/pelletier/go-buffruneio
 github.com/pmezard/go-difflib/difflib
 # github.com/sergi/go-diff v1.0.0
 github.com/sergi/go-diff/diffmatchpatch
+# github.com/sirupsen/logrus v1.3.0
+github.com/sirupsen/logrus
 # github.com/src-d/gcfg v1.3.0
 github.com/src-d/gcfg
 github.com/src-d/gcfg/scanner
@@ -66,6 +70,7 @@ go.opencensus.io
 go.opencensus.io/stats/internal
 go.opencensus.io/internal/tagencoding
 # golang.org/x/crypto v0.0.0-20181001203147-e3636079e1a4
+golang.org/x/crypto/ssh/terminal
 golang.org/x/crypto/openpgp
 golang.org/x/crypto/openpgp/armor
 golang.org/x/crypto/openpgp/errors
@@ -98,8 +103,8 @@ golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
 # golang.org/x/sys v0.0.0-20180909124046-d0be0721c37e
-golang.org/x/sys/windows
 golang.org/x/sys/unix
+golang.org/x/sys/windows
 # golang.org/x/text v0.3.0
 golang.org/x/text/unicode/norm
 golang.org/x/text/transform
