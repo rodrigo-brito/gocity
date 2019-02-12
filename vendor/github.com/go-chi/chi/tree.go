@@ -33,15 +33,15 @@ var mALL = mCONNECT | mDELETE | mGET | mHEAD |
 	mOPTIONS | mPATCH | mPOST | mPUT | mTRACE
 
 var methodMap = map[string]methodTyp{
-	"CONNECT": mCONNECT,
-	"DELETE":  mDELETE,
-	"GET":     mGET,
-	"HEAD":    mHEAD,
-	"OPTIONS": mOPTIONS,
-	"PATCH":   mPATCH,
-	"POST":    mPOST,
-	"PUT":     mPUT,
-	"TRACE":   mTRACE,
+	http.MethodConnect: mCONNECT,
+	http.MethodDelete:  mDELETE,
+	http.MethodGet:     mGET,
+	http.MethodHead:    mHEAD,
+	http.MethodOptions: mOPTIONS,
+	http.MethodPatch:   mPATCH,
+	http.MethodPost:    mPOST,
+	http.MethodPut:     mPUT,
+	http.MethodTrace:   mTRACE,
 }
 
 // RegisterMethod adds support for custom HTTP method handlers, available
@@ -651,6 +651,9 @@ func patNextSegment(pattern string) (nodeTyp, string, string, byte, int, int) {
 	}
 
 	// Sanity check
+	if ws >= 0 && ws != len(pattern)-1 {
+		panic("chi: wildcard '*' must be the last value in a route. trim trailing text or use a '{param}' instead")
+	}
 	if ps >= 0 && ws >= 0 && ws < ps {
 		panic("chi: wildcard '*' must be the last pattern in a route, otherwise use a '{param}'")
 	}
