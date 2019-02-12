@@ -82,3 +82,17 @@ func (g *GCS) Save(projectName string, content []byte) error {
 func (g *GCS) Delete(projectName string) error {
 	return nil
 }
+
+type NoStorage struct{}
+
+func (NoStorage) Get(projectName string) (bool, []byte, error) {
+	return false, nil, nil
+}
+
+func (NoStorage) Save(projectName string, content []byte) error {
+	return nil
+}
+
+func (NoStorage) Delete(projectName string) error {
+	return nil
+}

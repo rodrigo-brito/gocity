@@ -2,9 +2,10 @@ package handle
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/rodrigo-brito/gocity/utils"
 
