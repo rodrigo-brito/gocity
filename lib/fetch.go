@@ -2,8 +2,9 @@ package lib
 
 import (
 	"fmt"
-	"log"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 
 	git "gopkg.in/src-d/go-git.v4"
 )
@@ -39,7 +40,7 @@ func (f *fetcher) Fetch(name string) error {
 	if err != nil && err != git.ErrRepositoryAlreadyExists {
 		go func() {
 			if err := os.RemoveAll(folder); err != nil {
-				log.Printf("error on remove: %s", err)
+				log.WithField("folder", folder).Error(err)
 			}
 		}()
 

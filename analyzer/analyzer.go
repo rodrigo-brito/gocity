@@ -5,10 +5,11 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/rodrigo-brito/gocity/utils"
 
@@ -74,8 +75,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 
 		file, err := parser.ParseFile(fileSet, path, nil, parser.ParseComments)
 		if err != nil {
-			// TODO: Log error with project information
-			log.Printf("invalid file %s: %s", path, err)
+			log.WithField("file", path).Warn(err)
 			return nil
 		}
 
