@@ -8,10 +8,11 @@ import Legend from "./Legend";
 import Loading from "./Loading";
 import { feedbackEvent, getProportionalColor, searchEvent } from "./utils";
 import swal from "sweetalert2";
+import Cookies from 'js-cookie';
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-const endpoint = process.env.REACT_APP_API_URL;
+const endpoint = Cookies.get('gocity_api') || process.env.REACT_APP_API_URL;
 
 // TODO: isolate in the constants file
 const colors = {
@@ -432,12 +433,12 @@ class App extends Component {
           {this.state.loading ? (
             <Loading message="Fetching repository..." />
           ) : (
-            <BabylonScene
-              width={window.innerWidth}
-              engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
-              onSceneMount={this.onSceneMount}
-            />
-          )}
+              <BabylonScene
+                width={window.innerWidth}
+                engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
+                onSceneMount={this.onSceneMount}
+              />
+            )}
         </section>
         <div className="footer-warning notification is-danger is-hidden-tablet is-paddingless is-marginless is-unselectable">
           GoCity is best viewed on Desktop

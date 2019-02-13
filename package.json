@@ -9,6 +9,7 @@
     "babylonjs-gui": "^3.2.0",
     "babylonjs-loaders": "^3.2.0",
     "firebaseui": "^3.4.1",
+    "js-cookie": "^2.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
