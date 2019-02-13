@@ -2,8 +2,12 @@ package handle
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi"
+	"github.com/rodrigo-brito/gocity/handle/middlewares"
 
 	log "github.com/sirupsen/logrus"
 
@@ -75,4 +79,22 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
+}
+
+func (h *AnalyzerHandle) Serve(port int) error {
+	router := chi.NewRouter()
+	cors := middlewares.GetCors("*")
+	baseURL := fmt.Sprintf("http://localhost:%d", port)
+
+	router.Use(cors.Handler)
+	router.Use(middlewares.APIHeader(fmt.Sprintf("%s/api", baseURL)))
+
+	router.Get("/*", FrontEndProxy)
+	router.Get("/api", h.Handler)
+	router.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	log.Infof("Server started at %s", baseURL)
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), router)
 }
