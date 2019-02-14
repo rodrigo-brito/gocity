@@ -22,12 +22,13 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
  - The Number of Variables (NOV) correlates to the building's base size.
  - The Number of methods (NOM) correlates to the building height.
  
-## How To Run API in Localhost
+## Private Repositories / Localhost
 
-To start the API in localhost
-- Install Go 1.9+
-- Clone repository
-- Run: `go run main.go`
+Install gocity:
+- `go get -u github.com/rodrigo-brito/gocity`
+
+Open a local project:
+- `gocity open github.com/example/my-project`
  
 ## UI / Front-end
 
