@@ -17,6 +17,5 @@
 */**/node_modules
 
 # Project files
-gcs-credentials.json
 gocity
 coverage.txt

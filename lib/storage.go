@@ -6,12 +6,17 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
+	"os"
 
 	"cloud.google.com/go/storage"
 )
 
 // Sets the name for the new bucket.
-const bucketName = "gocity-cache"
+const (
+	bucketName = "gocity-cache"
+	EnvKeyGCS  = "GOOGLE_APPLICATION_CREDENTIALS"
+)
 
 type Storage interface {
 	Get(projectName string) (bool, []byte, error)
@@ -95,4 +100,17 @@ func (NoStorage) Save(projectName string, content []byte) error {
 
 func (NoStorage) Delete(projectName string) error {
 	return nil
+}
+
+func NewStorage() Storage {
+	if credentials := os.Getenv(EnvKeyGCS); len(credentials) > 0 {
+		var err error
+		storage, err := NewGCS(context.Background())
+		if err != nil {
+			log.Fatal(err)
+		}
+		return storage
+	}
+
+	return new(NoStorage)
 }
