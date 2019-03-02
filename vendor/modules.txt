@@ -22,6 +22,7 @@ github.com/emirpasic/gods/utils
 github.com/emirpasic/gods/lists
 # github.com/go-chi/chi v4.0.1+incompatible
 github.com/go-chi/chi
+github.com/go-chi/chi/middleware
 # github.com/go-chi/cors v1.0.0
 github.com/go-chi/cors
 # github.com/golang/protobuf v1.2.0
@@ -45,8 +46,6 @@ github.com/konsorten/go-windows-terminal-sequences
 github.com/mitchellh/go-homedir
 # github.com/pelletier/go-buffruneio v0.2.0
 github.com/pelletier/go-buffruneio
-# github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4
-github.com/pkg/browser
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
 # github.com/prometheus/common v0.0.0-20180801064454-c7de2306084e

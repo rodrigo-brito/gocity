@@ -4,18 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/rodrigo-brito/gocity/handle/middlewares"
-
-	log "github.com/sirupsen/logrus"
-
-	"github.com/rodrigo-brito/gocity/utils"
-
+	"github.com/go-chi/chi/middleware"
 	"github.com/rodrigo-brito/gocity/analyzer"
+	"github.com/rodrigo-brito/gocity/handle/middlewares"
 	"github.com/rodrigo-brito/gocity/lib"
 	"github.com/rodrigo-brito/gocity/model"
+	"github.com/rodrigo-brito/gocity/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 type AnalyzerHandle struct {
@@ -57,7 +56,6 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 			return nil, err
 		}
 
-		// store result on Google Cloud Storage
 		go func() {
 			if err := h.Storage.Save(projectURL, body); err != nil {
 				log.Print(err)
@@ -93,8 +91,16 @@ func (h *AnalyzerHandle) Serve(port int) error {
 
 	router.Use(cors.Handler)
 	router.Use(middlewares.APIHeader(fmt.Sprintf("%s/api", baseURL)))
+	router.Use(middleware.DefaultLogger)
 
-	router.Get("/*", FrontEndProxy)
+	staticPath, err := filepath.Abs("./assets")
+	if err != nil {
+		return err
+	}
+
+	fs := http.FileServer(http.Dir(staticPath))
+	router.Handle("/*", fs)
+
 	router.Get("/api", h.Handler)
 	router.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

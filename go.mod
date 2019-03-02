@@ -18,7 +18,7 @@ require (
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e // indirect
 	github.com/mitchellh/go-homedir v1.0.0 // indirect
 	github.com/pelletier/go-buffruneio v0.2.0 // indirect
-	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4
+	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4 // indirect
 	github.com/pkg/errors v0.8.0 // indirect
 	github.com/prometheus/common v0.0.0-20180801064454-c7de2306084e
 	github.com/sergi/go-diff v1.0.0 // indirect
