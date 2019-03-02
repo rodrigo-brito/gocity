@@ -1,6 +1,7 @@
 <img width="500" src="https://raw.githubusercontent.com/rodrigo-brito/gocity/master/logo.png" alt="GoCity" />
 
 [![Build Status](https://travis-ci.org/rodrigo-brito/gocity.svg?branch=master)](https://travis-ci.org/rodrigo-brito/gocity)
+[![codecov](https://codecov.io/gh/rodrigo-brito/gocity/branch/master/graph/badge.svg)](https://codecov.io/gh/rodrigo-brito/gocity)
 [![Go Report Card](https://goreportcard.com/badge/github.com/rodrigo-brito/gocity)](https://goreportcard.com/report/github.com/rodrigo-brito/gocity)
 [![GoDoc](https://godoc.org/github.com/rodrigo-brito/gocity?status.svg)](https://godoc.org/github.com/rodrigo-brito/gocity)
 <a href="https://opensource.org/licenses/MIT">
