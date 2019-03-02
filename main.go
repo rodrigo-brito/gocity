@@ -1,41 +1,24 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
-	"time"
-
-	"github.com/pkg/browser"
-
-	"github.com/rodrigo-brito/gocity/utils"
 
 	"github.com/rodrigo-brito/gocity/handle"
 	"github.com/rodrigo-brito/gocity/lib"
+	"github.com/rodrigo-brito/gocity/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
 const (
-	EnvKeyGCS   = "GOOGLE_APPLICATION_CREDENTIALS"
 	defaultPort = 4000
 )
 
 func main() {
-	storage := lib.Storage(new(lib.NoStorage))
-	cache := lib.NewCache()
-
-	if credentials := os.Getenv(EnvKeyGCS); len(credentials) > 0 {
-		var err error
-		storage, err = lib.NewGCS(context.Background())
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
 	analyzer := handle.AnalyzerHandle{
-		Cache:   cache,
-		Storage: storage,
+		Cache:   lib.NewCache(),
+		Storage: lib.NewStorage(),
 	}
 
 	app := cli.NewApp()
@@ -47,8 +30,16 @@ func main() {
 		{
 			Name:        "server",
 			Description: "Start a local server to analyze projects",
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "port",
+					Value: defaultPort,
+					Usage: "Local server port",
+				},
+			},
 			Action: func(c *cli.Context) error {
-				return analyzer.Serve(defaultPort)
+				port := c.Int("port")
+				return analyzer.Serve(port)
 			},
 		},
 		{
@@ -60,7 +51,8 @@ func main() {
 				if !ok {
 					return fmt.Errorf("invalid project URL: %s", baseURL)
 				}
-				go openVisualization(url, time.Second)
+
+				analyzer.SetProjectURL(url)
 				return analyzer.Serve(defaultPort)
 			},
 		},
@@ -69,11 +61,4 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Error(err)
 	}
-}
-
-func openVisualization(url string, delay time.Duration) {
-	time.Sleep(delay)
-	cityURL := fmt.Sprintf("http://localhost:%d/#/%s", defaultPort, url)
-	log.Info("opening ", cityURL)
-	browser.OpenURL(cityURL)
 }

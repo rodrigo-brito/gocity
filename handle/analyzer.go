@@ -19,8 +19,9 @@ import (
 )
 
 type AnalyzerHandle struct {
-	Storage lib.Storage
-	Cache   lib.Cache
+	Storage    lib.Storage
+	Cache      lib.Cache
+	projectURL *string
 }
 
 func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
@@ -81,6 +82,10 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
+func (h *AnalyzerHandle) SetProjectURL(URL string) {
+	h.projectURL = &URL
+}
+
 func (h *AnalyzerHandle) Serve(port int) error {
 	router := chi.NewRouter()
 	cors := middlewares.GetCors("*")
@@ -95,6 +100,11 @@ func (h *AnalyzerHandle) Serve(port int) error {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	log.Infof("Server started at %s", baseURL)
+	if h.projectURL != nil {
+		log.Infof("Visualization available at: %s/#/%s", baseURL, *h.projectURL)
+	} else {
+		log.Infof("Server started at %s", baseURL)
+	}
+
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), router)
 }

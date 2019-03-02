@@ -1,0 +1,14 @@
+version: '3'
+services:
+  caddy:
+    image: "abiosoft/caddy"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./server/docker/Caddyfile:/etc/Caddyfile"
+      - "/root/.caddy"
+    depends_on:
+      - api
+    links:
+      - api
