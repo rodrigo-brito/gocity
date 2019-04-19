@@ -21,4 +21,5 @@ build-docker:
 	docker build -t rodrigobrito/gocity -f ./server/docker/Dockerfile .
 
 deploy:
-	cd server && we deploy -p rodrigo
+	heroku container:push -a go-city web
+	heroku container:release -a go-city web

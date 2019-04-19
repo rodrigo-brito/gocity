@@ -34,9 +34,10 @@ func main() {
 			Description: "Start a local server to analyze projects",
 			Flags: []cli.Flag{
 				cli.IntFlag{
-					Name:  "port",
-					Value: defaultPort,
-					Usage: "Local server port",
+					Name:   "port",
+					Value:  defaultPort,
+					Usage:  "Local server port",
+					EnvVar: "PORT",
 				},
 			},
 			Action: func(c *cli.Context) error {

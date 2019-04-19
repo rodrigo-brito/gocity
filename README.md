@@ -10,6 +10,9 @@
 <hr />
  
 Available here: https://go-city.github.io
+
+Tool Paper: [26th International Conference on Software Analysis, Evolution and Reengineering (SANER)](https://ieeexplore.ieee.org/document/8668008)
+<br>PDF Version: [ASERG Page](https://homepages.dcc.ufmg.br/~mtov/pub/2019-saner-gocity.pdf)
  
 GoCity is an implementation of the Code City metaphor for visualizing source code. GoCity represents a Go program as a city, as follows: 
 
