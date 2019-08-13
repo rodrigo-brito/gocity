@@ -1,0 +1,13 @@
+name: Go
+on: [push]
+jobs:
+
+  build:
+    name: GoCity CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-go@v1
+        with:
+          version: '1.12'
+      - run: go test -race -cover ./...
