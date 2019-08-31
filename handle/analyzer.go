@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"path/filepath"
 	"time"
+
+	"github.com/gobuffalo/packr/v2"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -93,14 +94,10 @@ func (h *AnalyzerHandle) Serve(port int) error {
 	router.Use(middlewares.APIHeader(fmt.Sprintf("%s/api", baseURL)))
 	router.Use(middleware.DefaultLogger)
 
-	staticPath, err := filepath.Abs("./assets")
-	if err != nil {
-		return err
-	}
+	box := packr.New("assets", "./assets")
+	fs := http.FileServer(box)
 
-	fs := http.FileServer(http.Dir(staticPath))
 	router.Handle("/*", fs)
-
 	router.Get("/api", h.Handler)
 	router.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

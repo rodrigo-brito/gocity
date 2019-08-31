@@ -18,7 +18,7 @@ test:
 	done
 
 build-docker:
-	docker build -t rodrigobrito/gocity -f ./server/docker/Dockerfile .
+	docker build -t rodrigobrito/gocity .
 
 deploy:
 	heroku container:push -a go-city web

@@ -24,7 +24,7 @@ func main() {
 	log.SetLevel(log.InfoLevel)
 
 	app := cli.NewApp()
-	app.Version = "1.0.1"
+	app.Version = "1.0.2"
 	app.Description = "Code City metaphor for visualizing Go source code in 3D"
 	app.Author = "Rodrigo Brito (https://github.com/rodrigo-brito)"
 

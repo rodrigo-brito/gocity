@@ -19,3 +19,4 @@
 # Project files
 gocity
 coverage.txt
+/vendor

@@ -1,8 +1,9 @@
 language: go
 
-go: 1.x
+go: 1.12.x
 
 script:
+  - go mod download
   - make test
 
 after_success:
