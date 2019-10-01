@@ -32,22 +32,27 @@ const colors = {
 
 const examples = [
   {
+    branch: "master",
     name: "sirupsen/logrus",
     link: "github.com/sirupsen/logrus"
   },
   {
+    branch: "master",
     name: "gin-gonic/gin",
     link: "github.com/gin-gonic/gin"
   },
   {
+    branch: "master",
     name: "spf13/cobra",
     link: "github.com/spf13/cobra"
   },
   {
+    branch: "master",
     name: "golang/dep",
     link: "github.com/golang/dep"
   },
   {
+    branch: "master",
     name: "gohugoio/hugo",
     link: "github.com/gohugoio/hugo"
   }
@@ -66,7 +71,8 @@ class App extends Component {
       feedbackFormActive: false,
       loading: false,
       repository:
-        this.props.match.params.repository || "github.com/rodrigo-brito/gocity"
+        this.props.match.params.repository || "github.com/rodrigo-brito/gocity",
+      branch: this.props.match.params.branch || "master"
     };
 
     this.addBlock = this.addBlock.bind(this);
@@ -87,7 +93,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.repository) {
-      this.process(this.state.repository);
+      this.process(this.state.repository, "", this.state.branch);
     }
   }
 
@@ -268,10 +274,11 @@ class App extends Component {
   };
 
   onInputChange(e) {
-    this.setState({ repository: e.target.value });
+    if(e.target.id === "repository") {this.setState({ repository: e.target.value })}
+    if(e.target.id === "branch") {this.setState({ branch: e.target.value })}
   }
 
-  process(repository, json) {
+  process(repository, json, branch) {
     if (!BABYLON.Engine.isSupported()) {
       return;
     }
@@ -281,9 +288,8 @@ class App extends Component {
       swal("Invalid URL", "Please inform a valid Github URL.", "error");
       return;
     }
-
-    if (match !== this.props.match.params.repository) {
-      this.props.history.push(`/${match[1]}`);
+    if (match !== this.props.match.params.repository || branch !== this.props.match.params.branch) {
+      this.props.history.push(`/${match[1]}/#/${branch}`);
     }
 
     this.setState({
@@ -297,7 +303,8 @@ class App extends Component {
     } else {
       request = axios.get(endpoint, {
         params: {
-          q: match[1]
+          q: match[1],
+          b: branch
         }
       });
     }
@@ -333,7 +340,7 @@ class App extends Component {
 
   onClick() {
     searchEvent(this.state.repository);
-    this.process(this.state.repository);
+    this.process(this.state.repository, "", this.state.branch);
   }
 
   onFeedBackFormClose() {
@@ -402,6 +409,17 @@ class App extends Component {
                 />
               </div>
               <div className="control">
+                <input
+                  onKeyPress={this.handleKeyPress}
+                  onChange={this.onInputChange}
+                  className="input"
+                  id="branch"
+                  type="text"
+                  placeholder="eg: master"
+                  value={this.state.branch}
+                />
+              </div>
+              <div className="control">
                 <a
                   id="search"
                   onClick={this.onClick}
@@ -419,7 +437,7 @@ class App extends Component {
                     className="m-l-10"
                     key={example.link}
                     onClick={() => {
-                      this.process(example.link, example.json);
+                      this.process(example.link, example.json, example.branch);
                     }}
                   >
                     {example.name}
