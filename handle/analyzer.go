@@ -35,9 +35,9 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 	if branch = r.URL.Query().Get("b"); branch == "" {
 		branch = "master"
 	}
-
-	result, err := h.Cache.GetSet(projectURL, func() ([]byte, error) {
-		ok, data, err := h.Storage.Get(projectURL)
+	key := fmt.Sprintf("%s:%s", projectURL, branch)
+	result, err := h.Cache.GetSet(key, func() ([]byte, error) {
+		ok, data, err := h.Storage.Get(key)
 		if err != nil {
 			return nil, err
 		}
@@ -63,7 +63,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		go func() {
-			if err := h.Storage.Save(projectURL, body); err != nil {
+			if err := h.Storage.Save(key, body); err != nil {
 				log.Print(err)
 			}
 		}()
