@@ -53,3 +53,21 @@ func TestGetGithubBaseURL(t *testing.T) {
 		})
 	}
 }
+
+func TestIsGoFile(t *testing.T) {
+	tests := []struct {
+		got  string
+		want bool
+	}{
+		{"foo.go", true},
+		{"bar.gol", false},
+		{"foobar", false},
+		{"fubar.g", false},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("given the filename %s", tt.got), func(t *testing.T) {
+			got := IsGoFile(tt.got)
+			assert.Equal(t, got, tt.want)
+		})
+	}
+}
