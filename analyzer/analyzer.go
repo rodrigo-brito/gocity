@@ -23,15 +23,17 @@ type Analyzer interface {
 
 type analyzer struct {
 	PackageName string
+	BranchName  string
 	IgnoreNodes []string
 	fetcher     lib.Fetcher
 }
 
 type Option func(a *analyzer)
 
-func NewAnalyzer(packageName string, options ...Option) Analyzer {
+func NewAnalyzer(packageName string, branchName string, options ...Option) Analyzer {
 	analyzer := &analyzer{
 		PackageName: packageName,
+		BranchName:  branchName,
 		fetcher:     lib.NewFetcher(),
 	}
 
@@ -49,7 +51,7 @@ func WithIgnoreList(files ...string) Option {
 }
 
 func (p *analyzer) FetchPackage() error {
-	return p.fetcher.Fetch(p.PackageName)
+	return p.fetcher.Fetch(p.PackageName, p.BranchName)
 }
 
 func (p *analyzer) IsInvalidPath(path string) bool {

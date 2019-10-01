@@ -31,6 +31,11 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var branch string
+	if branch = r.URL.Query().Get("b"); branch == "" {
+		branch = "master"
+	}
+
 	result, err := h.Cache.GetSet(projectURL, func() ([]byte, error) {
 		ok, data, err := h.Storage.Get(projectURL)
 		if err != nil {
@@ -41,7 +46,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 			return data, nil
 		}
 
-		analyzer := analyzer.NewAnalyzer(projectURL, analyzer.WithIgnoreList("/vendor/"))
+		analyzer := analyzer.NewAnalyzer(projectURL, branch, analyzer.WithIgnoreList("/vendor/"))
 		err = analyzer.FetchPackage()
 		if err != nil {
 			return nil, err
@@ -52,7 +57,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 			return nil, err
 		}
 
-		body, err := json.Marshal(model.New(summary, projectURL))
+		body, err := json.Marshal(model.New(summary, projectURL, branch))
 		if err != nil {
 			return nil, err
 		}

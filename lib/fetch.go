@@ -7,10 +7,11 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	git "gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4/plumbing"
 )
 
 type Fetcher interface {
-	Fetch(packageName string) error
+	Fetch(packageName string, branchName string) error
 }
 
 func NewFetcher() Fetcher {
@@ -27,14 +28,14 @@ func (fetcher) packageFound(name string) bool {
 	return true
 }
 
-func (f *fetcher) Fetch(name string) error {
+func (f *fetcher) Fetch(name string, branch string) error {
 	gitAddress := fmt.Sprintf("https://%s", name)
 	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
-
 	_, err := git.PlainClone(folder, false, &git.CloneOptions{
-		URL:          gitAddress,
-		Depth:        1,
-		SingleBranch: true,
+		URL:           gitAddress,
+		Depth:         1,
+		SingleBranch:  true,
+		ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", branch)),
 	})
 
 	if err != nil && err != git.ErrRepositoryAlreadyExists {

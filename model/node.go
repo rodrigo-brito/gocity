@@ -21,6 +21,7 @@ const (
 type Node struct {
 	Name               string   `json:"name"`
 	URL                string   `json:"url"`
+	Branch             string   `json:branch`
 	Type               NodeType `json:"type"`
 	Width              float64  `json:"width"`
 	Depth              float64  `json:"depth"`
@@ -107,9 +108,10 @@ func getPathAndFile(fullPath string) (paths []string, fileName, structName strin
 	return
 }
 
-func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
+func New(items map[string]*analyzer.NodeInfo, repositoryName string, repositoryBranch string) *Node {
 	tree := &Node{
 		Name:        repositoryName,
+		Branch:      repositoryBranch,
 		childrenMap: make(map[string]*Node),
 		Children:    make([]*Node, 0),
 	}
@@ -163,8 +165,7 @@ func New(items map[string]*analyzer.NodeInfo, repositoryName string) *Node {
 		}
 	}
 
-	// TODO: branch selector
-	tree.GenerateChildList(fmt.Sprintf("https://%s/%s/master", repositoryName, BaseTypeFlag))
+	tree.GenerateChildList(fmt.Sprintf("https://%s/%s/%s", repositoryName, BaseTypeFlag, repositoryBranch))
 	tree.GenerateChildrenPosition()
 
 	return tree
