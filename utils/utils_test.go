@@ -87,7 +87,6 @@ func TestTrimGoPath(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("Trim GOPATH"), func(t *testing.T) {
 			got := TrimGoPath(tt.args.path, tt.args.repository)
-			fmt.Println(got)
 			assert.Equal(t, got, tt.want)
 		})
 	}
