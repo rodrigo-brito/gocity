@@ -71,3 +71,24 @@ func TestIsGoFile(t *testing.T) {
 		})
 	}
 }
+
+func TestTrimGoPath(t *testing.T) {
+	type args struct {
+		path       string
+		repository string
+	}
+	tests := []struct {
+		args args
+		got  string
+		want string
+	}{
+		{args{"/home/dude/go/src/github.com/repo", "github.com/dude/repo.git"}, "somerepo", "home/bla/src/github/somerp"},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("Trim GOPATH"), func(t *testing.T) {
+			got := TrimGoPath(tt.args.path, tt.args.repository)
+			fmt.Println(got)
+			assert.Equal(t, got, tt.want)
+		})
+	}
+}
