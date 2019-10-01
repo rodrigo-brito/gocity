@@ -82,7 +82,7 @@ func TestTrimGoPath(t *testing.T) {
 		got  string
 		want string
 	}{
-		{args{"/home/dude/go/src/github.com/repo", "github.com/dude/repo.git"}, "somerepo", "home/bla/src/github/somerp"},
+		// Need some test cases, but not sure what this function really does.
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("Trim GOPATH"), func(t *testing.T) {
