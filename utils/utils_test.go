@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -73,28 +74,10 @@ func TestIsGoFile(t *testing.T) {
 }
 
 func TestTrimGoPath(t *testing.T) {
-	type args struct {
+	tests := []struct {
 		path       string
 		repository string
-	}
-	tests := []struct {
-		args args
-		got  string
-		want string
-	}{
-		// Need some test cases, but not sure what this function really does.
-	}
-	for _, tt := range tests {
-		t.Run(fmt.Sprintf("Trim GOPATH"), func(t *testing.T) {
-			got := TrimGoPath(tt.args.path, tt.args.repository)
-			assert.Equal(t, got, tt.want)
-		})
-	}
-func TestTrimGoPath(t *testing.T) {
-	tests := []struct {
-		path string
-		repository string
-		want string
+		want       string
 	}{
 		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go"},
 		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go"},
@@ -103,7 +86,7 @@ func TestTrimGoPath(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("given project %s/%s", tt.path, tt.repository), func(t *testing.T) {
 			got := TrimGoPath(tt.path, tt.repository)
-			assert.Equal(t, tt.want,  got)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
