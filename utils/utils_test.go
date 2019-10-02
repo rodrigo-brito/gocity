@@ -90,4 +90,20 @@ func TestTrimGoPath(t *testing.T) {
 			assert.Equal(t, got, tt.want)
 		})
 	}
+func TestTrimGoPath(t *testing.T) {
+	tests := []struct {
+		path string
+		repository string
+		want string
+	}{
+		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go"},
+		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go"},
+		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "/vendor"},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("given project %s/%s", tt.path, tt.repository), func(t *testing.T) {
+			got := TrimGoPath(tt.path, tt.repository)
+			assert.Equal(t, tt.want,  got)
+		})
+	}
 }
