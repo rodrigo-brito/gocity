@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -50,6 +51,42 @@ func TestGetGithubBaseURL(t *testing.T) {
 			output, valid := GetGithubBaseURL(tc.Input)
 			assert.Equal(t, tc.IsValid, valid)
 			assert.Equal(t, tc.Output, output)
+		})
+	}
+}
+
+func TestIsGoFile(t *testing.T) {
+	tests := []struct {
+		got  string
+		want bool
+	}{
+		{"foo.go", true},
+		{"bar.gol", false},
+		{"foobar", false},
+		{"fubar.g", false},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("given the filename %s", tt.got), func(t *testing.T) {
+			got := IsGoFile(tt.got)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func TestTrimGoPath(t *testing.T) {
+	tests := []struct {
+		path       string
+		repository string
+		want       string
+	}{
+		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go"},
+		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go"},
+		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "/vendor"},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("given project %s/%s", tt.path, tt.repository), func(t *testing.T) {
+			got := TrimGoPath(tt.path, tt.repository)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
