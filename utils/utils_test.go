@@ -67,7 +67,7 @@ func TestIsGoFile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("given the filename %s", tt.got), func(t *testing.T) {
 			got := IsGoFile(tt.got)
-			assert.Equal(t, got, tt.want)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
