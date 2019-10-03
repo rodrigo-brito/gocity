@@ -1,13 +1,40 @@
 name: Go
 on: [push]
 jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
 
-  build:
-    name: GoCity CI
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-go@v1
-        with:
-          version: '1.12'
-      - run: go test -race -cover ./...
+            - name: Set up Go 1.12
+              uses: actions/setup-go@v1
+              with:
+                  go-version: 1.12.4
+
+            - name: Check out code into the Go module directory
+              uses: actions/checkout@v1
+              with:
+                  fetch-depth: 1
+                  path: go/src/github.com/user/gocity
+
+            - name: GoLint
+              run: |
+                  go get golang.org/x/lint/golint
+                  /home/runner/work/gocity/go/bin/golint ./
+              env:
+                  GOPATH: /home/runner/work/gocity/go
+            - name: Go get dependecies
+              run: |
+                  go get -u github.com/rodrigo-brito/gocity/handle
+                  go get -u github.com/stretchr/testify/assert
+                  go get -u github.com/rodrigo-brito/gocity/lib
+                  go get -u github.com/rodrigo-brito/gocity/utils
+                  go get -u github.com/sirupsen/logrus
+                  go get -u github.com/urfave/cli
+              env:
+                  GOPATH: /home/runner/work/gocity/go
+            - name: Test
+              run: |
+                  go test -race -cover ./...
+              env:
+                  GOPATH: /home/runner/work/gocity/go
