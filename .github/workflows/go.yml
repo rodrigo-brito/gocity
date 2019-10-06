@@ -6,10 +6,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
 
-            - name: Set up Go 1.12
+            - name: Set up Go 1.13
               uses: actions/setup-go@v1
               with:
-                  go-version: 1.12.4
+                  go-version: 1.13
 
             - name: Check out code into the Go module directory
               uses: actions/checkout@v1
@@ -17,20 +17,10 @@ jobs:
                   fetch-depth: 1
                   path: go/src/github.com/user/gocity
 
-            - name: GoLint
+            - name: GolangCI-Lint
               run: |
-                  go get golang.org/x/lint/golint
-                  /home/runner/work/gocity/go/bin/golint ./
-              env:
-                  GOPATH: /home/runner/work/gocity/go
-            - name: Go get dependecies
-              run: |
-                  go get -u github.com/rodrigo-brito/gocity/handle
-                  go get -u github.com/stretchr/testify/assert
-                  go get -u github.com/rodrigo-brito/gocity/lib
-                  go get -u github.com/rodrigo-brito/gocity/utils
-                  go get -u github.com/sirupsen/logrus
-                  go get -u github.com/urfave/cli
+                  curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s v1.19.1
+                  ./bin/golangci-lint --issues-exit-code 0 run  
               env:
                   GOPATH: /home/runner/work/gocity/go
             - name: Test
