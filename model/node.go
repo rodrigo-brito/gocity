@@ -21,7 +21,7 @@ const (
 type Node struct {
 	Name               string   `json:"name"`
 	URL                string   `json:"url"`
-	Branch             string   `json:branch`
+	Branch             string   `json:"branch"`
 	Type               NodeType `json:"type"`
 	Width              float64  `json:"width"`
 	Depth              float64  `json:"depth"`

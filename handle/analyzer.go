@@ -83,7 +83,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(result)
+	_, _ = w.Write(result)
 }
 
 func (h *AnalyzerHandle) SetProjectURL(URL string) {
