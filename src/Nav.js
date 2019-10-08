@@ -9,7 +9,7 @@ export default () => {
         <div className="level-item">
           <div className="control">
             <a href="/">
-              <img className="m-r-10" width={50} src={logo} alt="GoCity: Source code visualization"/>
+              <img className="m-r-10" width={50} src={logo} alt="GoCity: Source code visualization" />
             </a>
           </div>
           <a href="/">

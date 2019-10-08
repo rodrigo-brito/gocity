@@ -7,7 +7,7 @@ export function getProportionalColor(start, end, percent) {
   return { r: red, g: green, b: blue };
 }
 
-export function feedbackEvent(action = "click") {
+export function feedbackEvent(action = 'click') {
   window.ga('send', 'event', {
     eventCategory: 'feedback',
     eventAction: action
