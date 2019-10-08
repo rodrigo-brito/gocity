@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import FloatBox from "./FloatBox";
-import * as BABYLON from "babylonjs";
-import BabylonScene from "./Scene";
-import axios from "axios";
-import Navbar from "./Nav";
-import Legend from "./Legend";
-import Loading from "./Loading";
-import { feedbackEvent, getProportionalColor, searchEvent } from "./utils";
-import swal from "sweetalert2";
+import React, { Component } from 'react';
+import FloatBox from './FloatBox';
+import * as BABYLON from 'babylonjs';
+import BabylonScene from './Scene';
+import axios from 'axios';
+import Navbar from './Nav';
+import Legend from './Legend';
+import Loading from './Loading';
+import { feedbackEvent, getProportionalColor, searchEvent, logoBase64 } from './utils';
+import swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
@@ -83,6 +83,9 @@ class App extends Component {
     this.onSceneMount = this.onSceneMount.bind(this);
     this.onFeedBackFormClose = this.onFeedBackFormClose.bind(this);
     this.openFeedBackForm = this.openFeedBackForm.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.getBadgeValue = this.getBadgeValue.bind(this);
   }
 
   componentDidMount() {
@@ -345,6 +348,24 @@ class App extends Component {
     feedbackEvent();
   }
 
+  openModal() {
+    this.setState({ modalActive: true });
+  }
+
+  closeModal() {
+    this.setState({ modalActive: false });
+  }
+
+  getBadgeValue(template) {
+    const repo = this.state.repository;
+    const baseUrl = `https://img.shields.io/static/v1?label=gocity&color=blue&style=for-the-badge&message=${repo}&logo=${logoBase64()}`;
+    const templates = {
+      md: `![](${baseUrl})`,
+      html: `<img src="${baseUrl}" alt="checkout my repo on gocity"/>`
+    };
+    return templates[template];
+  }
+
   render() {
     return (
       <main onMouseMove={this.onMouseMove}>
@@ -374,21 +395,21 @@ class App extends Component {
             />
           </svg>
         </a>
-        <FloatBox
-          position={this.state.infoPosition}
-          info={this.state.infoData}
-          visible={this.state.infoVisible}
-        />
+        <FloatBox position={this.state.infoPosition} info={this.state.infoData} visible={this.state.infoVisible} />
         <header className="header">
           <div className="container">
             <Navbar />
-            <span>
-              GoCity is an implementation of the Code City metaphor for
-              visualizing Go source code. Visit our repository for{" "}
-              <a href="https://github.com/rodrigo-brito/gocity">
-                more details.
-              </a>
-            </span>
+            <p>
+              GoCity is an implementation of the Code City metaphor for visualizing Go source code. Visit our repository
+              for <a href="https://github.com/rodrigo-brito/gocity">more details.</a>
+            </p>
+            <p>
+              You can also add a custom badge for your go repository.{' '}
+              <a onClick={this.openModal} href="#">
+                click here
+              </a>{' '}
+              to generate one.
+            </p>
             <div className="field has-addons">
               <div className="control is-expanded">
                 <input
