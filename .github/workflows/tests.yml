@@ -1,26 +1,23 @@
-name: Go
+name: tests
 on: [push, pull_request]
 jobs:
     build:
         name: Build
         runs-on: ubuntu-latest
         steps:
-
             - name: Set up Go 1.13
               uses: actions/setup-go@v1
               with:
                   go-version: 1.13
-
             - name: Check out code into the Go module directory
               uses: actions/checkout@v1
               with:
                   fetch-depth: 1
-                  path: go/src/github.com/user/gocity
-
+                  path: go/src/github.com/rodrigo-brito/gocity
             - name: GolangCI-Lint
               run: |
                   curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s v1.19.1
-                  ./bin/golangci-lint --issues-exit-code 0 run  
+                  ./bin/golangci-lint run
               env:
                   GOPATH: /home/runner/work/gocity/go
             - name: Test

@@ -1,5 +1,6 @@
 <img width="350" src="https://raw.githubusercontent.com/rodrigo-brito/gocity/master/handle/assets/logo.png" alt="GoCity" />
 
+[![Actions Status](https://github.com/rodrigo-brito/gocity/workflows/tests/badge.svg)](https://github.com/rodrigo-brito/gocity/actions)
 [![Build Status](https://travis-ci.org/rodrigo-brito/gocity.svg?branch=master)](https://travis-ci.org/rodrigo-brito/gocity)
 [![codecov](https://codecov.io/gh/rodrigo-brito/gocity/branch/master/graph/badge.svg)](https://codecov.io/gh/rodrigo-brito/gocity)
 [![Go Report Card](https://goreportcard.com/badge/github.com/rodrigo-brito/gocity)](https://goreportcard.com/report/github.com/rodrigo-brito/gocity)
