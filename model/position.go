@@ -13,14 +13,12 @@ const defaultMargin = 1
 
 type generator struct {
 	numberNodes  int
-	margin       int
 	dimension    int
 	xReference   float64
 	yReference   float64
 	currentIndex int
 	maxWidth     float64
 	maxHeight    float64
-	bounds       Position
 }
 
 func NewGenerator(numberNodes int) *generator {

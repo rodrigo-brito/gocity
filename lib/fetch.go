@@ -20,14 +20,6 @@ func NewFetcher() Fetcher {
 
 type fetcher struct{}
 
-func (fetcher) packageFound(name string) bool {
-	dir := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
-	if _, err := os.Stat(dir); err != nil {
-		return false
-	}
-	return true
-}
-
 func (f *fetcher) Fetch(name string, branch string) error {
 	gitAddress := fmt.Sprintf("https://%s", name)
 	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
