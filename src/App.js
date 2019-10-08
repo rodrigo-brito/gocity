@@ -32,29 +32,29 @@ const colors = {
 
 const examples = [
   {
-    branch: "master",
-    name: "sirupsen/logrus",
-    link: "github.com/sirupsen/logrus"
+    branch: 'master',
+    name: 'sirupsen/logrus',
+    link: 'github.com/sirupsen/logrus'
   },
   {
-    branch: "master",
-    name: "gin-gonic/gin",
-    link: "github.com/gin-gonic/gin"
+    branch: 'master',
+    name: 'gin-gonic/gin',
+    link: 'github.com/gin-gonic/gin'
   },
   {
-    branch: "master",
-    name: "spf13/cobra",
-    link: "github.com/spf13/cobra"
+    branch: 'master',
+    name: 'spf13/cobra',
+    link: 'github.com/spf13/cobra'
   },
   {
-    branch: "master",
-    name: "golang/dep",
-    link: "github.com/golang/dep"
+    branch: 'master',
+    name: 'golang/dep',
+    link: 'github.com/golang/dep'
   },
   {
-    branch: "master",
-    name: "gohugoio/hugo",
-    link: "github.com/gohugoio/hugo"
+    branch: 'master',
+    name: 'gohugoio/hugo',
+    link: 'github.com/gohugoio/hugo'
   }
 ];
 
@@ -70,9 +70,9 @@ class App extends Component {
     this.state = {
       feedbackFormActive: false,
       loading: false,
-      repository:
-        this.props.match.params.repository || "github.com/rodrigo-brito/gocity",
-      branch: this.props.match.params.branch || "master"
+      branch: this.props.match.params.branch || 'master',
+      repository: this.props.match.params.repository || 'github.com/rodrigo-brito/gocity',
+      modalActive: false
     };
 
     this.addBlock = this.addBlock.bind(this);
@@ -96,7 +96,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.repository) {
-      this.process(this.state.repository, "", this.state.branch);
+      this.process(this.state.repository, '', this.state.branch);
     }
   }
 
@@ -148,23 +148,17 @@ class App extends Component {
 
     bar.actionManager = new BABYLON.ActionManager(this.scene);
     bar.actionManager.registerAction(
-      new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnPointerOverTrigger,
-        () => {
-          this.showTooltip(bar.info);
-        }
-      )
+      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, () => {
+        this.showTooltip(bar.info);
+      })
     );
 
     bar.actionManager.registerAction(
-      new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnPointerOutTrigger,
-        this.hideTooltip
-      )
+      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger, this.hideTooltip)
     );
 
     // Material
-    bar.material = new BABYLON.StandardMaterial(data.label + "mat", this.scene);
+    bar.material = new BABYLON.StandardMaterial(data.label + 'mat', this.scene);
     bar.material.diffuseColor = data.color;
 
     bar.freezeWorldMatrix();
@@ -220,22 +214,13 @@ class App extends Component {
     }
     width = Math.min(width, 1000);
     height = Math.min(height, 1000);
-    this.camera.setPosition(
-      new BABYLON.Vector3(width / 2, width, (width + height) / 2)
-    );
+    this.camera.setPosition(new BABYLON.Vector3(width / 2, width, (width + height) / 2));
   }
 
   initScene() {
     this.scene.clearColor = new BABYLON.Color3(0.7, 0.7, 0.7);
     // This creates and positions a free camera (non-mesh)
-    this.camera = new BABYLON.ArcRotateCamera(
-      "camera",
-      0,
-      0,
-      10,
-      BABYLON.Vector3.Zero(),
-      this.scene
-    );
+    this.camera = new BABYLON.ArcRotateCamera('camera', 0, 0, 10, BABYLON.Vector3.Zero(), this.scene);
 
     // This targets the camera to scene origin
     this.camera.setTarget(BABYLON.Vector3.Zero());
@@ -247,11 +232,7 @@ class App extends Component {
     this.camera.useAutoRotationBehavior = true;
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight(
-      "global_light",
-      new BABYLON.Vector3(0, 1, 0),
-      this.scene
-    );
+    var light = new BABYLON.HemisphericLight('global_light', new BABYLON.Vector3(0, 1, 0), this.scene);
 
     light.intensity = 0.8;
   }
@@ -271,14 +252,18 @@ class App extends Component {
   }
 
   handleKeyPress = event => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.onClick();
     }
   };
 
   onInputChange(e) {
-    if(e.target.id === "repository") {this.setState({ repository: e.target.value })}
-    if(e.target.id === "branch") {this.setState({ branch: e.target.value })}
+    if (e.target.id === 'repository') {
+      this.setState({ repository: e.target.value });
+    }
+    if (e.target.id === 'branch') {
+      this.setState({ branch: e.target.value });
+    }
   }
 
   process(repository, json, branch) {
@@ -288,7 +273,7 @@ class App extends Component {
 
     const match = URLRegexp.exec(repository);
     if (!match) {
-      swal("Invalid URL", "Please inform a valid Github URL.", "error");
+      swal('Invalid URL', 'Please inform a valid Github URL.', 'error');
       return;
     }
     if (match !== this.props.match.params.repository || branch !== this.props.match.params.branch) {
@@ -318,7 +303,7 @@ class App extends Component {
         this.reset();
 
         if (response.data.children && response.data.children.length === 0) {
-          swal("Invalid project", "Only Go projects are allowed.", "error");
+          swal('Invalid project', 'Only Go projects are allowed.', 'error');
         }
 
         this.plot(response.data.children);
@@ -326,11 +311,7 @@ class App extends Component {
       })
       .catch(e => {
         this.setState({ loading: false });
-        swal(
-          "Error during plot",
-          "Something went wrong during the plot. Try again later",
-          "error"
-        );
+        swal('Error during plot', 'Something went wrong during the plot. Try again later', 'error');
         console.error(e);
       });
 
@@ -343,7 +324,7 @@ class App extends Component {
 
   onClick() {
     searchEvent(this.state.repository);
-    this.process(this.state.repository, "", this.state.branch);
+    this.process(this.state.repository, '', this.state.branch);
   }
 
   onFeedBackFormClose() {
@@ -385,14 +366,14 @@ class App extends Component {
             width="80"
             height="80"
             viewBox="0 0 250 250"
-            style={{ fill: "#151513", color: "#fff" }}
+            style={{ fill: '#151513', color: '#fff' }}
             aria-hidden="true"
           >
             <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />
             <path
               d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
               fill="currentColor"
-              style={{ transformOrigin: "130px 106px" }}
+              style={{ transformOrigin: '130px 106px' }}
               className="octo-arm"
             />
             <path
@@ -441,18 +422,14 @@ class App extends Component {
                 />
               </div>
               <div className="control">
-                <a
-                  id="search"
-                  onClick={this.onClick}
-                  className="button is-info"
-                >
+                <a id="search" onClick={this.onClick} className="button is-info">
                   Plot
                 </a>
               </div>
             </div>
             <div className="level">
               <small className="level-left">
-                Examples:{" "}
+                Examples:{' '}
                 {examples.map(example => (
                   <a
                     className="m-l-10"
@@ -467,17 +444,34 @@ class App extends Component {
               </small>
             </div>
           </div>
+          <div className={this.state.modalActive ? 'modal is-active' : 'modal'}>
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <section className="modal-card-body">
+                <div class="content">
+                  <span>
+                    Showing code for <strong>{this.state.repository}</strong>
+                  </span>
+                  <h3>Markdown format</h3>
+                  <textarea className="textarea">{this.getBadgeValue('md')}</textarea>
+                  <h3>HTML format</h3>
+                  <textarea className="textarea">{this.getBadgeValue('html')}</textarea>
+                </div>
+              </section>
+            </div>
+            <button onClick={this.closeModal} className="modal-close is-large" aria-label="close"></button>
+          </div>
         </header>
         <section className="canvas">
           {this.state.loading ? (
             <Loading message="Fetching repository..." />
           ) : (
-              <BabylonScene
-                width={window.innerWidth}
-                engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
-                onSceneMount={this.onSceneMount}
-              />
-            )}
+            <BabylonScene
+              width={window.innerWidth}
+              engineOptions={{ preserveDrawingBuffer: true, stencil: true }}
+              onSceneMount={this.onSceneMount}
+            />
+          )}
         </section>
         <div className="footer-warning notification is-danger is-hidden-tablet is-paddingless is-marginless is-unselectable">
           GoCity is best viewed on Desktop
