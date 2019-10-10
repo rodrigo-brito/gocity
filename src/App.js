@@ -70,8 +70,8 @@ class App extends Component {
     this.state = {
       feedbackFormActive: false,
       loading: false,
-      branch: this.props.match.params.branch || 'master',
       repository: this.props.match.params.repository || 'github.com/rodrigo-brito/gocity',
+      branch: this.props.match.params.branch || 'master',
       modalActive: false
     };
 
