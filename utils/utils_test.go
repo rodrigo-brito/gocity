@@ -90,3 +90,23 @@ func TestTrimGoPath(t *testing.T) {
 		})
 	}
 }
+
+func TestGetIdentifier(t *testing.T) {
+	tests := []struct {
+		path string
+		pkg  string
+		name string
+		want string
+	}{
+		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go", "/main.go.(/main.go)"},
+		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go", "/foo/bar.go.(/foo/bar.go)"},
+		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "/vendor", "/vendor.(/vendor)"},
+		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "", "/vendor"},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("given path %s, pkg %s and name %s", tt.path, tt.pkg, tt.name), func(t *testing.T) {
+			got := GetIdentifier(tt.path, tt.pkg, tt.name)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
