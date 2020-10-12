@@ -1,4 +1,4 @@
-FROM golang:1.12 as build
+FROM golang:1.15 as build
 WORKDIR /app
 ADD . .
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -mod=vendor -ldflags="-w -s" -mod vendor
