@@ -3,6 +3,7 @@ package handle
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/rodrigo-brito/gocity/lib/file"
 	"net/http"
 	"time"
 
@@ -14,7 +15,6 @@ import (
 	"github.com/rodrigo-brito/gocity/handle/middlewares"
 	"github.com/rodrigo-brito/gocity/lib"
 	"github.com/rodrigo-brito/gocity/model"
-	"github.com/rodrigo-brito/gocity/utils"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -25,7 +25,7 @@ type AnalyzerHandle struct {
 }
 
 func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
-	projectURL, ok := utils.GetGithubBaseURL(r.URL.Query().Get("q"))
+	projectURL, ok := file.GetGithubBaseURL(r.URL.Query().Get("q"))
 	if !ok {
 		w.WriteHeader(http.StatusBadRequest)
 		return
