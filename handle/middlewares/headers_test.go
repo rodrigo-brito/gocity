@@ -19,7 +19,7 @@ func TestAPIHeader(t *testing.T) {
 	request := &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
 	cookie, err := request.Cookie(cookieKey)
 	require.NoError(t, err)
-	require.Equal(t, cookie.Value, "http://localhost:3000/test")
+	require.Equal(t, cookie.Value, url)
 
 	path, err := request.Cookie("Path")
 	require.NoError(t, err)
@@ -29,10 +29,10 @@ func TestAPIHeader(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, maxAge.Value, "90000")
 
-	expires, err := request.Cookie("Expires")
+	expiry, err := request.Cookie("Expires")
 	require.NoError(t, err)
 
-	expiryTime, err := time.Parse(time.RFC1123, expires.Value)
+	expiryTime, err := time.Parse(time.RFC1123, expiry.Value)
 	require.NoError(t, err)
 	require.True(t, expiryTime.After(time.Now()))
 }
