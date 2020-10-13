@@ -2,7 +2,6 @@ package analyzer
 
 import (
 	"fmt"
-	"github.com/rodrigo-brito/gocity/lib/file"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -13,6 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/rodrigo-brito/gocity/lib"
+	"github.com/rodrigo-brito/gocity/lib/file"
 )
 
 type Analyzer interface {
