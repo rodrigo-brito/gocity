@@ -8,10 +8,9 @@ import (
 const cookieKey = "gocity_api"
 
 type Middleware func(http.Handler) http.Handler
-var now = time.Now
 
 func setAPICookie(w http.ResponseWriter, url string) {
-	expire := now().Add(24 * time.Hour)
+	expire := time.Now().Add(24 * time.Hour)
 	cookie := http.Cookie{
 		Name:    cookieKey,
 		Value:   url,
