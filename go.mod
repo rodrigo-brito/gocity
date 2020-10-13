@@ -16,6 +16,7 @@ require (
 	github.com/karlseguin/ccache v2.0.2+incompatible
 	github.com/karlseguin/expect v1.0.1 // indirect
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e // indirect
+	github.com/magiconair/properties v1.8.0
 	github.com/pelletier/go-buffruneio v0.2.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sergi/go-diff v1.0.0 // indirect
