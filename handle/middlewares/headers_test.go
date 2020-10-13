@@ -16,7 +16,7 @@ func TestAPIHeader(t *testing.T) {
 	router := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
 	router.ServeHTTP(recorder, nil)
 
-	request := &http.Request{Header: http.Header{"Cookie": recorder.HeaderMap["Set-Cookie"]}}
+	request := &http.Request{Header: http.Header{"Cookie": recorder.Header().Values("Set-Cookie")}}
 	cookie, err := request.Cookie(cookieKey)
 	require.NoError(t, err)
 	require.Equal(t, cookie.Value, url)
