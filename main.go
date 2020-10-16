@@ -8,7 +8,7 @@ import (
 	"github.com/rodrigo-brito/gocity/lib"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 const (
@@ -23,20 +23,20 @@ func main() {
 	log.SetLevel(log.InfoLevel)
 
 	app := cli.NewApp()
-	app.Version = "1.0.2"
+	app.Version = "1.0.3"
 	app.Description = "Code City metaphor for visualizing Go source code in 3D"
-	app.Author = "Rodrigo Brito (https://github.com/rodrigo-brito)"
+	app.Copyright = "Rodrigo Brito (https://github.com/rodrigo-brito)"
 
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		{
 			Name:        "server",
 			Description: "Start a local server to analyze projects",
 			Flags: []cli.Flag{
-				cli.IntFlag{
-					Name:   "port",
-					Value:  defaultPort,
-					Usage:  "Local server port",
-					EnvVar: "PORT",
+				&cli.IntFlag{
+					Name:    "port",
+					Value:   defaultPort,
+					Usage:   "Local server port",
+					EnvVars: []string{"PORT"},
 				},
 			},
 			Action: func(c *cli.Context) error {

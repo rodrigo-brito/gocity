@@ -25,7 +25,7 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/src-d/gcfg v1.3.0 // indirect
 	github.com/stretchr/testify v1.4.0
-	github.com/urfave/cli v1.20.0
+	github.com/urfave/cli/v2 v2.2.0
 	github.com/wsxiaoys/terminal v0.0.0-20160513160801-0940f3fc43a0 // indirect
 	github.com/xanzy/ssh-agent v0.2.0 // indirect
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
