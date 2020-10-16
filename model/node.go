@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"github.com/rodrigo-brito/gocity/lib/file"
 	"sort"
 	"strings"
 
-	"github.com/rodrigo-brito/gocity/analyzer"
+	"gocity/analyzer"
+	"gocity/lib"
 )
 
 type NodeType string
@@ -103,7 +103,7 @@ func (n *Node) GenerateChildrenPosition() {
 func getPathAndFile(fullPath string) (paths []string, fileName, structName string) {
 	pathlist := strings.Split(fullPath, "/")
 	paths = pathlist[:len(pathlist)-1]
-	fileName, structName = file.GetFileAndStruct(pathlist[len(pathlist)-1])
+	fileName, structName = lib.GetFileAndStruct(pathlist[len(pathlist)-1])
 	return
 }
 

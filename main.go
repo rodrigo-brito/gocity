@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/rodrigo-brito/gocity/lib/file"
 	"os"
 
-	"github.com/rodrigo-brito/gocity/handle"
-	"github.com/rodrigo-brito/gocity/lib"
+	"gocity/handle"
+	"gocity/lib"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
@@ -50,7 +50,7 @@ func main() {
 			Description: "Open a given project in local server",
 			Action: func(c *cli.Context) error {
 				baseURL := c.Args().First()
-				url, ok := file.GetGithubBaseURL(c.Args().First())
+				url, ok := lib.GetGithubBaseURL(c.Args().First())
 				if !ok {
 					return fmt.Errorf("invalid project URL: %s", baseURL)
 				}

@@ -1,4 +1,6 @@
-module github.com/rodrigo-brito/gocity
+module gocity
+
+go 1.15
 
 require (
 	cloud.google.com/go v0.44.3
@@ -9,14 +11,16 @@ require (
 	github.com/gliderlabs/ssh v0.1.1 // indirect
 	github.com/go-chi/chi v4.0.1+incompatible
 	github.com/go-chi/cors v1.0.0
-	github.com/gobuffalo/packr/v2 v2.7.0
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/karlseguin/ccache v2.0.2+incompatible
 	github.com/karlseguin/expect v1.0.1 // indirect
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/magiconair/properties v1.8.0
+	github.com/markbates/pkger v0.17.1
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pelletier/go-buffruneio v0.2.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sergi/go-diff v1.0.0 // indirect
@@ -39,5 +43,3 @@ require (
 	gopkg.in/src-d/go-git.v4 v4.7.0
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
-
-go 1.13

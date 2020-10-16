@@ -1,20 +1,21 @@
+//go:generate go run github.com/markbates/pkger/cmd/pkger -o handle
+
 package handle
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/rodrigo-brito/gocity/lib/file"
 	"net/http"
 	"time"
 
-	"github.com/gobuffalo/packr/v2"
+	"gocity/analyzer"
+	"gocity/handle/middlewares"
+	"gocity/lib"
+	"gocity/model"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/rodrigo-brito/gocity/analyzer"
-	"github.com/rodrigo-brito/gocity/handle/middlewares"
-	"github.com/rodrigo-brito/gocity/lib"
-	"github.com/rodrigo-brito/gocity/model"
+	"github.com/markbates/pkger"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -25,7 +26,7 @@ type AnalyzerHandle struct {
 }
 
 func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
-	projectURL, ok := file.GetGithubBaseURL(r.URL.Query().Get("q"))
+	projectURL, ok := lib.GetGithubBaseURL(r.URL.Query().Get("q"))
 	if !ok {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -99,9 +100,12 @@ func (h *AnalyzerHandle) Serve(port int) error {
 	router.Use(middlewares.APIHeader(fmt.Sprintf("%s/api", baseURL)))
 	router.Use(middleware.DefaultLogger)
 
-	box := packr.New("assets", "./assets")
-	fs := http.FileServer(box)
+	assets, err := pkger.Open("/handle/assets")
+	if err != nil {
+		return err
+	}
 
+	fs := http.FileServer(assets)
 	router.Handle("/*", fs)
 	router.Get("/api", h.Handler)
 	router.Get("/health", func(w http.ResponseWriter, r *http.Request) {

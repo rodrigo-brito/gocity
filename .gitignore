@@ -20,3 +20,4 @@
 gocity
 coverage.txt
 /vendor
+/dist

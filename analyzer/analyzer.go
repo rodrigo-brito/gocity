@@ -11,8 +11,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/rodrigo-brito/gocity/lib"
-	"github.com/rodrigo-brito/gocity/lib/file"
+	"gocity/lib"
 )
 
 type Analyzer interface {
@@ -70,7 +69,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 		}
 
 		fileSet := token.NewFileSet()
-		if f.IsDir() || !file.IsGoFile(f.Name()) || a.IsInvalidPath(path) {
+		if f.IsDir() || !lib.IsGoFile(f.Name()) || a.IsInvalidPath(path) {
 			return nil
 		}
 
