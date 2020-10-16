@@ -17,8 +17,7 @@ const (
 
 func main() {
 	analyzer := handle.AnalyzerHandle{
-		Cache:   lib.NewCache(),
-		Storage: lib.NewStorage(),
+		Cache: lib.NewCache(),
 	}
 
 	log.SetLevel(log.InfoLevel)

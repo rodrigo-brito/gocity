@@ -27,13 +27,16 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
  - The Number of Variables (NOV) correlates to the building's base size.
  - The Number of methods (NOM) correlates to the building height.
  
-## Private Repositories / Localhost
+## Installation
 
-Install gocity:
 - `go get -u github.com/rodrigo-brito/gocity`
+- Or just head to the [releases](https://github.com/rodrigo-brito/gocity/releases) page and download the latest version for you platform.
 
-Open a local project:
-- `gocity open github.com/example/my-project`
+## Usage:
+- Online: https://go-city.github.io
+- Commands
+    - `gocity server` - Open a local / private server
+    - `gocity open <GITHUB_IMPORT>` - Open a specific Github project
  
 ## UI / Front-end
 
