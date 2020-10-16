@@ -5,8 +5,7 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
-
-	git "gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
 )
 

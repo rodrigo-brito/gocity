@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"gocity/handle"
-	"gocity/lib"
+	"github.com/rodrigo-brito/gocity/handle"
+	"github.com/rodrigo-brito/gocity/lib"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"

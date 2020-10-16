@@ -1,4 +1,4 @@
-module gocity
+module github.com/rodrigo-brito/gocity
 
 go 1.15
 

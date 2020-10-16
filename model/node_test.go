@@ -5,7 +5,7 @@ import (
 
 	"github.com/magiconair/properties/assert"
 
-	"gocity/analyzer"
+	"github.com/rodrigo-brito/gocity/analyzer"
 )
 
 func TestNode_GenerateChildList(t *testing.T) {

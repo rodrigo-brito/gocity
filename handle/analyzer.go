@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"time"
 
-	"gocity/analyzer"
-	"gocity/handle/middlewares"
-	"gocity/lib"
-	"gocity/model"
+	"github.com/rodrigo-brito/gocity/analyzer"
+	"github.com/rodrigo-brito/gocity/handle/middlewares"
+	"github.com/rodrigo-brito/gocity/lib"
+	"github.com/rodrigo-brito/gocity/model"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
