@@ -2,6 +2,7 @@ import React from "react";
 import Message from "./Message";
 import Login from "./Login";
 import Loading from "../Loading";
+import PropTypes from 'prop-types';
 
 const DATABASE_ALL = "all-messages";
 const DATABASE_PUBLIC = "public-messages";
@@ -219,4 +220,11 @@ export default class FeedbackForm extends React.Component {
       </div>
     );
   }
+}
+
+FeedbackForm.propTypes = {
+  active: PropTypes.bool,
+  projectURL: PropTypes.string,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func
 }

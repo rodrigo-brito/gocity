@@ -13,7 +13,6 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
     "sweetalert2": "^7.28.10"
   },
   "eslintIgnore": [
@@ -22,9 +21,27 @@
     "node_modules/"
   ],
   "scripts": {
+    "lint": "eslint src",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --passWithNoTests",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "react-app": "^1.1.2",
+    "react-scripts": "^3.4.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

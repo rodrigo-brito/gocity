@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './img/logo.png';
 import { logoBase64 } from './utils.js';
 
-export default () => {
+const Nav = () => {
   return (
     <div className="level">
       <div className="level-left">
@@ -33,14 +33,14 @@ export default () => {
             />
           </a>
           <span className="m-l-10" />
-          <a>
-            <img
-              alt="Add gocity badge for your go repo"
-              src={`https://img.shields.io/static/v1?label=gocity&message=rodrigo-brito/gocity&color=blue&style=for-the-badge&logo=${logoBase64()}`}
-            />
-          </a>
+          <img className="link-like-element"
+            alt="Add gocity badge for your go repo"
+            src={`https://img.shields.io/static/v1?label=gocity&message=rodrigo-brito/gocity&color=blue&style=for-the-badge&logo=${logoBase64()}`}
+          />
         </div>
       </div>
     </div>
   );
 };
+
+export default Nav;

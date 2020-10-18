@@ -1,0 +1,9 @@
+{
+    "env": {
+        "node": true,
+        "commonjs": true,
+        "browser": true
+    },
+    "extends": ["react-app", "plugin:jsx-a11y/recommended", "eslint:recommended", "plugin:react/recommended"],
+    "plugins": ["jsx-a11y"]
+}

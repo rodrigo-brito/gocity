@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-export default ({ name, photo, content, date, project, onOpen, onClose }) => {
+const Message = ({ name, photo, content, date, project, onOpen, onClose }) => {
   return (
     <div className="card">
       <div className="card-content">
@@ -14,14 +15,14 @@ export default ({ name, photo, content, date, project, onOpen, onClose }) => {
             <p className="title is-4">{name}</p>
             <p className="subtitle is-6">
               <time dateTime={date}>{date.toLocaleString()}</time> - seeing{" "}
-              <a
+              <button className="link-like-button"
                 onClick={() => {
                   onOpen(project);
                   onClose();
                 }}
               >
                 {project}
-              </a>
+              </button>
             </p>
           </div>
         </div>
@@ -31,3 +32,15 @@ export default ({ name, photo, content, date, project, onOpen, onClose }) => {
     </div>
   );
 };
+
+Message.propTypes = {
+  name: PropTypes.string,
+  photo: PropTypes.string,
+  content: PropTypes.string,
+  date: PropTypes.instanceOf(Date),
+  project: PropTypes.string,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
+}
+
+export default Message;
