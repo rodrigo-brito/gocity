@@ -15,15 +15,6 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-      - name: Yarn Install
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: install
-      - name: Eslint
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: lint
-      - name: Test
-        uses: Borales/actions-yarn@v2.3.0
-        with:
-          cmd: test
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn test
