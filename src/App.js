@@ -9,6 +9,7 @@ import Loading from './Loading';
 import { feedbackEvent, getProportionalColor, searchEvent, logoBase64 } from './utils';
 import swal from 'sweetalert2';
 import Cookies from 'js-cookie';
+import PropTypes from 'prop-types';
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
@@ -393,9 +394,9 @@ class App extends Component {
             </p>
             <p>
               You can also add a custom badge for your go repository.{' '}
-              <a onClick={this.openModal} href="#">
+              <button className="link-like-button" onClick={this.openModal} href="#">
                 click here
-              </a>{' '}
+              </button>{' '}
               to generate one.
             </p>
             <div className="field has-addons">
@@ -422,24 +423,24 @@ class App extends Component {
                 />
               </div>
               <div className="control">
-                <a id="search" onClick={this.onClick} className="button is-info">
+                <button id="search" onClick={this.onClick} className="button is-info link-like-button">
                   Plot
-                </a>
+                </button>
               </div>
             </div>
             <div className="level">
               <small className="level-left">
                 Examples:{' '}
                 {examples.map(example => (
-                  <a
-                    className="m-l-10"
+                  <button
+                    className="m-l-10 link-like-button"
                     key={example.link}
                     onClick={() => {
                       this.process(example.link, example.json, example.branch);
                     }}
                   >
                     {example.name}
-                  </a>
+                  </button>
                 ))}
               </small>
             </div>
@@ -448,7 +449,7 @@ class App extends Component {
             <div className="modal-background"></div>
             <div className="modal-card">
               <section className="modal-card-body">
-                <div class="content">
+                <div className="content">
                   <span>
                     Showing code for <strong>{this.state.repository}</strong>
                   </span>
@@ -480,6 +481,18 @@ class App extends Component {
       </main>
     );
   }
+}
+
+App.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      repository: PropTypes.string,
+      branch: PropTypes.string
+    })
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  })
 }
 
 export default App;

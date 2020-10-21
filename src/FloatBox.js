@@ -1,7 +1,8 @@
 import React from "react";
 import {openGithubEvent} from "./utils";
+import PropTypes from 'prop-types';
 
-export default ({ position, info, visible }) => {
+const FloatBox = ({ position, info, visible }) => {
   if (!visible) {
     return null;
   }
@@ -24,7 +25,7 @@ export default ({ position, info, visible }) => {
           <span className="attributes">{info.NOA}</span>
           <br />
         </div>}
-        <a href={info.url} className="button m-t-10" target="_blank" onClick={() => {
+        <a href={info.url} className="button m-t-10" target="_blank" rel="noopener noreferrer" onClick={() => {
           openGithubEvent(info.url);
         }}>
           <svg
@@ -45,3 +46,23 @@ export default ({ position, info, visible }) => {
     </div>
   );
 };
+
+FloatBox.displayName = "FloatBox";
+
+FloatBox.propTypes = {
+  position: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number
+  }),
+  info: PropTypes.shape({
+    NOA: PropTypes.number,
+    NOL: PropTypes.number,
+    NOM: PropTypes.number,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    url: PropTypes.string
+  }),
+  visible: PropTypes.bool,
+}
+
+export default FloatBox;

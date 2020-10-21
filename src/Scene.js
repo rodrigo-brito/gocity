@@ -1,6 +1,7 @@
 import React from "react";
 import * as BABYLON from "babylonjs";
 import swal from "sweetalert2";
+import PropTypes from 'prop-types';
 
 export default class Scene extends React.Component {
   scene = null;
@@ -83,4 +84,10 @@ export default class Scene extends React.Component {
 
     return <canvas {...opts} ref={this.onCanvasLoaded} />;
   }
+}
+
+Scene.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  onSceneMount: PropTypes.oneOf([PropTypes.func, PropTypes.undefined])
 }
