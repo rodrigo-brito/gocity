@@ -1,0 +1,12 @@
+no_trace: false
+trig_async: [run, test]
+rules:
+  - name: changer
+    match: \.go$
+    trig_async:
+      - test
+      - run
+  - name: run
+    command: go run main.go server
+  - name: test
+    command: go test ./...
