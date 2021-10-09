@@ -93,6 +93,7 @@ class App extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.getBadgeValue = this.getBadgeValue.bind(this);
+    this.saveAsPng = this.saveAsPng.bind(this);
   }
 
   componentDidMount() {
@@ -355,6 +356,14 @@ class App extends Component {
     return templates[template];
   }
 
+  saveAsPng() {
+    const image = this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const link = document.createElement("a");
+    link.setAttribute("download", `gocity-${this.state.repository}-${this.state.branch}.png`);
+    link.setAttribute("href", image);
+    link.click();
+  }
+
   render() {
     return (
       <main onMouseMove={this.onMouseMove}>
@@ -397,7 +406,11 @@ class App extends Component {
               <button className="link-like-button" onClick={this.openModal} href="#">
                 click here
               </button>{' '}
-              to generate one.
+              to generate one. Or you can{' '}
+              <button className="link-like-button" onClick={this.saveAsPng} href="#">
+                save the city as PNG
+              </button>
+              .
             </p>
             <div className="field has-addons">
               <div className="control is-expanded">
