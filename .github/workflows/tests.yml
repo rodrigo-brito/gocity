@@ -24,7 +24,6 @@ jobs:
               run: |
                   go test -race -cover -coverprofile=coverage.txt -covermode=atomic ./...
               env:
-                  GOCITY_CACHE: /home/runner/work/gocity_cache
                   GOPATH: /home/runner/work/gocity/go
             - name: Upload coverage report
               uses: codecov/codecov-action@v1.0.13

@@ -22,6 +22,7 @@ import (
 type AnalyzerHandle struct {
 	Cache      lib.Cache
 	projectURL *string
+	TmpFolder  string
 }
 
 func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +38,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 	}
 	key := fmt.Sprintf("%s:%s", projectURL, branch)
 	result, err := h.Cache.GetSet(key, func() ([]byte, error) {
-		analyzer := analyzer.NewAnalyzer(projectURL, branch, analyzer.WithIgnoreList("/vendor/"))
+		analyzer := analyzer.NewAnalyzer(projectURL, branch, h.TmpFolder, analyzer.WithIgnoreList("/vendor/"))
 		err := analyzer.FetchPackage()
 		if err != nil {
 			return nil, err

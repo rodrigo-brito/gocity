@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/rodrigo-brito/gocity/handle"
@@ -16,13 +17,20 @@ const (
 )
 
 func main() {
+	tmpFolder, err := ioutil.TempDir("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	analyzer := handle.AnalyzerHandle{
-		Cache: lib.NewCache(),
+		Cache:     lib.NewCache(),
+		TmpFolder: tmpFolder,
 	}
 
 	log.SetLevel(log.InfoLevel)
 
 	app := cli.NewApp()
+
 	app.Version = "1.0.3"
 	app.Description = "Code City metaphor for visualizing Go source code in 3D"
 	app.Copyright = "Rodrigo Brito (https://github.com/rodrigo-brito)"

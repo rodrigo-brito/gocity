@@ -13,15 +13,18 @@ type Fetcher interface {
 	Fetch(packageName string, branchName string) error
 }
 
-func NewFetcher() Fetcher {
-	return new(fetcher)
+func NewFetcher(tmpFolder string) Fetcher {
+	return &fetcher{tmpFolder: tmpFolder}
 }
 
-type fetcher struct{}
+type fetcher struct {
+	tmpFolder string
+}
 
 func (f *fetcher) Fetch(name string, branch string) error {
 	gitAddress := fmt.Sprintf("https://%s", name)
-	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOCITY_CACHE"), name)
+	folder := fmt.Sprintf("%s/%s", f.tmpFolder, name)
+	fmt.Println("fetch to", folder, f.tmpFolder, name)
 	_, err := git.PlainClone(folder, false, &git.CloneOptions{
 		URL:           gitAddress,
 		Depth:         1,
