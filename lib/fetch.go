@@ -21,7 +21,7 @@ type fetcher struct{}
 
 func (f *fetcher) Fetch(name string, branch string) error {
 	gitAddress := fmt.Sprintf("https://%s", name)
-	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), name)
+	folder := fmt.Sprintf("%s/src/%s", os.Getenv("GOCITY_CACHE"), name)
 	_, err := git.PlainClone(folder, false, &git.CloneOptions{
 		URL:           gitAddress,
 		Depth:         1,

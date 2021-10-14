@@ -62,7 +62,7 @@ func (p *analyzer) IsInvalidPath(path string) bool {
 
 func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 	summary := make(map[string]*NodeInfo)
-	root := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), a.PackageName)
+	root := fmt.Sprintf("%s/src/%s", os.Getenv("GOCITY_CACHE"), a.PackageName)
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
 			return fmt.Errorf("error on file walk: %s", err)

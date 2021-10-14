@@ -1,5 +1,8 @@
 no_trace: false
 trig_async: [run]
+env:
+- name: GOCITY_CACHE
+  value: ../.gocity_cache
 rules:
   - name: run
     match: \.go$

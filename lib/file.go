@@ -13,7 +13,7 @@ var (
 )
 
 func TrimGoPath(path, repository string) string {
-	return strings.TrimPrefix(path, fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), repository))
+	return strings.TrimPrefix(path, fmt.Sprintf("%s/src/%s", os.Getenv("GOCITY_CACHE"), repository))
 }
 
 func GetFileAndStruct(identifier string) (fileName, structName string) {
