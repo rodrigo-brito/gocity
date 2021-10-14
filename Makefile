@@ -1,9 +1,5 @@
-dev-dependencies:
-	go get -u github.com/canthefason/go-watcher
-	go install github.com/canthefason/go-watcher/cmd/watcher
-
-watcher: dev-dependencies
-	watcher # github.com/canthefason/go-watcher
+run:
+	@go run github.com/rafaelsq/wtc
 
 mock:
 	go get github.com/vektra/mockery/...
