@@ -1,14 +1,12 @@
 no_trace: false
-trig_async: [run, test_all]
+trig_async: [run]
 rules:
-  - name: checker
+  - name: run
     match: \.go$
     ignore: _test\.go$
-    trig_async: [run, test_all]
-  - name: run
     command: go run main.go server
   - name: test_all
-    command: go test ./...
+    command: go test -cover ./...
   - name: test
     match: _test\.go$
     command: go test -cover {PKG}
