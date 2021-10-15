@@ -1,14 +1,14 @@
 package lib
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFetch(t *testing.T) {
-	tmpFolder, _ := ioutil.TempDir("", "")
+	tmpFolder, _ := os.MkdirTemp("", "")
 
 	f := NewFetcher(tmpFolder)
 	assert.Implements(t, new(Fetcher), f)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/rodrigo-brito/gocity/handle"
@@ -17,7 +16,7 @@ const (
 )
 
 func main() {
-	tmpFolder, err := ioutil.TempDir("", "")
+	tmpFolder, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
