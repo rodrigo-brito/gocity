@@ -72,7 +72,7 @@ func TestIsGoFile(t *testing.T) {
 	}
 }
 
-func TestTrimGoPath(t *testing.T) {
+func TestTrimTemporaryPath(t *testing.T) {
 	tests := []struct {
 		path       string
 		repository string
@@ -84,7 +84,7 @@ func TestTrimGoPath(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("given project %s/%s", tt.path, tt.repository), func(t *testing.T) {
-			got := TrimGoPath("/src", tt.path, tt.repository)
+			got := TrimTemporaryPath("/src", tt.path, tt.repository)
 			assert.Equal(t, tt.want, got)
 		})
 	}

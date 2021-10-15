@@ -11,7 +11,7 @@ var (
 	regexpGithub = regexp.MustCompile(`github\.com\/([^\/]+)\/([^\/]+)`)
 )
 
-func TrimGoPath(tmpFolder, path, repository string) string {
+func TrimTemporaryPath(tmpFolder, path, repository string) string {
 	return strings.TrimPrefix(path, fmt.Sprintf("%s/%s", tmpFolder, repository))
 }
 
@@ -29,7 +29,7 @@ func GetFileAndStruct(identifier string) (fileName, structName string) {
 }
 
 func GetIdentifier(tmpFolder, path, pkg, name string) string {
-	path = TrimGoPath(tmpFolder, path, pkg)
+	path = TrimTemporaryPath(tmpFolder, path, pkg)
 	if len(name) > 0 {
 		return fmt.Sprintf("%s.(%s)", path, name)
 	}
