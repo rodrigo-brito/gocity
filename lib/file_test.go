@@ -2,7 +2,6 @@ package lib
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -73,19 +72,19 @@ func TestIsGoFile(t *testing.T) {
 	}
 }
 
-func TestTrimGoPath(t *testing.T) {
+func TestTrimTemporaryPath(t *testing.T) {
 	tests := []struct {
 		path       string
 		repository string
 		want       string
 	}{
-		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go"},
-		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go"},
-		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "/vendor"},
+		{"/src/gocity/main.go", "gocity", "/main.go"},
+		{"/src/gocity/foo/bar.go", "gocity", "/foo/bar.go"},
+		{"/src/gocity/vendor", "gocity", "/vendor"},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("given project %s/%s", tt.path, tt.repository), func(t *testing.T) {
-			got := TrimGoPath(tt.path, tt.repository)
+			got := TrimTemporaryPath("/src", tt.path, tt.repository)
 			assert.Equal(t, tt.want, got)
 		})
 	}
@@ -98,14 +97,14 @@ func TestGetIdentifier(t *testing.T) {
 		name string
 		want string
 	}{
-		{fmt.Sprintf("%s/src/gocity/main.go", os.Getenv("GOPATH")), "gocity", "/main.go", "/main.go.(/main.go)"},
-		{fmt.Sprintf("%s/src/gocity/foo/bar.go", os.Getenv("GOPATH")), "gocity", "/foo/bar.go", "/foo/bar.go.(/foo/bar.go)"},
-		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "/vendor", "/vendor.(/vendor)"},
-		{fmt.Sprintf("%s/src/gocity/vendor", os.Getenv("GOPATH")), "gocity", "", "/vendor"},
+		{"/src/gocity/main.go", "gocity", "/main.go", "/main.go.(/main.go)"},
+		{"/src/gocity/foo/bar.go", "gocity", "/foo/bar.go", "/foo/bar.go.(/foo/bar.go)"},
+		{"/src/gocity/vendor", "gocity", "/vendor", "/vendor.(/vendor)"},
+		{"/src/gocity/vendor", "gocity", "", "/vendor"},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("given path %s, pkg %s and name %s", tt.path, tt.pkg, tt.name), func(t *testing.T) {
-			got := GetIdentifier(tt.path, tt.pkg, tt.name)
+			got := GetIdentifier("/src", tt.path, tt.pkg, tt.name)
 			assert.Equal(t, tt.want, got)
 		})
 	}

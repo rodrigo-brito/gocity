@@ -21,6 +21,7 @@ type Visitor struct {
 	StructInfo  map[string]*NodeInfo
 	PackageName string
 	Path        string
+	TmpFolder   string
 }
 
 func (v Visitor) getNumberOfLines(start, end token.Pos) int {
@@ -34,7 +35,7 @@ func (v *Visitor) Visit(node ast.Node) ast.Visitor {
 
 	switch definition := node.(type) {
 	case *ast.ValueSpec: // Atributes
-		identifier := lib.GetIdentifier(v.Path, v.PackageName, "")
+		identifier := lib.GetIdentifier(v.TmpFolder, v.Path, v.PackageName, "")
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(NodeInfo)
@@ -45,7 +46,7 @@ func (v *Visitor) Visit(node ast.Node) ast.Visitor {
 
 	case *ast.TypeSpec: // Structs
 		if structObj, ok := definition.Type.(*ast.StructType); ok {
-			identifier := lib.GetIdentifier(v.Path, v.PackageName, definition.Name.Name)
+			identifier := lib.GetIdentifier(v.TmpFolder, v.Path, v.PackageName, definition.Name.Name)
 
 			if _, ok := v.StructInfo[identifier]; !ok {
 				v.StructInfo[identifier] = new(NodeInfo)
@@ -71,7 +72,7 @@ func (v *Visitor) Visit(node ast.Node) ast.Visitor {
 			}
 		}
 
-		identifier := lib.GetIdentifier(v.Path, v.PackageName, structName)
+		identifier := lib.GetIdentifier(v.TmpFolder, v.Path, v.PackageName, structName)
 
 		if _, ok := v.StructInfo[identifier]; !ok {
 			v.StructInfo[identifier] = new(NodeInfo)

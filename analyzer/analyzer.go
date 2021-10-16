@@ -24,15 +24,17 @@ type analyzer struct {
 	BranchName  string
 	IgnoreNodes []string
 	fetcher     lib.Fetcher
+	tmpFolder   string
 }
 
 type Option func(a *analyzer)
 
-func NewAnalyzer(packageName string, branchName string, options ...Option) Analyzer {
+func NewAnalyzer(packageName, branchName, tmpFolder string, options ...Option) Analyzer {
 	analyzer := &analyzer{
 		PackageName: packageName,
 		BranchName:  branchName,
-		fetcher:     lib.NewFetcher(),
+		fetcher:     lib.NewFetcher(tmpFolder),
+		tmpFolder:   tmpFolder,
 	}
 
 	for _, option := range options {
@@ -62,7 +64,7 @@ func (p *analyzer) IsInvalidPath(path string) bool {
 
 func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 	summary := make(map[string]*NodeInfo)
-	root := fmt.Sprintf("%s/src/%s", os.Getenv("GOPATH"), a.PackageName)
+	root := fmt.Sprintf("%s/%s", a.tmpFolder, a.PackageName)
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
 			return fmt.Errorf("error on file walk: %s", err)
@@ -84,6 +86,7 @@ func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
 			PackageName: a.PackageName,
 			Path:        path,
 			StructInfo:  summary,
+			TmpFolder:   a.tmpFolder,
 		}
 
 		ast.Walk(v, file)
