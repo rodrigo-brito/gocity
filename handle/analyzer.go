@@ -1,4 +1,4 @@
-//go:generate go run github.com/markbates/pkger/cmd/pkger -o handle
+//go:embed: https://pkg.go.dev/embed
 
 package handle
 
