@@ -1,8 +1,8 @@
-//go:embed: https://pkg.go.dev/embed
 
 package handle
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -18,6 +18,8 @@ import (
 	"github.com/markbates/pkger"
 	log "github.com/sirupsen/logrus"
 )
+
+//go:embed: go run github.com/markbates/pkger/cmd/pkger -o handle
 
 type AnalyzerHandle struct {
 	Cache      lib.Cache
