@@ -4,6 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,10 +15,11 @@ func TestFetch(t *testing.T) {
 	f := NewFetcher(tmpFolder)
 	assert.Implements(t, new(Fetcher), f)
 
-	err := f.Fetch("invalid", "master")
+	path, err := f.Fetch("invalid", "master")
 	assert.Error(t, err)
+	require.Empty(t, path)
 
-	err = f.Fetch("github.com/rodrigo-brito/gocity", "master")
+	path, err = f.Fetch("github.com/rodrigo-brito/gocity", "master")
 	assert.NoError(t, err)
-
+	require.NotEmpty(t, path)
 }

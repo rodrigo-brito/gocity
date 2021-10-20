@@ -123,7 +123,10 @@ func (h *AnalyzerHandle) Serve() error {
 	})
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
-		w.Write(indexPage)
+		_, err := w.Write(indexPage)
+		if err != nil {
+			log.Error(err)
+		}
 	})
 
 	var staticFS = fs.FS(assets)
