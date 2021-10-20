@@ -273,17 +273,25 @@ class App extends Component {
       return;
     }
 
-    const match = URLRegexp.exec(repository);
-    if (!match) {
-      swal('Invalid URL', 'Please inform a valid Github URL.', 'error');
-      return;
-    }
-    if (match !== this.props.match.params.repository || branch !== this.props.match.params.branch) {
-      this.props.history.push(`/${match[1]}/#/${branch}`);
+    let repositoryName;
+    if (repository === "local") {
+      repositoryName = "local";
+    } else {
+      const match = URLRegexp.exec(repository);
+      if (!match) {
+        swal('Invalid URL', 'Please inform a valid Github URL.', 'error');
+        return;
+      }
+
+      if (match !== this.props.match.params.repository || branch !== this.props.match.params.branch) {
+        this.props.history.push(`/${match[1]}/#/${branch}`);
+      }
+
+      repositoryName = match[1];
     }
 
     this.setState({
-      repository: match[1],
+      repository: repositoryName,
       loading: true
     });
 
@@ -293,7 +301,7 @@ class App extends Component {
     } else {
       request = axios.get(endpoint, {
         params: {
-          q: match[1],
+          q: repositoryName,
           b: branch
         }
       });
