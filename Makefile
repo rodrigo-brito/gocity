@@ -12,3 +12,7 @@ build-docker:
 deploy:
 	heroku container:push -a go-city web
 	heroku container:release -a go-city web
+
+
+test-release:
+	goreleaser release --snapshot

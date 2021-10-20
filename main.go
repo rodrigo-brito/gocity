@@ -21,7 +21,7 @@ func main() {
 
 	app := cli.NewApp()
 
-	app.Version = "1.0.3"
+	app.Version = "1.0.5"
 	app.Description = "Code City metaphor for visualizing Go source code in 3D"
 	app.Copyright = "Rodrigo Brito (https://github.com/rodrigo-brito)"
 
@@ -66,9 +66,10 @@ func main() {
 					Usage:   "Local server port",
 					EnvVars: []string{"PORT"},
 				},
-				&cli.DurationFlag{
+				&cli.StringFlag{
 					Name:    "branch",
 					Aliases: []string{"b"},
+					Value:   "master",
 					Usage:   "Specify a custom branch",
 				},
 			},
@@ -92,7 +93,6 @@ func main() {
 				analyzer := handle.AnalyzerHandle{
 					Cache:       lib.NewCache(),
 					TmpFolder:   os.TempDir(),
-					CacheTTL:    c.Duration("cache"),
 					Port:        c.Int("port"),
 					ProjectPath: &projectAddress,
 					Local:       local,
