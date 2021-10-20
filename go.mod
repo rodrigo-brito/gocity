@@ -12,7 +12,6 @@ require (
 	github.com/gliderlabs/ssh v0.1.1 // indirect
 	github.com/go-chi/chi v4.0.1+incompatible
 	github.com/go-chi/cors v1.0.0
-	github.com/gobuffalo/here v0.6.0 // indirect
 	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/karlseguin/ccache v2.0.2+incompatible
@@ -20,7 +19,6 @@ require (
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/magiconair/properties v1.8.0
-	github.com/markbates/pkger v0.17.1
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pelletier/go-buffruneio v0.2.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect

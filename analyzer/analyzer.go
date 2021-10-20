@@ -15,8 +15,8 @@ import (
 )
 
 type Analyzer interface {
-	FetchPackage() error
-	Analyze() (map[string]*NodeInfo, error)
+	FetchPackage() (string, error)
+	Analyze(path string) (map[string]*NodeInfo, error)
 }
 
 type analyzer struct {
@@ -50,7 +50,7 @@ func WithIgnoreList(files ...string) Option {
 	}
 }
 
-func (p *analyzer) FetchPackage() error {
+func (p *analyzer) FetchPackage() (string, error) {
 	return p.fetcher.Fetch(p.PackageName, p.BranchName)
 }
 
@@ -62,10 +62,9 @@ func (p *analyzer) IsInvalidPath(path string) bool {
 	return false
 }
 
-func (a *analyzer) Analyze() (map[string]*NodeInfo, error) {
+func (a *analyzer) Analyze(path string) (map[string]*NodeInfo, error) {
 	summary := make(map[string]*NodeInfo)
-	root := fmt.Sprintf("%s/%s", a.tmpFolder, a.PackageName)
-	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+	err := filepath.Walk(path, func(path string, f os.FileInfo, err error) error {
 		if err != nil {
 			return fmt.Errorf("error on file walk: %s", err)
 		}

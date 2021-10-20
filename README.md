@@ -28,14 +28,15 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
  
 ## Installation
 
-- `go get -u github.com/rodrigo-brito/gocity`
+- `go install github.com/rodrigo-brito/gocity@latest`
 - Or just head to the [releases](https://github.com/rodrigo-brito/gocity/releases) page and download the latest version for you platform.
 
 ## Usage:
 - Online: https://go-city.github.io
 - Commands
-    - `gocity server` - Open a local / private server
-    - `gocity open <GITHUB_IMPORT>` - Open a specific Github project
+    - `gocity server` - Start server
+    - `gocity open <GITHUB_IMPORT>` - Open a specific Github project from github
+    - `gocity open ./my-project` - Open a local directory
  
 ## UI / Front-end
 

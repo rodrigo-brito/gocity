@@ -10,7 +10,7 @@ import (
 )
 
 type Fetcher interface {
-	Fetch(packageName string, branchName string) error
+	Fetch(packageName string, branchName string) (string, error)
 }
 
 func NewFetcher(tmpFolder string) Fetcher {
@@ -21,7 +21,7 @@ type fetcher struct {
 	tmpFolder string
 }
 
-func (f *fetcher) Fetch(name string, branch string) error {
+func (f *fetcher) Fetch(name string, branch string) (string, error) {
 	gitAddress := fmt.Sprintf("https://%s", name)
 	folder := fmt.Sprintf("%s/%s", f.tmpFolder, name)
 	fmt.Println("fetch to", folder, f.tmpFolder, name)
@@ -39,8 +39,8 @@ func (f *fetcher) Fetch(name string, branch string) error {
 			}
 		}()
 
-		return err
+		return "", err
 	}
 
-	return nil
+	return folder, nil
 }
