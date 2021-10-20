@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/fs"
 	"net/http"
-	"net/url"
 	"os"
 	"time"
 
@@ -137,7 +136,7 @@ func (h *AnalyzerHandle) Serve() error {
 	if h.Local {
 		log.Infof("Visualization available at: %s/#/local", baseURL)
 	} else if h.ProjectPath != nil {
-		log.Infof("Visualization available at: %s/#/%s", baseURL, url.QueryEscape(*h.ProjectPath))
+		log.Infof("Visualization available at: %s/#/%s", baseURL, *h.ProjectPath)
 	} else {
 		log.Infof("Server started at %s", baseURL)
 	}
