@@ -112,7 +112,9 @@ class App extends Component {
       this.setState({
         infoVisible: true,
         infoData: info,
-        infoPosition: { x: this.mouse_x, y: this.mouse_y }
+        // offset the tooltip a bit for better visibility 
+        // and to allow mouse click to more easily toggle rotation
+        infoPosition: { x: this.mouse_x+10, y: this.mouse_y }
       });
     }, 100);
   }
@@ -165,6 +167,12 @@ class App extends Component {
 
     bar.freezeWorldMatrix();
 
+    bar.actionManager.registerAction(
+      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => {
+        this.toggleRotation();
+      })
+    );
+
     return bar;
   };
 
@@ -208,12 +216,20 @@ class App extends Component {
     });
   }
 
+  toggleRotation() {
+    console.log("toggling rotation")
+    this.camera.useAutoRotationBehavior = this.camera.useAutoRotationBehavior ? false : true
+  }
+
   updateCamera(width, height) {
+    /*
+    // XXX what were these for and can we get rid of them?
     if (width > 1000) {
       this.camera.useAutoRotationBehavior = false;
     } else {
       this.camera.useAutoRotationBehavior = true;
     }
+    */
     width = Math.min(width, 1000);
     height = Math.min(height, 1000);
     this.camera.setPosition(new BABYLON.Vector3(width / 2, width, (width + height) / 2));
@@ -237,6 +253,7 @@ class App extends Component {
     var light = new BABYLON.HemisphericLight('global_light', new BABYLON.Vector3(0, 1, 0), this.scene);
 
     light.intensity = 0.8;
+
   }
 
   onSceneMount(e) {
