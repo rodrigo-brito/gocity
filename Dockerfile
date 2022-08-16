@@ -1,7 +1,7 @@
-FROM golang:1.15 as build
+FROM golang:1.17 as build
 WORKDIR /app
 ADD . .
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -mod=vendor -ldflags="-w -s" -mod vendor
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s"
 
 FROM alpine
 COPY --from=build /app/gocity /bin/gocity
