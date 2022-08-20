@@ -6,7 +6,6 @@ require (
 	github.com/go-chi/chi v1.5.4
 	github.com/go-chi/cors v1.2.1
 	github.com/karlseguin/ccache v2.0.3+incompatible
-	github.com/magiconair/properties v1.8.6
 	github.com/rafaelsq/wtc v1.1.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.0

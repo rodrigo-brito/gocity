@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNodeSortByWidth(t *testing.T) {

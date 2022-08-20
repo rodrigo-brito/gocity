@@ -34,7 +34,7 @@ func TestGetCors(t *testing.T) {
 		"Access-Control-Max-Age",
 	}
 
-	middleware := GetCors("*")
+	middleware := GetCors("http://foobar.com")
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 
 	req, _ := http.NewRequest("GET", "http://example.com/foo", nil)
