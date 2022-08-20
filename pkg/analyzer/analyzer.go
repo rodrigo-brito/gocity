@@ -9,8 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rodrigo-brito/gocity/lib"
-
+	"github.com/rodrigo-brito/gocity/pkg/lib"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -50,15 +49,14 @@ func WithIgnoreList(files ...string) Option {
 	}
 }
 
-func (p *analyzer) FetchPackage() (string, error) {
-	return p.fetcher.Fetch(p.PackageName, p.BranchName)
+func (a *analyzer) FetchPackage() (string, error) {
+	return a.fetcher.Fetch(a.PackageName, a.BranchName)
 }
 
-func (p *analyzer) IsInvalidPath(path string) bool {
-	for _, value := range p.IgnoreNodes {
+func (a *analyzer) IsInvalidPath(path string) bool {
+	for _, value := range a.IgnoreNodes {
 		return strings.Contains(path, value)
 	}
-
 	return false
 }
 

@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rodrigo-brito/gocity/analyzer"
-	"github.com/rodrigo-brito/gocity/lib"
+	"github.com/rodrigo-brito/gocity/pkg/analyzer"
+	"github.com/rodrigo-brito/gocity/pkg/lib"
 )
 
 type NodeType string

@@ -1,4 +1,4 @@
-package handle
+package server
 
 import (
 	"embed"
@@ -9,10 +9,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/rodrigo-brito/gocity/analyzer"
-	"github.com/rodrigo-brito/gocity/handle/middlewares"
-	"github.com/rodrigo-brito/gocity/lib"
-	"github.com/rodrigo-brito/gocity/model"
+	"github.com/rodrigo-brito/gocity/pkg/analyzer"
+	"github.com/rodrigo-brito/gocity/pkg/lib"
+	"github.com/rodrigo-brito/gocity/pkg/model"
+	"github.com/rodrigo-brito/gocity/pkg/server/middlewares"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -64,12 +64,12 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 
 	key := fmt.Sprintf("%s:%s", projectAddress, branch)
 	result, err := h.Cache.GetSet(key, func() ([]byte, error) {
-		analyzer := analyzer.NewAnalyzer(projectAddress, branch, h.TmpFolder, analyzer.WithIgnoreList("/vendor/"))
+		codeAnalyzer := analyzer.NewAnalyzer(projectAddress, branch, h.TmpFolder, analyzer.WithIgnoreList("/vendor/"))
 
 		path := projectAddress
 		stat, err := os.Stat(projectAddress)
 		if os.IsNotExist(err) {
-			path, err = analyzer.FetchPackage()
+			path, err = codeAnalyzer.FetchPackage()
 			if err != nil {
 				return nil, err
 			}
@@ -77,7 +77,7 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 			return nil, ErrInvalidPath
 		}
 
-		summary, err := analyzer.Analyze(path)
+		summary, err := codeAnalyzer.Analyze(path)
 		if err != nil {
 			return nil, err
 		}
@@ -105,7 +105,10 @@ func (h *AnalyzerHandle) Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	_, _ = w.Write(result)
+	_, err = w.Write(result)
+	if err != nil {
+		log.Error(err)
+	}
 }
 
 func (h *AnalyzerHandle) Serve() error {

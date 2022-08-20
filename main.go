@@ -5,9 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/rodrigo-brito/gocity/handle"
-	"github.com/rodrigo-brito/gocity/lib"
-
+	"github.com/rodrigo-brito/gocity/pkg/lib"
+	"github.com/rodrigo-brito/gocity/pkg/server"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
@@ -46,7 +45,7 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				analyzer := handle.AnalyzerHandle{
+				analyzer := server.AnalyzerHandle{
 					Cache:     lib.NewCache(),
 					TmpFolder: os.TempDir(),
 					CacheTTL:  c.Duration("cache"),
@@ -90,7 +89,7 @@ func main() {
 					local = true
 				}
 
-				analyzer := handle.AnalyzerHandle{
+				analyzer := server.AnalyzerHandle{
 					Cache:       lib.NewCache(),
 					TmpFolder:   os.TempDir(),
 					Port:        c.Int("port"),

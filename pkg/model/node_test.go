@@ -3,9 +3,8 @@ package model
 import (
 	"testing"
 
+	"github.com/rodrigo-brito/gocity/pkg/analyzer"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/rodrigo-brito/gocity/analyzer"
 )
 
 func TestNode_GenerateChildList(t *testing.T) {
