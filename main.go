@@ -21,7 +21,7 @@ func main() {
 
 	app := cli.NewApp()
 
-	app.Version = "1.0.5"
+	app.Version = "1.0.6"
 	app.Description = "Code City metaphor for visualizing Go source code in 3D"
 	app.Copyright = "Rodrigo Brito (https://github.com/rodrigo-brito)"
 
