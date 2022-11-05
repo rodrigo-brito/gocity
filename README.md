@@ -18,18 +18,18 @@ GoCity is an implementation of the Code City metaphor for visualizing source cod
 
  - Folders are districts
  - Files are buildings
- - Structs are represented as buildings on the top of their files.
+ - Structs are represented as buildings on the top of their files
 
 ## Structures Characteristics
 
  - The Number of Lines of Source Code (LOC) represents the build color (high values makes the building dark)
- - The Number of Variables (NOV) correlates to the building's base size.
- - The Number of methods (NOM) correlates to the building height.
+ - The Number of Variables (NOV) correlates to the building's base size
+ - The Number of methods (NOM) correlates to the building height
  
 ## Installation
 
 - `go install github.com/rodrigo-brito/gocity@latest`
-- Or just head to the [releases](https://github.com/rodrigo-brito/gocity/releases) page and download the latest version for you platform.
+- Or just head to the [releases](https://github.com/rodrigo-brito/gocity/releases) page and download the latest version for you platform
 
 ## Usage:
 - Online: https://go-city.github.io
@@ -44,7 +44,7 @@ The UI is built with React and uses [babylon.js](https://www.babylonjs.com/) to 
  
 ### Related Works
 - [Code City](https://wettel.github.io/codecity.html) by [Richard Wettel](https://twitter.com/richardwettel)
-- [JS City](https://github.com/ASERG-UFMG/JSCity/wiki/JSCITY) by [Marcus Viana](https://github.com/malilovick).
+- [JS City](https://github.com/ASERG-UFMG/JSCity/wiki/JSCITY) by [Marcus Viana](https://github.com/malilovick)
 
 This tool makes part of a scientific research developed at Federal University of Minas Gerais (UFMG)<br/>
 Student: [Rodrigo Brito](https://github.com/rodrigo-brito)<br/>
