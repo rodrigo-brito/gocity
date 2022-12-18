@@ -1,10 +1,5 @@
-FROM golang:1.19 as build
-WORKDIR /app
-ADD . .
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s"
-
 FROM alpine
-COPY --from=build /app/gocity /bin/gocity
+COPY ./gocity /bin/gocity
 
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh

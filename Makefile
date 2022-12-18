@@ -2,11 +2,8 @@ run:
 	@go run github.com/rafaelsq/wtc
 
 build-docker:
-	docker build -t rodrigobrito/gocity .
-
-deploy:
-	heroku container:push -a go-city web
-	heroku container:release -a go-city web
+	GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-w -s"
+	docker buildx build --platform linux/arm64 --push -t rodrigobrito/gocity .
 
 test-release:
 	goreleaser release --snapshot
