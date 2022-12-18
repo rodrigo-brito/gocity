@@ -178,9 +178,9 @@ small a {
   color: #3273dc;
   cursor: pointer;
   text-decoration: none;
-  background: none!important;
+  background: none !important;
   border: none;
-  padding: 0!important;
+  padding: 0 !important;
   font-family: arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;

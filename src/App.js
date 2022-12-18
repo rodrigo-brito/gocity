@@ -1,62 +1,62 @@
-import React, { Component } from 'react';
-import FloatBox from './FloatBox';
-import * as BABYLON from 'babylonjs';
-import BabylonScene from './Scene';
-import axios from 'axios';
-import Navbar from './Nav';
-import Legend from './Legend';
-import Loading from './Loading';
-import { feedbackEvent, getProportionalColor, searchEvent, logoBase64 } from './utils';
-import swal from 'sweetalert2';
-import Cookies from 'js-cookie';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import FloatBox from "./FloatBox";
+import * as BABYLON from "babylonjs";
+import BabylonScene from "./Scene";
+import axios from "axios";
+import Navbar from "./Nav";
+import Legend from "./Legend";
+import Loading from "./Loading";
+import {
+  feedbackEvent,
+  getProportionalColor,
+  searchEvent,
+  logoBase64,
+} from "./utils";
+import swal from "sweetalert2";
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
 
 const URLRegexp = new RegExp(/^(?:https:\/\/?)?(github\.com\/.*)/i);
 
-const endpoint = Cookies.get('gocity_api') || process.env.REACT_APP_API_URL;
+const endpoint = Cookies.get("gocity_api") || process.env.REACT_APP_API_URL;
 
 // TODO: isolate in the constants file
 const colors = {
   PACKAGE: {
     start: { r: 255, g: 100, b: 100 },
-    end: { r: 255, g: 100, b: 100 }
+    end: { r: 255, g: 100, b: 100 },
   },
   FILE: {
     start: { r: 255, g: 255, b: 255 },
-    end: { r: 0, g: 0, b: 0 }
+    end: { r: 0, g: 0, b: 0 },
   },
   STRUCT: {
     start: { r: 32, g: 156, b: 238 },
-    end: { r: 0, g: 0, b: 0 }
-  }
+    end: { r: 0, g: 0, b: 0 },
+  },
 };
 
 const examples = [
   {
-    branch: 'master',
-    name: 'sirupsen/logrus',
-    link: 'github.com/sirupsen/logrus'
+    branch: "master",
+    name: "sirupsen/logrus",
+    link: "github.com/sirupsen/logrus",
   },
   {
-    branch: 'master',
-    name: 'gin-gonic/gin',
-    link: 'github.com/gin-gonic/gin'
+    branch: "master",
+    name: "gin-gonic/gin",
+    link: "github.com/gin-gonic/gin",
   },
   {
-    branch: 'master',
-    name: 'spf13/cobra',
-    link: 'github.com/spf13/cobra'
+    branch: "master",
+    name: "spf13/cobra",
+    link: "github.com/spf13/cobra",
   },
   {
-    branch: 'master',
-    name: 'golang/dep',
-    link: 'github.com/golang/dep'
+    branch: "master",
+    name: "gohugoio/hugo",
+    link: "github.com/gohugoio/hugo",
   },
-  {
-    branch: 'master',
-    name: 'gohugoio/hugo',
-    link: 'github.com/gohugoio/hugo'
-  }
 ];
 
 class App extends Component {
@@ -71,9 +71,10 @@ class App extends Component {
     this.state = {
       feedbackFormActive: false,
       loading: false,
-      repository: this.props.match.params.repository || 'github.com/rodrigo-brito/gocity',
-      branch: this.props.match.params.branch || 'master',
-      modalActive: false
+      repository:
+        this.props.match.params.repository || "github.com/rodrigo-brito/gocity",
+      branch: this.props.match.params.branch || "master",
+      modalActive: false,
     };
 
     this.addBlock = this.addBlock.bind(this);
@@ -98,7 +99,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.repository) {
-      this.process(this.state.repository, '', this.state.branch);
+      this.process(this.state.repository, "", this.state.branch);
     }
   }
 
@@ -112,14 +113,14 @@ class App extends Component {
       this.setState({
         infoVisible: true,
         infoData: info,
-        infoPosition: { x: this.mouse_x, y: this.mouse_y }
+        infoPosition: { x: this.mouse_x, y: this.mouse_y },
       });
     }, 100);
   }
 
   hideTooltip() {
     this.setState({
-      infoVisible: false
+      infoVisible: false,
     });
   }
 
@@ -129,7 +130,7 @@ class App extends Component {
     this.initScene();
   }
 
-  addBlock = data => {
+  addBlock = (data) => {
     const bar = BABYLON.MeshBuilder.CreateBox(
       data.label,
       { width: data.width, depth: data.depth, height: data.height },
@@ -150,17 +151,23 @@ class App extends Component {
 
     bar.actionManager = new BABYLON.ActionManager(this.scene);
     bar.actionManager.registerAction(
-      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, () => {
-        this.showTooltip(bar.info);
-      })
+      new BABYLON.ExecuteCodeAction(
+        BABYLON.ActionManager.OnPointerOverTrigger,
+        () => {
+          this.showTooltip(bar.info);
+        }
+      )
     );
 
     bar.actionManager.registerAction(
-      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger, this.hideTooltip)
+      new BABYLON.ExecuteCodeAction(
+        BABYLON.ActionManager.OnPointerOutTrigger,
+        this.hideTooltip
+      )
     );
 
     // Material
-    bar.material = new BABYLON.StandardMaterial(data.label + 'mat', this.scene);
+    bar.material = new BABYLON.StandardMaterial(data.label + "mat", this.scene);
     bar.material.diffuseColor = data.color;
 
     bar.freezeWorldMatrix();
@@ -173,7 +180,7 @@ class App extends Component {
       return;
     }
 
-    children.forEach(data => {
+    children.forEach((data) => {
       var color = getProportionalColor(
         colors[data.type].start,
         colors[data.type].end,
@@ -194,8 +201,8 @@ class App extends Component {
           type: data.type,
           NOM: data.numberOfMethods,
           NOL: data.numberOfLines,
-          NOA: data.numberOfAttributes
-        }
+          NOA: data.numberOfAttributes,
+        },
       });
 
       if (parent) {
@@ -216,13 +223,22 @@ class App extends Component {
     }
     width = Math.min(width, 1000);
     height = Math.min(height, 1000);
-    this.camera.setPosition(new BABYLON.Vector3(width / 2, width, (width + height) / 2));
+    this.camera.setPosition(
+      new BABYLON.Vector3(width / 2, width, (width + height) / 2)
+    );
   }
 
   initScene() {
     this.scene.clearColor = new BABYLON.Color3(0.7, 0.7, 0.7);
     // This creates and positions a free camera (non-mesh)
-    this.camera = new BABYLON.ArcRotateCamera('camera', 0, 0, 10, BABYLON.Vector3.Zero(), this.scene);
+    this.camera = new BABYLON.ArcRotateCamera(
+      "camera",
+      0,
+      0,
+      10,
+      BABYLON.Vector3.Zero(),
+      this.scene
+    );
 
     // This targets the camera to scene origin
     this.camera.setTarget(BABYLON.Vector3.Zero());
@@ -234,7 +250,11 @@ class App extends Component {
     this.camera.useAutoRotationBehavior = true;
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight('global_light', new BABYLON.Vector3(0, 1, 0), this.scene);
+    var light = new BABYLON.HemisphericLight(
+      "global_light",
+      new BABYLON.Vector3(0, 1, 0),
+      this.scene
+    );
 
     light.intensity = 0.8;
   }
@@ -253,17 +273,17 @@ class App extends Component {
     });
   }
 
-  handleKeyPress = event => {
-    if (event.key === 'Enter') {
+  handleKeyPress = (event) => {
+    if (event.key === "Enter") {
       this.onClick();
     }
   };
 
   onInputChange(e) {
-    if (e.target.id === 'repository') {
+    if (e.target.id === "repository") {
       this.setState({ repository: e.target.value });
     }
-    if (e.target.id === 'branch') {
+    if (e.target.id === "branch") {
       this.setState({ branch: e.target.value });
     }
   }
@@ -279,11 +299,14 @@ class App extends Component {
     } else {
       const match = URLRegexp.exec(repository);
       if (!match) {
-        swal('Invalid URL', 'Please inform a valid Github URL.', 'error');
+        swal("Invalid URL", "Please inform a valid Github URL.", "error");
         return;
       }
 
-      if (match !== this.props.match.params.repository || branch !== this.props.match.params.branch) {
+      if (
+        match !== this.props.match.params.repository ||
+        branch !== this.props.match.params.branch
+      ) {
         this.props.history.push(`/${match[1]}/#/${branch}`);
       }
 
@@ -292,7 +315,7 @@ class App extends Component {
 
     this.setState({
       repository: repositoryName,
-      loading: true
+      loading: true,
     });
 
     let request = null;
@@ -302,26 +325,30 @@ class App extends Component {
       request = axios.get(endpoint, {
         params: {
           q: repositoryName,
-          b: branch
-        }
+          b: branch,
+        },
       });
     }
 
     request
-      .then(response => {
+      .then((response) => {
         this.setState({ loading: false });
         this.reset();
 
         if (response.data.children && response.data.children.length === 0) {
-          swal('Invalid project', 'Only Go projects are allowed.', 'error');
+          swal("Invalid project", "Only Go projects are allowed.", "error");
         }
 
         this.plot(response.data.children);
         this.updateCamera(response.data.width, response.data.depth);
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({ loading: false });
-        swal('Error during plot', 'Something went wrong during the plot. Try again later', 'error');
+        swal(
+          "Error during plot",
+          "Something went wrong during the plot. Try again later",
+          "error"
+        );
         console.error(e);
       });
 
@@ -334,7 +361,7 @@ class App extends Component {
 
   onClick() {
     searchEvent(this.state.repository);
-    this.process(this.state.repository, '', this.state.branch);
+    this.process(this.state.repository, "", this.state.branch);
   }
 
   onFeedBackFormClose() {
@@ -359,15 +386,20 @@ class App extends Component {
     const baseUrl = `https://img.shields.io/static/v1?label=gocity&color=blue&style=for-the-badge&message=${repo}&logo=${logoBase64()}`;
     const templates = {
       md: `![](${baseUrl})`,
-      html: `<img src="${baseUrl}" alt="checkout my repo on gocity"/>`
+      html: `<img src="${baseUrl}" alt="checkout my repo on gocity"/>`,
     };
     return templates[template];
   }
 
   saveAsPng() {
-    const image = this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const image = this.canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
     const link = document.createElement("a");
-    link.setAttribute("download", `gocity-${this.state.repository}-${this.state.branch}.png`);
+    link.setAttribute(
+      "download",
+      `gocity-${this.state.repository}-${this.state.branch}.png`
+    );
     link.setAttribute("href", image);
     link.click();
   }
@@ -384,14 +416,14 @@ class App extends Component {
             width="80"
             height="80"
             viewBox="0 0 250 250"
-            style={{ fill: '#151513', color: '#fff' }}
+            style={{ fill: "#151513", color: "#fff" }}
             aria-hidden="true"
           >
             <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" />
             <path
               d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
               fill="currentColor"
-              style={{ transformOrigin: '130px 106px' }}
+              style={{ transformOrigin: "130px 106px" }}
               className="octo-arm"
             />
             <path
@@ -401,21 +433,36 @@ class App extends Component {
             />
           </svg>
         </a>
-        <FloatBox position={this.state.infoPosition} info={this.state.infoData} visible={this.state.infoVisible} />
+        <FloatBox
+          position={this.state.infoPosition}
+          info={this.state.infoData}
+          visible={this.state.infoVisible}
+        />
         <header className="header">
           <div className="container">
             <Navbar />
             <p>
-              GoCity is an implementation of the Code City metaphor for visualizing Go source code. Visit our repository
-              for <a href="https://github.com/rodrigo-brito/gocity">more details.</a>
+              GoCity is an implementation of the Code City metaphor for
+              visualizing Go source code. Visit our repository for{" "}
+              <a href="https://github.com/rodrigo-brito/gocity">
+                more details.
+              </a>
             </p>
             <p>
-              You can also add a custom badge for your go repository.{' '}
-              <button className="link-like-button" onClick={this.openModal} href="#">
+              You can also add a custom badge for your go repository.{" "}
+              <button
+                className="link-like-button"
+                onClick={this.openModal}
+                href="#"
+              >
                 click here
-              </button>{' '}
-              to generate one. Or you can{' '}
-              <button className="link-like-button" onClick={this.saveAsPng} href="#">
+              </button>{" "}
+              to generate one. Or you can{" "}
+              <button
+                className="link-like-button"
+                onClick={this.saveAsPng}
+                href="#"
+              >
                 save the city as PNG
               </button>
               .
@@ -444,15 +491,19 @@ class App extends Component {
                 />
               </div>
               <div className="control">
-                <button id="search" onClick={this.onClick} className="button is-info link-like-button">
+                <button
+                  id="search"
+                  onClick={this.onClick}
+                  className="button is-info"
+                >
                   Plot
                 </button>
               </div>
             </div>
             <div className="level">
               <small className="level-left">
-                Examples:{' '}
-                {examples.map(example => (
+                Examples:{" "}
+                {examples.map((example) => (
                   <button
                     className="m-l-10 link-like-button"
                     key={example.link}
@@ -466,7 +517,7 @@ class App extends Component {
               </small>
             </div>
           </div>
-          <div className={this.state.modalActive ? 'modal is-active' : 'modal'}>
+          <div className={this.state.modalActive ? "modal is-active" : "modal"}>
             <div className="modal-background"></div>
             <div className="modal-card">
               <section className="modal-card-body">
@@ -475,13 +526,21 @@ class App extends Component {
                     Showing code for <strong>{this.state.repository}</strong>
                   </span>
                   <h3>Markdown format</h3>
-                  <textarea className="textarea">{this.getBadgeValue('md')}</textarea>
+                  <textarea className="textarea">
+                    {this.getBadgeValue("md")}
+                  </textarea>
                   <h3>HTML format</h3>
-                  <textarea className="textarea">{this.getBadgeValue('html')}</textarea>
+                  <textarea className="textarea">
+                    {this.getBadgeValue("html")}
+                  </textarea>
                 </div>
               </section>
             </div>
-            <button onClick={this.closeModal} className="modal-close is-large" aria-label="close"></button>
+            <button
+              onClick={this.closeModal}
+              className="modal-close is-large"
+              aria-label="close"
+            ></button>
           </div>
         </header>
         <section className="canvas">
@@ -508,12 +567,12 @@ App.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       repository: PropTypes.string,
-      branch: PropTypes.string
-    })
+      branch: PropTypes.string,
+    }),
   }),
   history: PropTypes.shape({
     push: PropTypes.func,
-  })
-}
+  }),
+};
 
 export default App;
