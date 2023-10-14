@@ -75,6 +75,7 @@ class App extends Component {
         this.props.match.params.repository || "github.com/rodrigo-brito/gocity",
       branch: this.props.match.params.branch || "master",
       modalActive: false,
+      sceneShouldRotate:true
     };
 
     this.addBlock = this.addBlock.bind(this);
@@ -219,7 +220,7 @@ class App extends Component {
     if (width > 1000) {
       this.camera.useAutoRotationBehavior = false;
     } else {
-      this.camera.useAutoRotationBehavior = true;
+      this.camera.useAutoRotationBehavior = this.state.sceneShouldRotate;
     }
     width = Math.min(width, 1000);
     height = Math.min(height, 1000);
@@ -247,7 +248,7 @@ class App extends Component {
     this.camera.attachControl(this.canvas, true);
 
     this.camera.setPosition(new BABYLON.Vector3(500, 400, -100));
-    this.camera.useAutoRotationBehavior = true;
+    this.camera.useAutoRotationBehavior = this.state.sceneShouldRotate;     
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
     var light = new BABYLON.HemisphericLight(
@@ -497,6 +498,21 @@ class App extends Component {
                   className="button is-info"
                 >
                   Plot
+                </button>
+                <button id="toggleRotation"
+                className="button is-info"
+                  onClick={() => {
+                    this.setState(
+                      {
+                        ...this.state,
+                        sceneShouldRotate: !this.state.sceneShouldRotate
+                      }
+                    );
+                    // redraw the scene
+                    this.process(this.state.repository, "", this.state.branch);
+                  }}
+                >
+                  Toggle Rotation
                 </button>
               </div>
             </div>
