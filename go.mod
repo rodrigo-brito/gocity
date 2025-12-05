@@ -7,7 +7,7 @@ require (
 	github.com/go-chi/cors v1.2.1
 	github.com/karlseguin/ccache v2.0.3+incompatible
 	github.com/rafaelsq/wtc v1.1.0
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.1
 	github.com/stretchr/testify v1.8.0
 	github.com/urfave/cli/v2 v2.11.2
 	gopkg.in/src-d/go-git.v4 v4.13.1
